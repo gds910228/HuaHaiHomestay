@@ -1,0 +1,198 @@
+/* pages/guide-detail/index.wxss */
+.detail-container {
+  min-height: 100vh;
+  background: #F5F7FA;
+  padding-bottom: 120rpx;
+}
+
+/* 顶部图片轮播 */
+.detail-images {
+  position: relative;
+  width: 100%;
+  height: 500rpx;
+  background: #000;
+}
+
+.images-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.detail-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 内容区 */
+.detail-content {
+  background: #FFFFFF;
+  border-radius: 32rpx 32rpx 0 0;
+  margin-top: -32rpx;
+  position: relative;
+  z-index: 2;
+  padding: 32rpx;
+  min-height: calc(100vh - 500rpx);
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+
+.header-left {
+  flex: 1;
+}
+
+.detail-category {
+  display: inline-block;
+  padding: 8rpx 20rpx;
+  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  color: #FFFFFF;
+  margin-bottom: 16rpx;
+}
+
+.detail-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333333;
+  line-height: 1.4;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12rpx;
+}
+
+.action-btn {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F5F7FA;
+  border-radius: 50%;
+}
+
+.action-icon {
+  font-size: 36rpx;
+}
+
+/* 标签 */
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.detail-tag {
+  padding: 8rpx 20rpx;
+  background: #F0F7FF;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  color: #2E7DFF;
+}
+
+/* 统计信息 */
+.detail-stats {
+  display: flex;
+  gap: 32rpx;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.stat-item {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+/* 分割线 */
+.divider {
+  height: 1rpx;
+  background: #F0F0F0;
+  margin: 24rpx 0;
+}
+
+/* 详细内容 */
+.detail-body {
+  margin-top: 24rpx;
+}
+
+.body-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 16rpx;
+}
+
+.body-content {
+  font-size: 28rpx;
+  color: #666666;
+  line-height: 1.8;
+}
+
+/* 实用信息 */
+.detail-info {
+  margin-top: 32rpx;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.info-label {
+  font-size: 28rpx;
+  color: #666666;
+}
+
+.info-value {
+  font-size: 28rpx;
+  color: #333333;
+  font-weight: 500;
+}
+
+/* 底部操作栏 */
+.detail-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 16rpx;
+  padding: 16rpx 24rpx;
+  background: #FFFFFF;
+  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.06);
+  z-index: 10;
+}
+
+.footer-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 28rpx;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #999999;
+}

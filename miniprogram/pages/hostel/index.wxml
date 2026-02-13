@@ -1,0 +1,108 @@
+<!--pages/hostel/index.wxml-->
+<view class="hostel-container" wx:if="{{!loading && hostel}}">
+  <!-- 相册轮播 -->
+  <view class="album-section">
+    <swiper class="album-swiper" indicator-dots="{{hostel.albums.length > 1}}" autoplay circular>
+      <swiper-item wx:for="{{hostel.albums}}" wx:key="*this">
+        <image
+          class="album-image"
+          src="{{item}}"
+          mode="aspectFill"
+          data-url="{{item}}"
+          data-urls="{{hostel.albums}}"
+          bindtap="previewAlbum"
+        ></image>
+      </swiper-item>
+    </swiper>
+    <view class="album-badge">
+      <text class="badge-text">{{hostel.albums.length}}张照片</text>
+    </view>
+  </view>
+
+  <!-- 民宿信息 -->
+  <view class="hostel-info card">
+    <text class="info-title">{{hostel.name}}</text>
+    <text class="info-desc">{{hostel.description}}</text>
+
+    <view class="info-location" bindtap="navigate">
+      <text class="location-icon">📍</text>
+      <text class="location-text">{{hostel.address}}</text>
+      <text class="location-arrow">›</text>
+    </view>
+
+    <!-- 联系方式 -->
+    <view class="contact-actions">
+      <button class="contact-btn" bindtap="makeCall">
+        <text class="btn-icon">📞</text>
+        <text class="btn-text">电话咨询</text>
+      </button>
+      <button class="contact-btn" bindtap="copyWechat">
+        <text class="btn-icon">💬</text>
+        <text class="btn-text">微信咨询</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 设施服务 -->
+  <view class="facilities-section card" wx:if="{{hostel.facilities && hostel.facilities.length > 0}}">
+    <text class="section-title">设施服务</text>
+    <view class="facilities-list">
+      <view class="facility-item" wx:for="{{hostel.facilities}}" wx:key="*this">
+        <text class="facility-icon">✓</text>
+        <text class="facility-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 房型列表 -->
+  <view class="rooms-section">
+    <text class="section-title">房型介绍</text>
+
+    <view class="room-card" wx:for="{{rooms}}" wx:key="_id" data-room="{{item}}" bindtap="viewRoom">
+      <view class="room-images">
+        <swiper class="room-swiper" indicator-dots="{{item.images.length > 1}}">
+          <swiper-item wx:for="{{item.images}}" wx:key="*this" wx:for-item="img">
+            <image class="room-image" src="{{img}}" mode="aspectFill"></image>
+          </swiper-item>
+        </swiper>
+      </view>
+
+      <view class="room-content">
+        <text class="room-title">{{item.roomType}}</text>
+        <text class="room-desc">{{item.description}}</text>
+
+        <view class="room-info">
+          <text class="info-tag">{{item.area}}</text>
+          <text class="info-tag">{{item.bedType}}</text>
+        </view>
+
+        <view class="room-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+
+        <view class="room-footer">
+          <view class="price-range">
+            <text class="price-label">参考价</text>
+            <text class="price-value">¥{{item.price.low}}-{{item.price.high}}</text>
+          </view>
+          <view class="room-status" wx:if="{{item.status}}">
+            <text class="status-dot"></text>
+            <text class="status-text">{{item.status}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部咨询按钮 -->
+  <view class="bottom-action">
+    <button class="action-btn btn-primary" bindtap="copyWechat">
+      <text>💬 立即咨询预订</text>
+    </button>
+  </view>
+</view>
+
+<!-- 加载状态 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text class="loading-text">加载中...</text>
+</view>

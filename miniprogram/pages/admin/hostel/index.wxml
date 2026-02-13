@@ -1,0 +1,126 @@
+<!--pages/admin/hostel/index.wxml-->
+<view class="hostel-container">
+  <!-- 标签切换 -->
+  <view class="tab-bar">
+    <view
+      class="tab-item {{activeTab === 'hostel' ? 'active' : ''}}"
+      data-tab="hostel"
+      bindtap="switchTab"
+    >
+      <text>民宿信息</text>
+    </view>
+    <view
+      class="tab-item {{activeTab === 'rooms' ? 'active' : ''}}"
+      data-tab="rooms"
+      bindtap="switchTab"
+    >
+      <text>房型管理</text>
+    </view>
+  </view>
+
+  <!-- 民宿信息 -->
+  <view class="tab-content" wx:if="{{activeTab === 'hostel'}}">
+    <view class="info-card card" wx:if="{{hostel}}">
+      <view class="info-header">
+        <text class="info-title">{{hostel.name || '画海民宿'}}</text>
+        <button class="edit-btn" size="mini" bindtap="editHostel">编辑</button>
+      </view>
+
+      <view class="info-section">
+        <text class="section-label">民宿描述</text>
+        <text class="section-value">{{hostel.description || '暂无描述'}}</text>
+      </view>
+
+      <view class="info-section">
+        <text class="section-label">地址</text>
+        <text class="section-value">{{hostel.address || '暂未设置'}}</text>
+      </view>
+
+      <view class="info-section">
+        <text class="section-label">联系电话</text>
+        <text class="section-value">{{hostel.phone || '暂未设置'}}</text>
+      </view>
+
+      <view class="info-section">
+        <text class="section-label">微信号</text>
+        <text class="section-value">{{hostel.wechat || '暂未设置'}}</text>
+      </view>
+
+      <view class="info-section">
+        <text class="section-label">相册数量</text>
+        <text class="section-value">{{hostel.albums ? hostel.albums.length : 0}} 张</text>
+      </view>
+
+      <view class="info-section">
+        <text class="section-label">设施服务</text>
+        <view class="facilities-list">
+          <text class="facility-tag" wx:for="{{hostel.facilities || []}}" wx:key="*this">{{item}}</text>
+          <text class="facility-empty" wx:if="{{!hostel.facilities || hostel.facilities.length === 0}}">暂未设置</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{!loading && !hostel}}">
+      <text class="empty-icon">🏠</text>
+      <text class="empty-text">暂未设置民宿信息</text>
+      <button class="empty-btn btn-primary" bindtap="editHostel">
+        <text>立即设置</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 房型管理 -->
+  <view class="tab-content" wx:if="{{activeTab === 'rooms'}}">
+    <view class="rooms-list">
+      <view
+        class="room-item card"
+        wx:for="{{rooms}}"
+        wx:key="_id"
+      >
+        <view class="room-header">
+          <text class="room-title">{{item.roomType}}</text>
+          <text class="room-price">¥{{item.price.low}}-{{item.price.high}}</text>
+        </view>
+
+        <view class="room-info">
+          <text class="info-text">面积: {{item.area}}</text>
+          <text class="info-text">床型: {{item.bedType}}</text>
+        </view>
+
+        <view class="room-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+
+        <view class="room-actions">
+          <button
+            class="action-btn edit"
+            size="mini"
+            data-index="{{index}}"
+            catchtap="editRoom"
+          >
+            编辑
+          </button>
+          <button
+            class="action-btn delete"
+            size="mini"
+            data-index="{{index}}"
+            data-room-type="{{item.roomType}}"
+            catchtap="deleteRoom"
+          >
+            删除
+          </button>
+        </view>
+      </view>
+
+      <view class="empty-state" wx:if="{{!loading && rooms.length === 0}}">
+        <text class="empty-icon">🛏️</text>
+        <text class="empty-text">暂无房型</text>
+      </view>
+    </view>
+
+    <!-- 添加按钮 -->
+    <view class="add-btn" bindtap="addRoom">
+      <text class="add-icon">+</text>
+    </view>
+  </view>
+</view>

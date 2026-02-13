@@ -1,0 +1,78 @@
+<!--pages/guide-detail/index.wxml-->
+<view class="detail-container" wx:if="{{!loading && guide}}">
+  <!-- 顶部图片轮播 -->
+  <view class="detail-images">
+    <swiper class="images-swiper" indicator-dots="{{guide.images.length > 1}}" autoplay circular>
+      <swiper-item wx:for="{{guide.images}}" wx:key="*this">
+        <image
+          class="detail-image"
+          src="{{item}}"
+          mode="aspectFill"
+          data-url="{{item}}"
+          data-urls="{{guide.images}}"
+          bindtap="previewImage"
+        ></image>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 内容区 -->
+  <view class="detail-content">
+    <!-- 标题和操作 -->
+    <view class="detail-header">
+      <view class="header-left">
+        <text class="detail-category">{{guide.categoryName}}</text>
+        <text class="detail-title">{{guide.title}}</text>
+      </view>
+      <view class="header-actions">
+        <view class="action-btn" bindtap="toggleFavorite">
+          <text class="action-icon">{{isFavorite ? '❤️' : '🤍'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 标签 -->
+    <view class="detail-tags" wx:if="{{guide.tags && guide.tags.length > 0}}">
+      <text class="detail-tag" wx:for="{{guide.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+    </view>
+
+    <!-- 统计信息 -->
+    <view class="detail-stats">
+      <text class="stat-item">👁 {{guide.views || 0}}</text>
+      <text class="stat-item" wx:if="{{guide.likes > 0}}">❤️ {{guide.likes || 0}}</text>
+    </view>
+
+    <!-- 分割线 -->
+    <view class="divider"></view>
+
+    <!-- 详细内容 -->
+    <view class="detail-body">
+      <text class="body-title">详细介绍</text>
+      <rich-text class="body-content" nodes="{{guide.content}}"></rich-text>
+    </view>
+
+    <!-- 实用信息（如果有） -->
+    <view class="detail-info" wx:if="{{guide.info}}">
+      <text class="body-title">实用信息</text>
+      <view class="info-item" wx:for="{{guide.info}}" wx:key="label">
+        <text class="info-label">{{item.label}}</text>
+        <text class="info-value">{{item.value}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="detail-footer">
+    <button class="footer-btn btn-secondary" open-type="share">
+      <text>📤 分享</text>
+    </button>
+    <button class="footer-btn btn-primary" bindtap="navigate" wx:if="{{guide.location}}">
+      <text>📍 一键导航</text>
+    </button>
+  </view>
+</view>
+
+<!-- 加载状态 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text class="loading-text">加载中...</text>
+</view>

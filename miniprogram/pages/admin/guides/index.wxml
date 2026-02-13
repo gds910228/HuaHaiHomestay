@@ -1,0 +1,89 @@
+<!--pages/admin/guides/index.wxml-->
+<view class="guides-container">
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <picker
+      class="filter-picker"
+      mode="selector"
+      range="{{['全部', '已发布', '草稿']}}"
+      bindchange="onFilterChange"
+      data-field="status"
+    >
+      <view class="picker-value">
+        <text>状态筛选</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+
+    <picker
+      class="filter-picker"
+      mode="selector"
+      range="{{['全部', '美食推荐', '游玩路线', '实用信息', '景点打卡']}}"
+      bindchange="onFilterChange"
+      data-field="category"
+    >
+      <view class="picker-value">
+        <text>分类筛选</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 攻略列表 -->
+  <view class="guides-list">
+    <view class="empty-state" wx:if="{{!loading && guides.length === 0}}">
+      <text class="empty-icon">📝</text>
+      <text class="empty-text">暂无攻略</text>
+    </view>
+
+    <view
+      class="guide-item card"
+      wx:for="{{guides}}"
+      wx:key="_id"
+    >
+      <view class="item-header">
+        <text class="item-title">{{item.title}}</text>
+        <view class="item-status {{item.status === 'published' ? 'published' : 'draft'}}">
+          <text>{{item.status === 'published' ? '已发布' : '草稿'}}</text>
+        </view>
+      </view>
+
+      <view class="item-info">
+        <text class="info-tag">{{item.category}}</text>
+        <text class="info-text">浏览 {{item.views || 0}}</text>
+        <text class="info-text">收藏 {{item.likes || 0}}</text>
+      </view>
+
+      <view class="item-actions">
+        <button
+          class="action-btn edit"
+          data-id="{{item._id}}"
+          catchtap="editGuide"
+        >
+          <text>编辑</text>
+        </button>
+        <button
+          class="action-btn toggle"
+          data-id="{{item._id}}"
+          data-status="{{item.status}}"
+          catchtap="toggleStatus"
+        >
+          <text>{{item.status === 'published' ? '下架' : '发布'}}</text>
+        </button>
+        <button
+          class="action-btn delete"
+          data-id="{{item._id}}"
+          data-title="{{item.title}}"
+          catchtap="deleteGuide"
+        >
+          <text>删除</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="add-btn" bindtap="addGuide">
+    <text class="add-icon">+</text>
+  </view>
+</view>

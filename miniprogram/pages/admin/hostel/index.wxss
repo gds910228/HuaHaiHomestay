@@ -1,0 +1,228 @@
+/* pages/admin/hostel/index.wxss */
+.hostel-container {
+  min-height: 100vh;
+  background: #F5F7FA;
+  padding-bottom: 120rpx;
+}
+
+/* 标签栏 */
+.tab-bar {
+  display: flex;
+  background: #FFFFFF;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.tab-item {
+  flex: 1;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #666666;
+  border-bottom: 4rpx solid transparent;
+  transition: all 0.3s;
+}
+
+.tab-item.active {
+  color: #2E7DFF;
+  border-bottom-color: #2E7DFF;
+  font-weight: 500;
+}
+
+/* 标签内容 */
+.tab-content {
+  padding: 24rpx;
+}
+
+/* 民宿信息卡片 */
+.info-card {
+  padding: 32rpx;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.info-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.edit-btn {
+  background: #F0F7FF;
+  color: #2E7DFF;
+  border: none;
+}
+
+.info-section {
+  margin-bottom: 24rpx;
+}
+
+.section-label {
+  display: block;
+  font-size: 24rpx;
+  color: #999999;
+  margin-bottom: 8rpx;
+}
+
+.section-value {
+  display: block;
+  font-size: 28rpx;
+  color: #333333;
+  line-height: 1.6;
+}
+
+.facilities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 12rpx;
+}
+
+.facility-tag {
+  padding: 8rpx 20rpx;
+  background: #F0F7FF;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  color: #2E7DFF;
+}
+
+.facility-empty {
+  font-size: 26rpx;
+  color: #999999;
+}
+
+/* 房型列表 */
+.rooms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.room-item {
+  padding: 24rpx;
+}
+
+.room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.room-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.room-price {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #FF6B35;
+}
+
+.room-info {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 12rpx;
+}
+
+.info-text {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.room-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  margin-bottom: 16rpx;
+}
+
+.tag {
+  padding: 6rpx 16rpx;
+  background: #F0F7FF;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  color: #2E7DFF;
+}
+
+.room-actions {
+  display: flex;
+  gap: 12rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #F0F0F0;
+}
+
+.action-btn {
+  flex: 1;
+}
+
+.action-btn.edit {
+  background: #F0F7FF;
+  color: #2E7DFF;
+}
+
+.action-btn.delete {
+  background: #FFEBEE;
+  color: #F44336;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 32rpx;
+}
+
+.empty-btn {
+  width: 240rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+}
+
+/* 添加按钮 */
+.add-btn {
+  position: fixed;
+  right: 32rpx;
+  bottom: 100rpx;
+  width: 112rpx;
+  height: 112rpx;
+  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+  border-radius: 56rpx;
+  box-shadow: 0 8rpx 24rpx rgba(46, 125, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.add-icon {
+  font-size: 64rpx;
+  color: #FFFFFF;
+  font-weight: 300;
+}

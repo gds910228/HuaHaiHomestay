@@ -1,0 +1,54 @@
+<!--pages/admin/index.wxml-->
+<view class="admin-container">
+  <!-- 未登录状态 -->
+  <view class="login-section" wx:if="{{!isAdmin}}">
+    <view class="login-card">
+      <text class="login-title">管理后台</text>
+      <text class="login-desc">请登录以管理内容</text>
+      <button class="login-btn btn-primary" bindtap="login">
+        <text>登录</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 已登录状态 -->
+  <view class="admin-content" wx:if="{{isAdmin}}">
+    <!-- 欢迎卡片 -->
+    <view class="welcome-card card">
+      <text class="welcome-title">欢迎回来</text>
+      <text class="welcome-desc">管理画海民宿的内容</text>
+    </view>
+
+    <!-- 功能菜单 -->
+    <view class="menu-list">
+      <view class="menu-item" bindtap="goToGuides">
+        <view class="menu-left">
+          <text class="menu-icon">📝</text>
+          <view class="menu-info">
+            <text class="menu-title">攻略管理</text>
+            <text class="menu-desc">管理景点、美食、路线等内容</text>
+          </view>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+
+      <view class="menu-item" bindtap="goToHostel">
+        <view class="menu-left">
+          <text class="menu-icon">🏠</text>
+          <view class="menu-info">
+            <text class="menu-title">民宿信息</text>
+            <text class="menu-desc">管理民宿信息和房型</text>
+          </view>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 退出登录按钮 -->
+    <view class="logout-section">
+      <button class="logout-btn btn-secondary" bindtap="logout">
+        <text>退出登录</text>
+      </button>
+    </view>
+  </view>
+</view>

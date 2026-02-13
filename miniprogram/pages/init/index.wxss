@@ -1,0 +1,174 @@
+/* pages/init/index.wxss */
+.init-container {
+  min-height: 100vh;
+  padding: 24rpx;
+  padding-bottom: 120rpx;
+}
+
+/* 提示卡片 */
+.tip-card {
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+}
+
+.tip-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #FFFFFF;
+  margin-bottom: 16rpx;
+}
+
+.tip-desc {
+  display: block;
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.6;
+  margin-bottom: 24rpx;
+}
+
+.tip-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20rpx;
+  border-radius: 12rpx;
+}
+
+.step-item {
+  font-size: 24rpx;
+  color: #FFFFFF;
+  line-height: 1.5;
+}
+
+/* 操作区域 */
+.actions-section {
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 16rpx;
+}
+
+.action-btn {
+  width: 100%;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  margin-bottom: 16rpx;
+  padding: 0;
+  background: #FFFFFF;
+  border: 2rpx solid #E0E0E0;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 8rpx 16rpx rgba(46, 125, 255, 0.2);
+}
+
+.action-btn.secondary {
+  background: #FFFFFF;
+  color: #2E7DFF;
+  border-color: #2E7DFF;
+}
+
+.action-btn.danger {
+  background: #FFEBEE;
+  color: #F44336;
+  border-color: #F44336;
+}
+
+.action-row {
+  display: flex;
+  gap: 16rpx;
+}
+
+.action-row .action-btn {
+  flex: 1;
+}
+
+.divider {
+  height: 1rpx;
+  background: #E0E0E0;
+  margin: 24rpx 0;
+}
+
+/* 日志区域 */
+.logs-section {
+  padding: 24rpx;
+}
+
+.logs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.logs-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.logs-count {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.logs-content {
+  height: 600rpx;
+  background: #1E1E1E;
+  border-radius: 12rpx;
+  padding: 16rpx;
+}
+
+.log-item {
+  display: block;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 22rpx;
+  color: #00FF00;
+  line-height: 1.6;
+  margin-bottom: 4rpx;
+  word-break: break-all;
+}
+
+.log-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 24rpx;
+  color: #666666;
+}
+
+/* 底部操作 */
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16rpx 24rpx;
+  background: #FFFFFF;
+  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.home-btn {
+  width: 100%;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+}
