@@ -6,6 +6,7 @@
     "pages/user/index",
     "pages/admin/index",
     "pages/admin/guides/index",
+    "pages/admin/guide-edit/index",
     "pages/admin/hostel/index",
     "pages/init/index"
   ],

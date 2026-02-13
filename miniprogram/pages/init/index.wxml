@@ -49,6 +49,31 @@
       <text>📝 攻略数据</text>
     </button>
 
+    <button
+      class="action-btn secondary"
+      bindtap="initFood"
+      disabled="{{loading}}"
+    >
+      <text>🍴 美食攻略（真实数据）</text>
+    </button>
+
+    <view class="action-row">
+      <button
+        class="action-btn secondary"
+        bindtap="goToAdmin"
+        disabled="{{loading}}"
+      >
+        <text>⚙️ 管理后台</text>
+      </button>
+      <button
+        class="action-btn secondary"
+        bindtap="goToAdminGuides"
+        disabled="{{loading}}"
+      >
+        <text>📝 编辑攻略</text>
+      </button>
+    </view>
+
     <view class="divider"></view>
 
     <button

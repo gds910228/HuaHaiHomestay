@@ -53,6 +53,12 @@ Page({
     await this.executeInit('initGuides', '攻略数据');
   },
 
+  // 初始化美食攻略数据
+  async initFood() {
+    if (this.data.loading) return;
+    await this.executeInit('initFood', '美食攻略数据');
+  },
+
   // 清空所有数据
   async clearAll() {
     if (this.data.loading) return;
@@ -127,6 +133,20 @@ Page({
       logs: []
     });
     this.addLog('📋 日志已清空');
+  },
+
+  // 跳转到管理后台首页
+  goToAdmin() {
+    wx.navigateTo({
+      url: '/pages/admin/index'
+    });
+  },
+
+  // 跳转到攻略管理（快速编辑入口）
+  goToAdminGuides() {
+    wx.navigateTo({
+      url: '/pages/admin/guides/index'
+    });
   },
 
   // 跳转到首页

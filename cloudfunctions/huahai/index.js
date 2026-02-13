@@ -31,6 +31,8 @@ exports.main = async (event, context) => {
         return await getGuides(event);
       case 'getGuideDetail':
         return await getGuideDetail(event);
+      case 'getGuideById':
+        return await getGuideById(event);
       case 'incrementViews':
         return await incrementViews(event);
 
@@ -145,6 +147,27 @@ async function getGuideDetail(event) {
       ...res.data,
       categoryName: categoryMap[res.data.category] || res.data.category
     }
+  };
+}
+
+/**
+ * 根据ID获取攻略（用于编辑）
+ */
+async function getGuideById(event) {
+  const { id } = event;
+
+  const res = await db.collection('guides').doc(id).get();
+
+  if (!res.data) {
+    return {
+      success: false,
+      errMsg: '攻略不存在'
+    };
+  }
+
+  return {
+    success: true,
+    data: res.data
   };
 }
 
