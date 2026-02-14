@@ -30,15 +30,6 @@ Page({
 
       if (res.result.success) {
         this.setData({ guide: res.result.data });
-
-        // 增加浏览量
-        wx.cloud.callFunction({
-          name: 'huahai',
-          data: {
-            type: 'incrementViews',
-            id: this.data.id
-          }
-        }).catch(() => {});
       }
     } catch (err) {
       console.error('加载详情失败', err);
@@ -51,45 +42,42 @@ Page({
     }
   },
 
-  // 检查是否已收藏
-  async checkFavorite() {
+  // 检查是否已收藏（本地存储）
+  checkFavorite() {
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'huahai',
-        data: {
-          type: 'checkFavorite',
-          guideId: this.data.id
-        }
-      });
-
-      if (res.result.success) {
-        this.setData({ isFavorite: res.result.data });
-      }
+      const favorites = wx.getStorageSync('favorites') || [];
+      const isFavorite = favorites.includes(this.data.id);
+      this.setData({ isFavorite });
     } catch (err) {
       console.error('检查收藏状态失败', err);
     }
   },
 
-  // 收藏/取消收藏
-  async toggleFavorite() {
+  // 收藏/取消收藏（本地存储）
+  toggleFavorite() {
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'huahai',
-        data: {
-          type: this.data.isFavorite ? 'removeFavorite' : 'addFavorite',
-          guideId: this.data.id
-        }
-      });
+      let favorites = wx.getStorageSync('favorites') || [];
 
-      if (res.result.success) {
-        this.setData({
-          isFavorite: !this.data.isFavorite
-        });
+      if (this.data.isFavorite) {
+        // 取消收藏
+        favorites = favorites.filter(id => id !== this.data.id);
         wx.showToast({
-          title: this.data.isFavorite ? '已取消收藏' : '已收藏',
+          title: '已取消收藏',
+          icon: 'success'
+        });
+      } else {
+        // 添加收藏
+        favorites.push(this.data.id);
+        wx.showToast({
+          title: '已收藏',
           icon: 'success'
         });
       }
+
+      wx.setStorageSync('favorites', favorites);
+      this.setData({
+        isFavorite: !this.data.isFavorite
+      });
     } catch (err) {
       console.error('收藏操作失败', err);
       wx.showToast({

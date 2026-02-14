@@ -1,0 +1,20 @@
+<!--pages/route/index.wxml-->
+<view class="coming-soon-container">
+  <view class="coming-soon-card">
+    <view class="icon-large">{{category.icon}}</view>
+    <view class="content">
+      <text class="title">{{category.name}}</text>
+      <text class="desc">{{category.desc}}</text>
+      <text class="status">即将上线</text>
+    </view>
+  </view>
+
+  <view class="tips-card">
+    <view class="tips-title">💡 小贴士</view>
+    <view class="tips-list">
+      <text class="tip-item">• 环岛路线全长约60公里</text>
+      <text class="tip-item">• 建议自驾或租电动车环岛</text>
+      <text class="tip-item">• 注意查看潮汐表，确保安全</text>
+    </view>
+  </view>
+</view>

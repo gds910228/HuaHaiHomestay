@@ -10,65 +10,15 @@
   </view>
 
   <!-- 分类导航 -->
-  <view class="category-scroll">
-    <scroll-view scroll-x class="category-list" enable-flex>
-      <view
-        class="category-item {{currentCategory === item.id ? 'active' : ''}}"
-        wx:for="{{categories}}"
-        wx:key="id"
-        data-category="{{item.id}}"
-        bindtap="switchCategory"
-      >
-        <text class="category-icon">{{item.icon}}</text>
-        <text class="category-name">{{item.name}}</text>
-      </view>
-    </scroll-view>
-  </view>
-
-  <!-- 攻略卡片列表 -->
-  <view class="guides-list">
-    <view class="empty-state" wx:if="{{!loading && guides.length === 0}}">
-      <text class="empty-icon">🌊</text>
-      <text class="empty-text">暂无内容</text>
-      <text class="empty-hint">精彩内容即将上线</text>
-    </view>
-
-    <view
-      class="guide-card"
-      wx:for="{{guides}}"
-      wx:key="_id"
-      data-id="{{item._id}}"
-      bindtap="viewGuide"
-    >
-      <!-- 卡片图片 -->
-      <view class="card-image-wrapper">
-        <image class="card-image" src="{{item.cover}}" mode="aspectFill"></image>
-        <view class="card-category">{{item.categoryName}}</view>
-      </view>
-
-      <!-- 卡片内容 -->
+  <view class="categories-container">
+    <view class="category-card" wx:for="{{categories}}" wx:key="id" data-id="{{item.id}}" bindtap="navigateToCategory" style="background: {{item.color}}">
       <view class="card-content">
-        <text class="card-title">{{item.title}}</text>
-        <text class="card-desc">{{item.summary}}</text>
-
-        <!-- 标签 -->
-        <view class="card-tags" wx:if="{{item.tags && item.tags.length > 0}}">
-          <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
-        </view>
-
-        <!-- 底部信息 -->
-        <view class="card-footer">
-          <view class="card-stats">
-            <text class="stat-item">👁 {{item.views || 0}}</text>
-            <text class="stat-item" wx:if="{{item.likes > 0}}">❤️ {{item.likes || 0}}</text>
-          </view>
+        <view class="card-icon">{{item.icon}}</view>
+        <view class="card-text">
+          <text class="card-title">{{item.name}}</text>
+          <text class="card-desc">{{item.desc}}</text>
         </view>
       </view>
-    </view>
-
-    <!-- 加载状态 -->
-    <view class="loading-more" wx:if="{{loading}}">
-      <text class="loading-text">加载中...</text>
     </view>
   </view>
 </view>

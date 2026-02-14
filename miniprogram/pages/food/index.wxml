@@ -1,0 +1,75 @@
+<!--pages/food/index.wxml-->
+<view class="food-container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">🍴 美食推荐</text>
+    <text class="page-subtitle">本地人推荐的{{guides.length}}家餐厅</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && guides.length === 0}}">
+    <text class="empty-icon">🌊</text>
+    <text class="empty-text">暂无数据</text>
+  </view>
+
+  <!-- 选项卡 -->
+  <view class="tabs-container" wx:if="{{!loading && tabs.length > 0}}">
+    <view
+      class="tab-item {{currentTab === index ? 'active' : ''}}"
+      wx:for="{{tabs}}"
+      wx:key="key"
+      data-index="{{index}}"
+      bindtap="switchTab"
+    >
+      <text class="tab-icon">{{item.icon}}</text>
+      <text class="tab-name">{{item.name}}</text>
+      <text class="tab-count">{{item.count}}家</text>
+    </view>
+  </view>
+
+  <!-- 选项卡内容区域 -->
+  <view class="tab-content-area" wx:if="{{!loading && tabs.length > 0}}">
+    <view class="food-list">
+      <view class="food-item"
+             wx:for="{{groupedGuides[tabs[currentTab].key]}}"
+             wx:key="_id"
+             wx:for-item="guide">
+        <view class="food-card {{guide.cover && !guide.cover.includes('placeholder') ? 'has-image' : 'no-image'}}">
+          <image wx:if="{{guide.cover && !guide.cover.includes('placeholder')}}"
+                 class="food-image"
+                 src="{{guide.cover}}"
+                 mode="aspectFill"></image>
+
+          <view class="food-info">
+            <text class="food-title">{{guide.title}}</text>
+            <text class="food-address" wx:if="{{guide.address}}">📍 {{guide.address}}</text>
+
+            <view class="food-tags" wx:if="{{guide.tags && guide.tags.length > 0}}">
+              <text class="food-tag" wx:for="{{guide.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+            </view>
+
+            <text class="food-desc" wx:if="{{guide.summary}}">{{guide.summary}}</text>
+
+            <view class="food-actions">
+              <button
+                  class="nav-btn"
+                  data-latitude="{{guide.location && guide.location.latitude}}"
+                  data-longitude="{{guide.location && guide.location.longitude}}"
+                  data-title="{{guide.title}}"
+                  data-address="{{guide.address}}"
+                  catchtap="navigate"
+                >
+                <text>🧭 一键导航</text>
+              </button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

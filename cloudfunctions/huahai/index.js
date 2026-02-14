@@ -97,17 +97,18 @@ async function getGuides(event) {
 
   const query = db.collection('guides');
 
+  // 构建查询条件
+  const whereCondition = {
+    status: 'published'
+  };
+
   // 分类筛选
   if (category) {
-    query.where({
-      category: category
-    });
+    whereCondition.category = category;
   }
 
   // 只查询已发布的
-  query.where({
-    status: 'published'
-  });
+  query.where(whereCondition);
 
   // 按权重和更新时间排序
   query.orderBy('weight', 'desc').orderBy('updateTime', 'desc');

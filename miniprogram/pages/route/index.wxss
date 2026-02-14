@@ -1,0 +1,79 @@
+/* pages/route/index.wxss */
+.coming-soon-container {
+  min-height: 100vh;
+  background: #F5F7FA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+}
+
+.coming-soon-card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 60rpx 40rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.icon-large {
+  font-size: 120rpx;
+  margin-bottom: 24rpx;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 12rpx;
+}
+
+.desc {
+  font-size: 26rpx;
+  color: #999999;
+  margin-bottom: 16rpx;
+}
+
+.status {
+  display: inline-block;
+  padding: 8rpx 24rpx;
+  background: #FFF3E0;
+  color: #FFFFFF;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+}
+
+.tips-card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.tips-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 24rpx;
+  text-align: center;
+}
+
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.tip-item {
+  font-size: 24rpx;
+  color: #666666;
+  line-height: 1.6;
+}

@@ -2,6 +2,10 @@
   "pages": [
     "pages/home/index",
     "pages/guide-detail/index",
+    "pages/food/index",
+    "pages/route/index",
+    "pages/info/index",
+    "pages/spot/index",
     "pages/hostel/index",
     "pages/user/index",
     "pages/admin/index",

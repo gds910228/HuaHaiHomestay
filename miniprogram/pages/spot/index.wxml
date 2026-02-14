@@ -1,0 +1,21 @@
+<!--pages/spot/index.wxml-->
+<view class="coming-soon-container">
+  <view class="coming-soon-card">
+    <view class="icon-large">{{category.icon}}</view>
+    <view class="content">
+      <text class="title">{{category.name}}</text>
+      <text class="desc">{{category.desc}}</text>
+      <text class="status">即将上线</text>
+    </view>
+  </view>
+
+  <view class="tips-card">
+    <view class="tips-title">🌟 热门景点</view>
+    <view class="tips-list">
+      <text class="tip-item">• 青澳湾 - 北回归线广场</text>
+      <text class="tip-item">• 总兵府 - 历史文化</text>
+      <text class="tip-item">• 宋井 - 古宋井</text>
+      <text class="tip-item">• 黄花山 - 风山森林公园</text>
+    </view>
+  </view>
+</view>

@@ -1,96 +1,60 @@
 <!--pages/user/index.wxml-->
 <view class="user-container">
   <!-- 用户信息卡片 -->
-  <view class="user-header">
+  <view class="user-header card">
     <view class="user-bg"></view>
     <view class="user-info">
       <image
         class="user-avatar"
-        src="{{userInfo ? userInfo.avatarUrl : '/images/default-avatar.png'}}"
+        src="/images/default-avatar.png"
         mode="aspectFill"
       ></image>
       <view class="user-detail">
-        <text class="user-name">{{userInfo ? userInfo.nickName : '点击授权登录'}}</text>
-        <text class="user-desc" wx:if="{{hasUserInfo}}">欢迎使用画海民宿</text>
+        <text class="user-name">欢迎来到画海民宿</text>
+        <text class="user-desc">南澳岛旅游指南</text>
       </view>
-      <button
-        class="auth-btn"
-        wx:if="{{!hasUserInfo}}"
-        bindtapgetUserProfile
-      >授权</button>
-    </view>
-  </view>
-
-  <!-- 统计信息 -->
-  <view class="stats-section card">
-    <view class="stat-item">
-      <text class="stat-value">{{favorites.length}}</text>
-      <text class="stat-label">我的收藏</text>
-    </view>
-    <view class="stat-divider"></view>
-    <view class="stat-item">
-      <text class="stat-value">{{history.length}}</text>
-      <text class="stat-label">浏览历史</text>
     </view>
   </view>
 
   <!-- 我的收藏 -->
-  <view class="favorites-section card" wx:if="{{hasUserInfo}}">
+  <view class="favorites-section card">
     <view class="section-header">
-      <text class="section-title">我的收藏</text>
-      <text class="section-empty" wx:if="{{favorites.length === 0}}">暂无收藏</text>
+      <text class="section-title">⭐ 我的收藏</text>
+      <text class="section-count" wx:if="{{favorites.length > 0}}">{{favorites.length}} 家</text>
     </view>
 
-    <view class="favorites-list" wx:if="{{favorites.length > 0}}">
+    <!-- 加载状态 -->
+    <view class="loading-state" wx:if="{{loading}}">
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && favorites.length === 0}}">
+      <text class="empty-text">暂无收藏，去首页看看吧</text>
+    </view>
+
+    <!-- 收藏列表 -->
+    <view class="favorites-list" wx:if="{{!loading && favorites.length > 0}}">
       <view
         class="favorite-item"
         wx:for="{{favorites}}"
         wx:key="_id"
-        data-id="{{item.guide._id}}"
+        data-id="{{item._id}}"
         bindtap="openGuide"
       >
-        <image class="favorite-image" src="{{item.guide.cover}}" mode="aspectFill"></image>
+        <image class="favorite-image" src="{{item.cover}}" mode="aspectFill"></image>
         <view class="favorite-content">
-          <text class="favorite-title">{{item.guide.title}}</text>
-          <text class="favorite-time">{{item.createTimeStr}}</text>
+          <text class="favorite-title">{{item.title}}</text>
+          <text class="favorite-desc">{{item.summary}}</text>
         </view>
         <view
           class="favorite-remove"
           catchtap="removeFavorite"
-          data-id="{{item.guide._id}}"
-          data-index="{{index}}"
+          data-id="{{item._id}}"
         >
           <text>✕</text>
         </view>
       </view>
-    </view>
-  </view>
-
-  <!-- 浏览历史 -->
-  <view class="history-section card" wx:if="{{hasUserInfo}}">
-    <view class="section-header">
-      <text class="section-title">浏览历史</text>
-      <text class="clear-btn" bindtap="clearHistory" wx:if="{{history.length > 0}}">清空</text>
-    </view>
-
-    <view class="history-list" wx:if="{{history.length > 0}}">
-      <view
-        class="history-item"
-        wx:for="{{history}}"
-        wx:key="*this"
-        data-id="{{item.id}}"
-        bindtap="openGuide"
-      >
-        <image class="history-image" src="{{item.cover}}" mode="aspectFill"></image>
-        <view class="history-content">
-          <text class="history-title">{{item.title}}</text>
-          <text class="history-time">{{item.time}}</text>
-        </view>
-      </view>
-    </view>
-
-    <view class="empty-state" wx:if="{{history.length === 0}}">
-      <text class="empty-text">暂无浏览记录</text>
     </view>
   </view>
 
@@ -114,6 +78,8 @@
       <text class="menu-arrow">›</text>
     </view>
 
+    <view class="menu-divider"></view>
+
     <!-- 数据初始化入口（隐藏） -->
     <view class="menu-item" bindtap="goToInit">
       <view class="menu-left">
@@ -122,10 +88,5 @@
       </view>
       <text class="menu-arrow">›</text>
     </view>
-  </view>
-
-  <!-- 未登录提示 -->
-  <view class="login-tip" wx:if="{{!hasUserInfo}}">
-    <text class="tip-text">登录后可使用收藏和历史功能</text>
   </view>
 </view>
