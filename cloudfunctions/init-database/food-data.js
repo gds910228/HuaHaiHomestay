@@ -1,28 +1,28 @@
 // 画海民宿美食攻略数据
-// 基于 画海民宿攻略.md 文件内容
-// ⚠️ 注意：当前使用占位图片，需要上传真实图片后替换
+// 基于用户提供的完整美食攻略内容
+// 最后更新：2026-02-14
+// ⚠️ 注意：图片需要上传到云存储后替换URL
 
 module.exports = {
-  // 美食攻略数据
+  // 美食攻略数据 - 每个餐厅独立条目
   foodGuides: [
+    // ========== 不在民宿附近（走路15分钟左右） ==========
     {
-      title: '后宅镇美食探店完全攻略',
+      title: '砂锅粥（现杀实惠）',
       category: 'food',
-      tags: ['海鲜', '地道', '必吃', '人均80', '本地人推荐'],
-      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=后宅镇美食',
-      images: [
-        'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=后宅镇美食+1'
-      ],
-      summary: '南澳岛后宅镇是本地人的美食天堂，这里有最新鲜的海鲜和最地道的潮汕风味。以下为您精选本地人最爱的美食店铺。',
-      content: '<h2>🍴 后宅镇美食完全攻略</h2><p><strong>📍 说明：</strong>👍表示极力推荐，最爱本地门店，好吃不贵</p><p>民宿外卖地址：后宅镇云禧大厦603或者2621</p><h3>⭐ 极力推荐美食店</h3><h4>🦀 阿伟海鲜坊（海鲜大排档）</h4><p><strong>特色：</strong>本地人吃的，对比过多家，性价比最高</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇南光新村东区龙滨路9号</p><p><strong>交通：</strong>要开车或者小电动，七八分钟能到</p><p><strong>贴士：</strong>每家都能先看一下有没有美团团购，会优惠一点</p><h4>🥘 砂锅粥</h4><p><strong>特色：</strong>现杀实惠，本地人最爱，只做晚餐和夜宵</p><p><strong>贴士：</strong>到店比较远（在小村子里面），外卖点餐只能加老板微信，具体咨询我帮忙点</p><h4>🥢 四季香鹅肉·小炒店</h4><p><strong>特色：</strong>卤鹅肉、炒菜好吃</p><p><strong>地址：</strong>广东省汕头市南澳县崇文路后宅镇中心幼儿园对面</p><p><strong>交通：</strong>开车几分钟到，走路10分钟左右</p><h4>🦪 阿雄酒料（野生生腌、盐焗鸡爪鸭爪等小吃）</h4><p><strong>特色：</strong>野生生腌</p><p><strong>⚠️ 重要提示：</strong>连锁生腌都是养殖的，寄生虫很多，吃了拉肚子，不建议购买。这家是野生的，安全可靠！</p><p><strong>联系方式：</strong>18923661801（可加老板微信或打电话叫外卖）</p><p><strong>贴士：</strong>没有美团，可加老板微信或者打电话叫外卖</p><h4>🍧 四吉甜品</h4><p><strong>地址：</strong>广东省汕头市南澳县后宅镇金龙路157号南一楼</p><p><strong>贴士：</strong>到店的话导航四吉，在这个店隔壁</p><h4>🍧 水果炒冰</h4><p><strong>特色：</strong>夏天供应，只做外卖</p><p><strong>联系方式：</strong>13413438060（打电话点）</p><h3>🍲 县城中心后宅镇（民宿附近）</h3><h4>🦐 欣海饭店（小码头）</h4><p><strong>特色：</strong>海鲜比较新鲜，不会宰客，算海滨路这边价格较好的</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇前江澳角底进港路第二期</p><p><strong>交通：</strong>海滨路方向，有停车位，走路开车都行，报画海民宿，老板娘会打点折扣</p><p><strong>口味：</strong>这家比较新鲜清淡，口味偏辣偏重地区客人不适合</p><p><strong>贴士：</strong>看下美团团购</p><h4>🍚 尚香食坊</h4><p><strong>特色：</strong>紫菜炒饭、蚝烙、炒螃蟹等特色小炒，白粥也有，平价（客人推荐）</p><p><strong>地址：</strong>广东省汕头市南澳县大圆新村金龙路南34号</p><p><strong>位置：</strong>民宿左转到路口再左转这条路，店面小，肉骨茶隔壁</p><h4>🥣 阿北白粥海鲜小炒</h4><p><strong>特色：</strong>本地人经常吃的苍蝇小店，味道可以</p><p><strong>地址：</strong>广东省汕头市南澳县海滨路海滨大厦A座102号</p><p><strong>位置：</strong>搬到民宿楼下海滨路了，在海豚饭店隔壁</p><p><strong>价格：</strong>价格比以前高，但是团购还可以</p><h4>🥟 千里香馄饨王（阿北夜粥隔壁）</h4><p><strong>特色：</strong>肉饱满，辣椒超好吃</p><p><strong>位置：</strong>在网红夜市处，民宿步行过去7分钟</p><h4>🥘 老牌石磨粿汁</h4><p><strong>特色：</strong>海鲜粿汁和猪脚饭好吃（牛腩一般）</p><p><strong>地址：</strong>广东省汕头市南澳县崇文路12号</p><p><strong>位置：</strong>阿北夜粥往前走到糖巢零食右转进来直走一两百米</p><h4>🍜 龙兴粿条面</h4><p><strong>特色：</strong>比较本地特色早餐店和午餐店，海鲜肉类任选，干的汤的都有</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇金龙路70号</p><p><strong>价格：</strong>15到20块钱</p><p><strong>交通：</strong>民宿步行过去8分钟</p><h4>🍳 比比赞食坊</h4><p><strong>特色：</strong>各式小炒，好吃实惠，加工费附近最低</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇金龙路龙地牌坊对面</p><h4>🥟 5点豆浆肠粉</h4><p><strong>特色：</strong>有肠粉、包子、豆浆油条等，肠粉特别特别好吃</p><p><strong>地址：</strong>广东省汕头市南澳县基督教隆澳堂西南门旁</p><p><strong>贴士：</strong>美团可点餐，比较远，建议外卖</p><h4>🥢 山顶彬记肠粉</h4><p><strong>地址：</strong>南澳县金龙路68号（公路巡警大队东南）</p><p><strong>位置：</strong>民宿附近</p><h4>🍜 蓬记牛腩面</h4><p><strong>特色：</strong>好吃实惠，种类多</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇金龙路90号</p><p><strong>位置：</strong>民宿附近</p><h4>🍜 网红阿武食店</h4><p><strong>地址：</strong>广东省汕头市南澳县金龙路80号之05铺面(龙滨路中...)</p><p><strong>位置：</strong>在网红夜市处，民宿步行过去10分钟，搬了新店</p><p><strong>评价：</strong>褒贬不一，性价比不高，东西减少很多</p><h3>🍢 烧烤系列</h3><h4>🔥 龙尾顶烧烤店</h4><p><strong>特色：</strong>烧生蚝、有生腌，这个码是商家自送，跟店内同价</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇龙地村顶地段287号</p><p><strong>推荐：</strong>有点网红店，但是好吃，平时淡季就叫这家，旺季就叫玖号，不用等太久</p><p><strong>注意：</strong>这家旺季排队时间长，送餐较久</p><h4>🔥 玖号烧烤店</h4><p><strong>特色：</strong>烧烤种类多、也有生腌，都是现串的不是冷冻品，本地人吃的比较多</p><p><strong>地址：</strong>广东省汕头市南澳县环城东路中心小学东南150米</p><p><strong>推荐：</strong>节假日极力推荐，主要是送餐比较快，去现场吃也方便</p><p><strong>交通：</strong>民宿步行过去约12分钟</p><h3>🍲 火锅系列</h3><h4>🐮 好客来牛肉火锅</h4><p><strong>特色：</strong>好评高，秒杀汕头市区网红店</p><p><strong>地址：</strong>广东省汕头市南澳县中兴路国信大楼后面</p><p><strong>预订：</strong>可提前预定包间，电话13192390773</p><h4>🐮 牛牛牛肉火锅</h4><p><strong>特色：</strong>相对较近，路较好开车</p><p><strong>贴士：</strong>美团团购很实惠</p><h3>🍹 甜品小吃</h3><h4>🍉 水果切切乐·甘草梅汁水果·特色炒冰·果汁冰</h4><p><strong>特色：</strong>水果一斤18，炒冰也可以，水果任选</p><p><strong>地址：</strong>广东省汕头市南澳县楚丹海产品商行(海滨路北)</p><p><strong>位置：</strong>海滨路红绿灯对面</p><p><strong>贴士：</strong>到店的话建议美团团购，比较实惠。外卖的话扫这个码</p><h4>🍹 果汁冰打卡公司（网红店）</h4><p><strong>评价：</strong>评价两端，有些好评高，有些觉得很一般，不是必要</p><h4>🍵 然记糖水/捷信糖水</h4><p><strong>评价：</strong>评价比较两端，可以试试，但不是必须</p><h4>☕️ 無間璞舍</h4><p><strong>特色：</strong>适合拍照的茶舍，不大，拍照有点特色老屋改造</p><h3>💡 美食小贴士</h3><p>• 海鲜最佳食用时间是上午，刚从渔船上下来最新鲜</p><p>• 可以让民宿老板帮忙推荐靠谱的餐厅</p><p>• 加工费一般按斤计算，提前问清楚价格</p><p>• 每家都先看一下有没有美团团购，会优惠一点</p><p>• <strong>⚠️ 如果不是推荐的饭店，请先问价后再点餐</strong></p>',
+      tags: ['本地人最爱', '晚餐夜宵', '现杀', '实惠'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=砂锅粥',
+      images: [],
+      summary: '只做晚餐和夜宵，现杀实惠，本地人最爱。到店比较远（在小村子里面）。',
+      content: '<h2>🍲 砂锅粥</h2><p><strong>特色：</strong>现杀实惠，本地人最爱</p><p><strong>营业时间：</strong>只做晚餐和夜宵</p><p><strong>地址：</strong>后宅镇龙滨路维也纳酒店附属楼首层3号商铺（中国电信对面）</p><p><strong>电话：</strong>13790844263</p><p><strong>外卖：</strong>到店比较远（在小村子里面），外卖点餐只能加老板微信，具体咨询我帮忙点</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
       location: {
         latitude: 23.4234,
         longitude: 117.0234
       },
-      address: '广东省汕头市南澳县后宅镇',
+      address: '广东省汕头市南澳县后宅镇龙滨路维也纳酒店附属楼首层3号商铺',
       info: [
-        { label: '最佳时间', value: '全天' },
-        { label: '人均消费', value: '60-150元' },
+        { label: '特色', value: '现杀' },
+        { label: '营业时间', value: '晚餐/夜宵' },
         { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
       ],
       weight: 10,
@@ -33,23 +33,148 @@ module.exports = {
       updateTime: new Date()
     },
     {
-      title: '青澳湾特色餐厅推荐',
+      title: '阿伟海鲜坊',
       category: 'food',
-      tags: ['青澳湾', '海鲜', '火锅', '特色'],
-      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=青澳湾美食',
-      images: [
-        'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=青澳湾美食+1'
-      ],
-      summary: '青澳湾周边的特色餐厅推荐，包括蒸汽火锅、鸡煲火锅等特色美食。',
-      content: '<h2>🍴 青澳湾特色餐厅推荐</h2><h3>⭐ 极力推荐</h3><h4>🦀 海潮风味蒸汽火锅店</h4><p><strong>特色：</strong>好评高，海鲜都是活的，清蒸后汁水滴到下面的粥，粥更好吃</p><p><strong>地址：</strong>广东省汕头市南澳县S336与后窑村路交叉口东南方向</p><p><strong>推荐：</strong>本地人也经常去</p><p><strong>贴士：</strong>推荐美团团购，单点太贵</p><h4>🍗 颍川大院民谣酒吧</h4><p><strong>特色：</strong>环境很好，晚餐美团可以团购鸡煲海鲜火锅，价格挺实惠的。晚上十点半后有乐队驻唱，气氛很好</p><p><strong>地址：</strong>广东省汕头市南澳县青澳湾海湾路11号海上东方D04</p><h4>🐔 石橄榄鸡（阿芳石锅鸡）</h4><p><strong>特色：</strong>大众价格，味道不错，本地人经常开车过去吃</p><p><strong>地址：</strong>广东省汕头市南澳县336省道北回归线广场北行200米（南澳青澳湾店）</p><h3>☕ 咖啡茶舍</h3><h4>🏖 西垦汀咖啡馆</h4><p><strong>特色：</strong>景色一绝，俯览整个青澳湾沙滩。众多网红推荐的打卡点</p><p><strong>地址：</strong>广东省汕头市南澳县336省道青澳湾锦骏黄金海岸...</p><p><strong>注意：</strong>餐厅是露天的，即使是晴天时海风也是无敌大</p>',
+      tags: ['海鲜', '大排档', '本地人', '性价比'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=阿伟海鲜坊',
+      images: [],
+      summary: '不在民宿附近的海鲜大排档，本地人吃的，对比过多家，性价比最高。',
+      content: '<h2>🦀 阿伟海鲜坊（海鲜大排档）</h2><p><strong>特色：</strong>本地人吃的，对比过多家，性价比最高</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇南光新村东区龙滨路9号</p><p><strong>交通：</strong>要开车或者小电动，七八分钟能到</p><p><strong>贴士：</strong>每家都能先看一下有没有美团团购，会优惠一点</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
       location: {
         latitude: 23.4234,
         longitude: 117.0234
       },
-      address: '广东省汕头市南澳县青澳湾',
+      address: '广东省汕头市南澳县后宅镇南光新村东区龙滨路9号',
       info: [
-        { label: '最佳时间', value: '全天' },
-        { label: '人均消费', value: '80-200元' },
+        { label: '特色', value: '性价比最高' },
+        { label: '交通', value: '开车7-8分钟' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
+      ],
+      weight: 10,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '四季香鹅肉·小炒店',
+      category: 'food',
+      tags: ['卤鹅', '小炒', '本地人推荐'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=四季香鹅肉',
+      images: [],
+      summary: '卤鹅肉，炒菜好吃。开车几分钟到，走路10分钟左右。',
+      content: '<h2>🥢 四季香鹅肉·小炒店</h2><p><strong>特色：</strong>卤鹅肉、炒菜好吃</p><p><strong>地址：</strong>广东省汕头市南澳县崇文路后宅镇中心幼儿园对面</p><p><strong>交通：</strong>开车几分钟到，走路10分钟左右</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县崇文路后宅镇中心幼儿园对面',
+      info: [
+        { label: '特色', value: '卤鹅肉' },
+        { label: '交通', value: '走路10分钟' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
+      ],
+      weight: 10,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '阿雄酒料（野生生腌）',
+      category: 'food',
+      tags: ['野生生腌', '盐焗', '小吃', '本地人推荐'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=阿雄酒料',
+      images: [],
+      summary: '野生生腌、盐焗鸡爪鸭爪等小吃。⚠️连锁生腌都是养殖的，这家是野生的！',
+      content: '<h2>🦪 阿雄酒料（野生生腌、盐焗鸡爪鸭爪等小吃）</h2><p><strong>特色：</strong>野生生腌</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇金龙路157号南一楼（四吉甜品隔壁）</p><p><strong>⚠️ 重要提示：</strong>连锁生腌都是养殖的，寄生虫很多，吃了拉肚子，不建议购买。这家是野生的，安全可靠！</p><p><strong>联系方式：</strong>18923661801（可加老板微信或打电话叫外卖）</p><p><strong>贴士：</strong>没有美团，可加老板微信或者打电话叫外卖</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇金龙路157号南一楼',
+      info: [
+        { label: '特色', value: '野生生腌' },
+        { label: '电话', value: '18923661801' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
+      ],
+      weight: 10,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '水果炒冰',
+      category: 'food',
+      tags: ['甜品', '外卖', '夏天供应'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=水果炒冰',
+      images: [],
+      summary: '夏天供应，只做外卖。打电话点餐。',
+      content: '<h2>🍧 水果炒冰</h2><p><strong>特色：</strong>夏天供应，只做外卖</p><p><strong>联系方式：</strong>13413438060（打电话点）</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇',
+      info: [
+        { label: '营业时间', value: '夏天' },
+        { label: '电话', value: '13413438060' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 8,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+
+    // ========== 县城中心后宅镇（民宿附近） ==========
+    {
+      title: '欣海饭店（小码头）',
+      category: 'food',
+      tags: ['海鲜', '新鲜', '不会宰客', '本地人推荐'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=欣海饭店',
+      images: [],
+      summary: '海鲜比较新鲜，不会宰客，算海滨路这边价格较好的。报画海民宿有折扣。',
+      content: '<h2>🦐 欣海饭店（小码头）</h2><p><strong>特色：</strong>海鲜比较新鲜，不会宰客，算海滨路这边价格较好的</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇前江澳角底进港路第二期</p><p><strong>交通：</strong>海滨路方向，有停车位，走路开车都行，报画海民宿，老板娘会打点折扣</p><p><strong>口味：</strong>这家比较新鲜清淡，口味偏辣偏重地区客人不适合</p><p><strong>贴士：</strong>看下美团团购</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇前江澳角底进港路第二期',
+      info: [
+        { label: '特色', value: '新鲜不宰客' },
+        { label: '交通', value: '步行10分钟' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
+      ],
+      weight: 10,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '尚香食坊',
+      category: 'food',
+      tags: ['小炒', '平价', '客人推荐'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=尚香食坊',
+      images: [],
+      summary: '紫菜炒饭、蚝烙、炒螃蟹等特色小炒，白粥也有，平价。',
+      content: '<h2>🍚 尚香食坊</h2><p><strong>特色：</strong>紫菜炒饭、蚝烙、炒螃蟹等特色小炒，白粥也有，平价（客人推荐）</p><p><strong>地址：</strong>广东省汕头市南澳县大圆新村金龙路南34号</p><p><strong>位置：</strong>民宿左转到路口再左转这条路，店面小，肉骨茶隔壁</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县大圆新村金龙路南34号',
+      info: [
+        { label: '特色', value: '小炒' },
+        { label: '价格', value: '平价' },
         { label: '推荐指数', value: '⭐⭐⭐⭐' }
       ],
       weight: 9,
@@ -60,26 +185,556 @@ module.exports = {
       updateTime: new Date()
     },
     {
-      title: '云澳镇海鲜大排档',
+      title: '阿北白粥海鲜小炒',
       category: 'food',
-      tags: ['云澳镇', '海鲜', '大排档', '平价'],
-      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=云澳镇海鲜',
-      images: [
-        'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=云澳镇海鲜+1'
-      ],
-      summary: '云澳镇的海鲜大排档推荐，大份实惠，平价不宰客。',
-      content: '<h2>🍴 云澳镇海鲜大排档</h2><h4>🦀 聚福园海鲜大排档</h4><p><strong>特色：</strong>大份实惠，平价，不宰客</p><p><strong>地址：</strong>广东省汕头市南澳县云澳镇台湾街2号云星华府1幢12...</p><p><strong>推荐：</strong>晚出门，刚好环岛中午路过云澳的话，力推这家海鲜排档</p><h3>💡 小贴士</h3><p>• 云澳镇位于南澳岛南端，适合环岛时路过用餐</p><p>• 建议提前电话咨询营业时间</p>',
+      tags: ['白粥', '海鲜', '本地人'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=阿北白粥',
+      images: [],
+      summary: '本地人经常吃的苍蝇小店，搬到民宿楼下海滨路了，在海豚饭店隔壁。',
+      content: '<h2>🥣 阿北白粥海鲜小炒</h2><p><strong>特色：</strong>本地人经常吃的苍蝇小店，味道可以</p><p><strong>地址：</strong>广东省汕头市南澳县海滨路海滨大厦A座102号</p><p><strong>位置：</strong>搬到民宿楼下海滨路了，在海豚饭店隔壁</p><p><strong>价格：</strong>价格比以前高，但是团购还可以</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
       location: {
         latitude: 23.4234,
         longitude: 117.0234
       },
-      address: '广东省汕头市南澳县云澳镇',
+      address: '广东省汕头市南澳县海滨路海滨大厦A座102号',
       info: [
-        { label: '最佳时间', value: '午餐/晚餐' },
-        { label: '人均消费', value: '80-150元' },
+        { label: '特色', value: '白粥' },
+        { label: '位置', value: '民宿楼下' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 9,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '千里香馄饨王',
+      category: 'food',
+      tags: ['馄饨', '早餐', '小吃'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=千里香馄饨王',
+      images: [],
+      summary: '肉饱满，辣椒超好吃。阿北夜粥隔壁，在网红夜市处。',
+      content: '<h2>🥟 千里香馄饨王（阿北夜粥隔壁）</h2><p><strong>特色：</strong>肉饱满，辣椒超好吃</p><p><strong>地址：</strong>南澳县金龙路山顶市场西北侧约50米</p><p><strong>位置：</strong>在网红夜市处，民宿步行过去7分钟</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县金龙路山顶市场西北侧',
+      info: [
+        { label: '特色', value: '馄饨' },
+        { label: '交通', value: '步行7分钟' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 9,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '老牌石磨粿汁',
+      category: 'food',
+      tags: ['粿汁', '猪脚饭', '早餐'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=老牌石磨粿汁',
+      images: [],
+      summary: '海鲜粿汁和猪脚饭好吃（牛腩一般）。阿北夜粥往前走到糖巢零食右转。',
+      content: '<h2>🥘 老牌石磨粿汁</h2><p><strong>特色：</strong>海鲜粿汁和猪脚饭好吃（牛腩一般）</p><p><strong>地址：</strong>广东省汕头市南澳县崇文路12号</p><p><strong>位置：</strong>阿北夜粥往前走到糖巢零食右转进来直走一两百米</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县崇文路12号',
+      info: [
+        { label: '特色', value: '粿汁' },
+        { label: '推荐', value: '猪脚饭' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 9,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '龙兴粿条面',
+      category: 'food',
+      tags: ['早餐', '午餐', '本地特色'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=龙兴粿条面',
+      images: [],
+      summary: '比较本地特色早餐店和午餐店，海鲜肉类任选，干的汤的都有。',
+      content: '<h2>🍜 龙兴粿条面</h2><p><strong>特色：</strong>比较本地特色早餐店和午餐店，海鲜肉类任选，干的汤的都有</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇金龙路70号</p><p><strong>价格：</strong>15到20块钱</p><p><strong>交通：</strong>民宿步行过去8分钟</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇金龙路70号',
+      info: [
+        { label: '特色', value: '粿条面' },
+        { label: '价格', value: '15-20元' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 9,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '比比赞食坊',
+      category: 'food',
+      tags: ['小炒', '实惠', '加工费低'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=比比赞食坊',
+      images: [],
+      summary: '各式小炒，好吃实惠，加工费附近最低。',
+      content: '<h2>🍳 比比赞食坊</h2><p><strong>特色：</strong>各式小炒，好吃实惠，加工费附近最低</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇金龙路龙地牌坊对面</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇金龙路龙地牌坊对面',
+      info: [
+        { label: '特色', value: '小炒' },
+        { label: '优势', value: '加工费最低' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 9,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '5点豆浆肠粉',
+      category: 'food',
+      tags: ['早餐', '肠粉', '包子', '外卖'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=5点豆浆肠粉',
+      images: [],
+      summary: '有肠粉、包子、豆浆油条等，肠粉特别特别好吃。',
+      content: '<h2>🥟 5点豆浆肠粉</h2><p><strong>特色：</strong>有肠粉、包子、豆浆油条等，肠粉特别特别好吃</p><p><strong>地址：</strong>广东省汕头市南澳县基督教隆澳堂西南门旁</p><p><strong>贴士：</strong>美团可点餐，比较远，建议外卖</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县基督教隆澳堂西南门旁',
+      info: [
+        { label: '特色', value: '肠粉' },
+        { label: '营业时间', value: '早晨' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
+      ],
+      weight: 10,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '山顶彬记肠粉',
+      category: 'food',
+      tags: ['肠粉', '早餐', '民宿附近'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=山顶彬记肠粉',
+      images: [],
+      summary: '民宿附近的肠粉店。',
+      content: '<h2>🥢 山顶彬记肠粉</h2><p><strong>地址：</strong>南澳县金龙路68号（公路巡警大队东南）</p><p><strong>位置：</strong>民宿附近</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县金龙路68号',
+      info: [
+        { label: '特色', value: '肠粉' },
+        { label: '位置', value: '民宿附近' },
         { label: '推荐指数', value: '⭐⭐⭐⭐' }
       ],
       weight: 8,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '蓬记牛腩面',
+      category: 'food',
+      tags: ['牛腩面', '实惠', '民宿附近'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=蓬记牛腩面',
+      images: [],
+      summary: '好吃实惠，种类多。民宿附近。',
+      content: '<h2>🍜 蓬记牛腩面</h2><p><strong>特色：</strong>好吃实惠，种类多</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇金龙路90号</p><p><strong>位置：</strong>民宿附近</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇金龙路90号',
+      info: [
+        { label: '特色', value: '牛腩面' },
+        { label: '位置', value: '民宿附近' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 8,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '网红阿武食店',
+      category: 'food',
+      tags: ['网红', '夜市', '性价比一般'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=阿武食店',
+      images: [],
+      summary: '在网红夜市处，搬了新店，褒贬不一，性价比不高，东西减少很多。',
+      content: '<h2>🍜 网红阿武食店</h2><p><strong>地址：</strong>广东省汕头市南澳县金龙路80号之05铺面</p><p><strong>位置：</strong>在网红夜市处，民宿步行过去10分钟，搬了新店</p><p><strong>评价：</strong>褒贬不一，性价比不高，东西减少很多</p><p><strong>推荐指数：</strong>⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县金龙路80号之05铺面',
+      info: [
+        { label: '位置', value: '网红夜市' },
+        { label: '评价', value: '褒贬不一' },
+        { label: '推荐指数', value: '⭐⭐⭐' }
+      ],
+      weight: 7,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+
+    // ========== 烧烤系列 ==========
+    {
+      title: '龙尾顶烧烤店',
+      category: 'food',
+      tags: ['烧烤', '生蚝', '生腌', '网红'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=龙尾顶烧烤',
+      images: [],
+      summary: '烧生蚝、有生腌。这个码是商家自送，跟店内同价。',
+      content: '<h2>🔥 龙尾顶烧烤店</h2><p><strong>特色：</strong>烧生蚝、有生腌，这个码是商家自送，跟店内同价</p><p><strong>地址：</strong>广东省汕头市南澳县后宅镇龙地村顶地段287号</p><p><strong>推荐：</strong>有点网红店，但是好吃，平时淡季就叫这家，旺季就叫玖号，不用等太久</p><p><strong>注意：</strong>这家旺季排队时间长，送餐较久</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇龙地村顶地段287号',
+      info: [
+        { label: '特色', value: '生蚝生腌' },
+        { label: '适合', value: '淡季' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 9,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '玖号烧烤店',
+      category: 'food',
+      tags: ['烧烤', '生腌', '节假日推荐', '本地人'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=玖号烧烤',
+      images: [],
+      summary: '烧烤种类多、也有生腌，都是现串的不是冷冻品，本地人吃的比较多。',
+      content: '<h2>🔥 玖号烧烤店</h2><p><strong>特色：</strong>烧烤种类多、也有生腌，都是现串的不是冷冻品，本地人吃的比较多</p><p><strong>地址：</strong>广东省汕头市南澳县环城东路中心小学东南150米</p><p><strong>推荐：</strong>节假日极力推荐，主要是送餐比较快，去现场吃也方便</p><p><strong>交通：</strong>民宿步行过去约12分钟</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县环城东路中心小学东南150米',
+      info: [
+        { label: '特色', value: '现串' },
+        { label: '交通', value: '步行12分钟' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
+      ],
+      weight: 10,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+
+    // ========== 火锅系列 ==========
+    {
+      title: '好客来牛肉火锅（中兴路店）',
+      category: 'food',
+      tags: ['牛肉火锅', '好评高', '包间'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=好客来牛肉火锅',
+      images: [],
+      summary: '好评高，秒杀汕头市区网红店。可提前预定包间。',
+      content: '<h2>🐮 好客来牛肉火锅</h2><p><strong>特色：</strong>好评高，秒杀汕头市区网红店</p><p><strong>地址：</strong>中兴路国信大楼后面</p><p><strong>预订：</strong>可提前预定包间，电话13192390773</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县中兴路国信大楼后面',
+      info: [
+        { label: '特色', value: '牛肉火锅' },
+        { label: '电话', value: '13192390773' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
+      ],
+      weight: 10,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '牛牛牛肉火锅',
+      category: 'food',
+      tags: ['牛肉火锅', '团购实惠', '路较好'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=牛牛牛肉火锅',
+      images: [],
+      summary: '相对较近，路较好开车。美团团购很实惠。',
+      content: '<h2>🐮 牛牛牛肉火锅</h2><p><strong>特色：</strong>相对较近，路较好开车</p><p><strong>贴士：</strong>美团团购很实惠</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇',
+      info: [
+        { label: '特色', value: '牛肉火锅' },
+        { label: '优势', value: '团购实惠' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 9,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+
+    // ========== 甜品小吃 ==========
+    {
+      title: '水果切切乐·甘草梅汁水果·特色炒冰·果汁冰',
+      category: 'food',
+      tags: ['甘草水果', '炒冰', '甜品', '平价'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=水果切切乐',
+      images: [],
+      summary: '水果一斤18，炒冰也可以，水果任选。海滨路红绿灯对面。',
+      content: '<h2>🍉 水果切切乐·甘草梅汁水果·特色炒冰·果汁冰</h2><p><strong>特色：</strong>水果一斤18，炒冰也可以，水果任选</p><p><strong>地址：</strong>后宅镇海滨路与龙滨路交叉口东30米路北</p><p><strong>位置：</strong>海滨路红绿灯对面</p><p><strong>贴士：</strong>到店的话建议美团团购，比较实惠。外卖的话扫这个码</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇海滨路与龙滨路交叉口',
+      info: [
+        { label: '特色', value: '甘草水果' },
+        { label: '价格', value: '18元/斤' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
+      ],
+      weight: 10,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '果汁冰打卡公司（网红店）',
+      category: 'food',
+      tags: ['果汁冰', '网红', '评价两极'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=果汁冰打卡公司',
+      images: [],
+      summary: '评价两端，有些好评高，有些觉得很一般，不是必要。',
+      content: '<h2>🍹 果汁冰打卡公司（网红店）</h2><p><strong>评价：</strong>评价两端，有些好评高，有些觉得很一般，不是必要</p><p><strong>推荐指数：</strong>⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇',
+      info: [
+        { label: '评价', value: '两极分化' },
+        { label: '推荐指数', value: '⭐⭐⭐' }
+      ],
+      weight: 6,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '然记糖水/捷信糖水',
+      category: 'food',
+      tags: ['糖水', '甜品', '评价两极'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=然记糖水',
+      images: [],
+      summary: '评价比较两端，可以试试，但不是必须。',
+      content: '<h2>🍵 然记糖水/捷信糖水</h2><p><strong>评价：</strong>评价比较两端，可以试试，但不是必须</p><p><strong>推荐指数：</strong>⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇',
+      info: [
+        { label: '评价', value: '两极分化' },
+        { label: '推荐指数', value: '⭐⭐⭐' }
+      ],
+      weight: 6,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '無間璞舍（茶舍）',
+      category: 'food',
+      tags: ['茶舍', '拍照', '特色'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=無間璞舍',
+      images: [],
+      summary: '适合拍照的茶舍，不大，拍照有点特色老屋改造。',
+      content: '<h2>☕️ 無間璞舍</h2><p><strong>特色：</strong>适合拍照的茶舍，不大，拍照有点特色老屋改造</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县后宅镇',
+      info: [
+        { label: '特色', value: '拍照' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 7,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+
+    // ========== 青澳湾 ==========
+    {
+      title: '海潮风味蒸汽火锅店',
+      category: 'food',
+      tags: ['蒸汽火锅', '海鲜', '本地人', '好评高'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=海潮风味蒸汽火锅',
+      images: [],
+      summary: '好评高，海鲜都是活的，清蒸后汁水滴到下面的粥，粥更好吃。',
+      content: '<h2>🦀 海潮风味蒸汽火锅店</h2><p><strong>特色：</strong>好评高，海鲜都是活的，清蒸后汁水滴到下面的粥，粥更好吃</p><p><strong>地址：</strong>汕头市南澳县青澳后窑村深青路南澳文昌餐住楼一层</p><p><strong>电话：</strong>15992532992</p><p><strong>推荐：</strong>本地人也经常去</p><p><strong>贴士：</strong>推荐美团团购，单点太贵</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县青澳后窑村深青路南澳文昌餐住楼一层',
+      info: [
+        { label: '特色', value: '蒸汽火锅' },
+        { label: '电话', value: '15992532992' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
+      ],
+      weight: 10,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '颍川大院民谣酒吧（青澳湾店）',
+      category: 'food',
+      tags: ['鸡煲', '海鲜火锅', '民谣', '酒吧'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=颍川大院',
+      images: [],
+      summary: '环境很好，晚餐美团可以团购鸡煲海鲜火锅。晚上十点半后有乐队驻唱，气氛很好。',
+      content: '<h2>🍗 颍川大院民谣酒吧</h2><p><strong>特色：</strong>环境很好，晚餐美团可以团购鸡煲海鲜火锅，价格挺实惠的。晚上十点半后有乐队驻唱，气氛很好</p><p><strong>地址：</strong>广东省汕头市南澳县青澳湾海湾路11号海上东方D04</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县青澳湾海湾路11号海上东方D04',
+      info: [
+        { label: '特色', value: '鸡煲' },
+        { label: '氛围', value: '乐队驻唱' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 9,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '石橄榄鸡（阿芳石锅鸡·南澳青澳湾店）',
+      category: 'food',
+      tags: ['石橄榄鸡', '海鲜小炒', '本地人'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=石橄榄鸡',
+      images: [],
+      summary: '大众价格，味道不错，本地人经常开车过去吃。',
+      content: '<h2>🐔 石橄榄鸡（阿芳石锅鸡）</h2><p><strong>特色：</strong>大众价格，味道不错，本地人经常开车过去吃</p><p><strong>地址：</strong>广东省汕头市南澳县336省道北回归线广场北行200米（南澳青澳湾店）</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县336省道北回归线广场北行200米',
+      info: [
+        { label: '特色', value: '石橄榄鸡' },
+        { label: '价格', value: '大众' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 9,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+    {
+      title: '西垦汀咖啡馆',
+      category: 'food',
+      tags: ['咖啡馆', '观景', '网红打卡'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=西垦汀咖啡馆',
+      images: [],
+      summary: '景色一绝，俯览整个青澳湾沙滩。众多网红推荐的打卡点。',
+      content: '<h2>☕ 西垦汀咖啡馆</h2><p><strong>特色：</strong>景色一绝，俯览整个青澳湾沙滩。众多网红推荐的打卡点</p><p><strong>地址：</strong>广东省汕头市南澳县336省道青澳湾锦骏黄金海岸...</p><p><strong>注意：</strong>餐厅是露天的，即使是晴天时海风也是无敌大</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县336省道青澳湾锦骏黄金海岸',
+      info: [
+        { label: '特色', value: '观景' },
+        { label: '注意', value: '风大' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐' }
+      ],
+      weight: 8,
+      status: 'published',
+      views: 0,
+      likes: 0,
+      createTime: new Date(),
+      updateTime: new Date()
+    },
+
+    // ========== 云澳镇 ==========
+    {
+      title: '聚福园海鲜大排档（云澳镇）',
+      category: 'food',
+      tags: ['海鲜', '大排档', '平价', '不宰客'],
+      cover: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=聚福园海鲜',
+      images: [],
+      summary: '大份实惠，平价，不宰客。晚出门，刚好环岛中午路过云澳的话，力推这家海鲜排档。',
+      content: '<h2>🦀 聚福园海鲜大排档</h2><p><strong>特色：</strong>大份实惠，平价，不宰客</p><p><strong>地址：</strong>广东省汕头市南澳县云澳镇台湾街2号云星华府1幢12...</p><p><strong>推荐：</strong>晚出门，刚好环岛中午路过云澳的话，力推这家海鲜排档</p><p><strong>推荐指数：</strong>⭐⭐⭐⭐⭐</p>',
+      location: {
+        latitude: 23.4234,
+        longitude: 117.0234
+      },
+      address: '广东省汕头市南澳县云澳镇台湾街2号云星华府',
+      info: [
+        { label: '特色', value: '平价' },
+        { label: '适合', value: '环岛路遇' },
+        { label: '推荐指数', value: '⭐⭐⭐⭐⭐' }
+      ],
+      weight: 10,
       status: 'published',
       views: 0,
       likes: 0,
