@@ -65,6 +65,21 @@ Page({
     await this.executeInit('addLingFengRoom', '添加"画海-聆风"房型');
   },
 
+  // 更新房型设施数据
+  async updateRoomFacilities() {
+    if (this.data.loading) return;
+
+    wx.showModal({
+      title: '更新房型设施数据',
+      content: '将为所有没有详细设施数据的房型添加默认设施结构（包含旧设施数据迁移）。',
+      success: async (res) => {
+        if (res.confirm) {
+          await this.executeInit('updateRoomFacilities', '更新房型设施数据');
+        }
+      }
+    });
+  },
+
   // 清空房型数据
   async clearRooms() {
     if (this.data.loading) return;

@@ -526,21 +526,42 @@ Page({
    * 切换设施选项
    */
   toggleFacility(e) {
+    console.log('=== toggleFacility 被调用 ===');
     const { category, facility } = e.currentTarget.dataset;
+    console.log('点击的设施类别:', category);
+    console.log('点击的设施名称:', facility);
+
     const facilities = this.data.detailedFacilities[category];
+    console.log('当前类别的设施列表:', facilities);
+    console.log('detailedFacilities 完整数据:', this.data.detailedFacilities);
+
+    if (!facilities) {
+      console.error('设施类别不存在:', category);
+      wx.showToast({
+        title: '设施类别初始化错误',
+        icon: 'none'
+      });
+      return;
+    }
+
     const index = facilities.indexOf(facility);
+    console.log('设施在列表中的索引:', index);
 
     if (index > -1) {
       // 已存在，移除
       facilities.splice(index, 1);
+      console.log('移除设施后的列表:', facilities);
     } else {
       // 不存在，添加
       facilities.push(facility);
+      console.log('添加设施后的列表:', facilities);
     }
 
     this.setData({
       [`detailedFacilities.${category}`]: facilities
     });
+
+    console.log('setData 完成，新的 detailedFacilities:', this.data.detailedFacilities);
   },
 
   /**

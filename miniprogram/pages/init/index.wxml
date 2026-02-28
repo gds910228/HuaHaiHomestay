@@ -65,6 +65,14 @@
       <text>🌊 添加"画海-聆风"房型</text>
     </button>
 
+    <button
+      class="action-btn secondary"
+      bindtap="updateRoomFacilities"
+      disabled="{{loading}}"
+    >
+      <text>🔧 更新房型设施数据</text>
+    </button>
+
     <view class="action-row">
       <button
         class="action-btn secondary"

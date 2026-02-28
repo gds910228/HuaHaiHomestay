@@ -65,6 +65,10 @@ exports.main = async (event, context) => {
         console.log('执行 initFood');
         result = await initFood();
         break;
+      case 'updateRoomFacilities':
+        console.log('执行 updateRoomFacilities');
+        result = await updateRoomFacilities();
+        break;
       default:
         console.log('未知的操作类型');
         return {
@@ -800,6 +804,103 @@ async function clearRooms() {
     };
   } catch (err) {
     console.error('7.X 清空rooms集合失败:', err);
+    return {
+      success: false,
+      errMsg: err.message
+    };
+  }
+}
+
+/**
+ * 更新所有房型的 detailedFacilities 字段
+ * 为没有 detailedFacilities 或该字段为空的房型添加默认设施数据
+ */
+async function updateRoomFacilities() {
+  console.log('8. 开始更新房型 detailedFacilities 字段');
+
+  try {
+    // 获取所有房型
+    const res = await db.collection('rooms').get();
+    console.log(`8.1 找到 ${res.data.length} 个房型`);
+
+    if (res.data.length === 0) {
+      return {
+        success: true,
+        message: '没有需要更新的房型',
+        count: 0
+      };
+    }
+
+    let updateCount = 0;
+    let skipCount = 0;
+
+    // 默认设施数据结构（空数组）
+    const defaultFacilities = {
+      services: [],
+      basic: [],
+      bathroom: [],
+      kitchen: [],
+      surroundings: [],
+      safety: [],
+      entertainment: [],
+      leisure: []
+    };
+
+    for (const room of res.data) {
+      console.log(`8.2 处理房型: ${room.roomType || room._id}`);
+
+      // 检查是否已有 detailedFacilities
+      if (!room.detailedFacilities ||
+          Object.keys(room.detailedFacilities).length === 0 ||
+          (room.detailedFacilities.services &&
+           room.detailedFacilities.basic &&
+           room.detailedFacilities.bathroom &&
+           room.detailedFacilities.kitchen &&
+           room.detailedFacilities.surroundings &&
+           room.detailedFacilities.safety &&
+           room.detailedFacilities.entertainment &&
+           room.detailedFacilities.leisure &&
+           room.detailedFacilities.services.length === 0 &&
+           room.detailedFacilities.basic.length === 0 &&
+           room.detailedFacilities.bathroom.length === 0 &&
+           room.detailedFacilities.kitchen.length === 0 &&
+           room.detailedFacilities.surroundings.length === 0 &&
+           room.detailedFacilities.safety.length === 0 &&
+           room.detailedFacilities.entertainment.length === 0 &&
+           room.detailedFacilities.leisure.length === 0)) {
+
+        // 如果有旧的 facilities 字段，将其迁移到 basic 分类
+        let facilitiesToUpdate = { ...defaultFacilities };
+        if (room.facilities && Array.isArray(room.facilities) && room.facilities.length > 0) {
+          facilitiesToUpdate.basic = room.facilities;
+          console.log(`  -> 迁移旧设施数据到 basic: ${room.facilities.join(', ')}`);
+        }
+
+        // 更新房型
+        await db.collection('rooms').doc(room._id).update({
+          data: {
+            detailedFacilities: facilitiesToUpdate
+          }
+        });
+
+        console.log(`  -> ✅ 已更新 detailedFacilities`);
+        updateCount++;
+      } else {
+        console.log(`  -> ⏭️ 跳过（已有详细设施数据）`);
+        skipCount++;
+      }
+    }
+
+    console.log(`8.3 更新完成: ${updateCount} 个房型已更新, ${skipCount} 个房型已跳过`);
+
+    return {
+      success: true,
+      message: `更新完成：${updateCount}个房型已添加详细设施，${skipCount}个房型已跳过`,
+      updateCount: updateCount,
+      skipCount: skipCount
+    };
+  } catch (err) {
+    console.error('8.X 更新房型 detailedFacilities 失败:', err);
     return {
       success: false,
       errMsg: err.message
