@@ -67,6 +67,14 @@
 
     <button
       class="action-btn secondary"
+      bindtap="addWangHaiRoom"
+      disabled="{{loading}}"
+    >
+      <text>🏖️ 添加"画海-望海"房型</text>
+    </button>
+
+    <button
+      class="action-btn secondary"
       bindtap="updateRoomFacilities"
       disabled="{{loading}}"
     >

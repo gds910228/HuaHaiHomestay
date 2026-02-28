@@ -65,6 +65,12 @@ Page({
     await this.executeInit('addLingFengRoom', '添加"画海-聆风"房型');
   },
 
+  // 添加"画海-望海"房型
+  async addWangHaiRoom() {
+    if (this.data.loading) return;
+    await this.executeInit('addWangHaiRoom', '添加"画海-望海"房型');
+  },
+
   // 更新房型设施数据
   async updateRoomFacilities() {
     if (this.data.loading) return;

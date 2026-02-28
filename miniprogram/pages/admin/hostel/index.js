@@ -57,9 +57,8 @@ Page({
 
   // 编辑民宿信息
   editHostel() {
-    const data = JSON.stringify(this.data.hostel);
     wx.navigateTo({
-      url: `/pages/admin/hostel-edit/index?data=${encodeURIComponent(data)}`
+      url: '/pages/admin/hostel-edit/index'
     });
   },
 

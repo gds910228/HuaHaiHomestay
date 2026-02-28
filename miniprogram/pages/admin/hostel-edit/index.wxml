@@ -1,0 +1,155 @@
+<!--pages/admin/hostel-edit/index.wxml-->
+<view class="hostel-edit-page">
+
+  <!-- 基本信息 -->
+  <view class="form-section">
+    <view class="section-title">基本信息</view>
+
+    <!-- 民宿名称 -->
+    <view class="form-item">
+      <view class="form-label required">民宿名称</view>
+      <input
+        class="form-input"
+        placeholder="画海民宿"
+        value="{{formData.name}}"
+        data-field="name"
+        bindinput="onInputChange" />
+    </view>
+
+    <!-- 民宿描述 -->
+    <view class="form-item">
+      <view class="form-label">民宿描述</view>
+      <textarea
+        class="form-textarea"
+        placeholder="请输入民宿描述..."
+        value="{{formData.description}}"
+        data-field="description"
+        bindinput="onInputChange" />
+    </view>
+
+    <!-- 地址 -->
+    <view class="form-item">
+      <view class="form-label">地址</view>
+      <input
+        class="form-input"
+        placeholder="广东省汕头市南澳县..."
+        value="{{formData.address}}"
+        data-field="address"
+        bindinput="onInputChange" />
+    </view>
+
+    <!-- 联系电话 -->
+    <view class="form-item">
+      <view class="form-label">联系电话</view>
+      <input
+        class="form-input"
+        type="number"
+        placeholder="13800138000"
+        value="{{formData.phone}}"
+        data-field="phone"
+        bindinput="onInputChange" />
+    </view>
+
+    <!-- 微信号 -->
+    <view class="form-item">
+      <view class="form-label">微信号</view>
+      <input
+        class="form-input"
+        placeholder="微信号码"
+        value="{{formData.wechat}}"
+        data-field="wechat"
+        bindinput="onInputChange" />
+    </view>
+  </view>
+
+  <!-- 相册管理 -->
+  <view class="form-section">
+    <view class="section-title">
+      <text>民宿相册</text>
+      <text class="image-count">（{{images.length}}/{{maxImages}}）</text>
+    </view>
+
+    <!-- 手动添加图片URL（备用方案） -->
+    <view class="manual-add-image" wx:if="{{images.length < maxImages}}">
+      <view class="input-row">
+        <input
+          class="url-input"
+          placeholder="输入云存储图片URL（cloud://...）"
+          value="{{imageUrlInput}}"
+          bindinput="onImageUrlInput"
+        />
+        <button class="url-add-btn" size="mini" bindtap="addImageUrl">添加</button>
+      </view>
+      <view class="tip-text">
+        💡 提示：如果上传失败，可以先在云开发控制台手动上传图片，然后复制云存储URL在此处添加
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="images-grid">
+      <!-- 已上传的图片 -->
+      <view class="image-item" wx:for="{{images}}" wx:key="index">
+        <image
+          class="image-thumb"
+          src="{{item}}"
+          mode="aspectFill"
+          data-url="{{item}}"
+          bindtap="previewImage" />
+        <view class="image-delete" data-index="{{index}}" bindtap="deleteImage">×</view>
+      </view>
+
+      <!-- 上传按钮 -->
+      <view class="image-upload" wx:if="{{images.length < maxImages}}" bindtap="chooseImage">
+        <text class="upload-icon">+</text>
+        <text class="upload-text">上传图片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设施服务 -->
+  <view class="form-section">
+    <view class="section-title">设施服务</view>
+
+    <view class="tag-input-row">
+      <input
+        class="tag-input"
+        placeholder="输入设施名称"
+        value="{{facilityInput}}"
+        bindinput="onFacilityInput" />
+      <button class="tag-add-btn" size="mini" bindtap="addFacility">添加</button>
+    </view>
+
+    <view class="tags-list" wx:if="{{formData.facilities.length > 0}}">
+      <view class="tag-item" wx:for="{{formData.facilities}}" wx:key="index">
+        <text class="tag-text">{{item}}</text>
+        <text class="tag-delete" data-index="{{index}}" bindtap="deleteFacility">×</text>
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="facility-title">快速选择：</view>
+    <view class="facilities-grid">
+      <view
+        class="facility-preset {{formData.facilities.includes(item) ? 'active' : ''}}"
+        wx:for="{{facilityOptions}}"
+        wx:key="*this"
+        data-facility="{{item}}"
+        bindtap="selectFacility">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部保存按钮 -->
+  <view class="bottom-save-bar">
+    <button
+      class="save-btn"
+      bindtap="saveHostel"
+      disabled="{{saving}}">
+      {{saving ? '保存中...' : '保存'}}
+    </button>
+  </view>
+
+</view>

@@ -13,6 +13,7 @@
     "pages/admin/guides/index",
     "pages/admin/guide-edit/index",
     "pages/admin/hostel/index",
+    "pages/admin/hostel-edit/index",
     "pages/admin/room-edit/room-edit",
     "pages/init/index"
   ],
