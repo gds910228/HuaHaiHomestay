@@ -1,0 +1,47 @@
+# Claude Code配置
+.claude/
+
+# 真实图片和敏感信息
+historyinfo/
+
+# 依赖
+node_modules/
+
+# 微信小程序临时文件
+.miniprogram/
+*.sourcemap*
+*.md5
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE配置
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 日志文件
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 环境配置
+.env
+.env.local
+.env.*.local
+
+# 云存储本地缓存
+cloudstorage/
+
+# 测试覆盖率
+coverage/
+.nyc_output/
+
+# 构建输出
+dist/
+build/

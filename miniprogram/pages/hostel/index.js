@@ -40,7 +40,28 @@ Page({
       });
 
       if (res.result.success) {
-        this.setData({ rooms: res.result.data });
+        const rooms = res.result.data.map(room => {
+          // 处理价格显示（兼容旧数据结构的 price.low/high 和新数据结构的 fixedPrice）
+          if (room.fixedPrice) {
+            room.displayPrice = `¥${room.fixedPrice}`;
+            room.priceText = `¥${room.fixedPrice}/晚`;
+          } else if (room.price && room.price.low) {
+            room.displayPrice = `¥${room.price.low}-${room.price.high}`;
+            room.priceText = `¥${room.price.low}-${room.price.high}`;
+          } else {
+            room.displayPrice = '价格暂无';
+            room.priceText = '价格暂无';
+          }
+
+          // 处理入住人数显示
+          if (room.maxGuests) {
+            room.guestDisplay = `可住${room.maxGuests}人${room.allowExtraGuests ? '（可加人）' : ''}`;
+          }
+
+          return room;
+        });
+
+        this.setData({ rooms });
       }
     } catch (err) {
       console.error('加载房型失败', err);
@@ -124,14 +145,19 @@ Page({
     });
   },
 
-  // 查看房型详情
+  // 查看房型详情 - 跳转到房型详情页
   viewRoom(e) {
     const room = e.currentTarget.dataset.room;
-    // 可以跳转到房型详情页，或者显示弹窗
-    wx.showModal({
-      title: room.roomType,
-      content: room.description,
-      showCancel: false
+    if (!room || !room._id) {
+      wx.showToast({
+        title: '房型信息不完整',
+        icon: 'none'
+      });
+      return;
+    }
+
+    wx.navigateTo({
+      url: `/pages/room-detail/room-detail?id=${room._id}`
     });
   }
 });

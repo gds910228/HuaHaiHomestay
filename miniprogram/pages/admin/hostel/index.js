@@ -66,7 +66,7 @@ Page({
   // 新增房型
   addRoom() {
     wx.navigateTo({
-      url: '/pages/admin/room-edit/index'
+      url: '/pages/admin/room-edit/room-edit'
     });
   },
 
@@ -75,7 +75,7 @@ Page({
     const index = e.currentTarget.dataset.index;
     const room = this.data.rooms[index];
     wx.navigateTo({
-      url: `/pages/admin/room-edit/index?data=${encodeURIComponent(JSON.stringify(room))}`
+      url: `/pages/admin/room-edit/room-edit?id=${room._id}`
     });
   },
 

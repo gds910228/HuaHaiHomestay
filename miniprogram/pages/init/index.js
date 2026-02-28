@@ -59,6 +59,29 @@ Page({
     await this.executeInit('initFood', '美食攻略数据');
   },
 
+  // 添加"画海-聆风"房型
+  async addLingFengRoom() {
+    if (this.data.loading) return;
+    await this.executeInit('addLingFengRoom', '添加"画海-聆风"房型');
+  },
+
+  // 清空房型数据
+  async clearRooms() {
+    if (this.data.loading) return;
+
+    wx.showModal({
+      title: '⚠️ 警告操作',
+      content: '确定要清空所有房型数据吗？此操作不可恢复！',
+      confirmText: '确定清空',
+      confirmColor: '#FF9800',
+      success: async (res) => {
+        if (res.confirm) {
+          await this.executeInit('clearRooms', '清空房型数据');
+        }
+      }
+    });
+  },
+
   // 清空所有数据
   async clearAll() {
     if (this.data.loading) return;

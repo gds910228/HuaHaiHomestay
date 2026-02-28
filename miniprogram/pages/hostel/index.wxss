@@ -192,8 +192,31 @@
   height: 100%;
 }
 
+/* 查看详情提示 */
+.view-detail-hint {
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  backdrop-filter: blur(10rpx);
+}
+
+.hint-text {
+  font-size: 22rpx;
+  color: #fff;
+}
+
 .room-content {
   padding: 24rpx;
+}
+
+/* 房型标题行 */
+.room-title-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
 }
 
 .room-title {
@@ -201,7 +224,17 @@
   font-size: 32rpx;
   font-weight: bold;
   color: #333333;
-  margin-bottom: 8rpx;
+  margin-right: 12rpx;
+}
+
+/* 房间类型标签 */
+.room-category {
+  background-color: #E3F2FD;
+  color: #2E7DFF;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+  white-space: nowrap;
 }
 
 .room-desc {
@@ -277,6 +310,10 @@
   height: 12rpx;
   background: #4CAF50;
   border-radius: 50%;
+}
+
+.status-dot.available {
+  background: #4CAF50;
 }
 
 .status-text {

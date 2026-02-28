@@ -1,0 +1,526 @@
+<!--pages/admin/room-edit/room-edit.wxml-->
+<view class="room-edit-page">
+
+  <!-- 基本信息 -->
+  <view class="form-section">
+    <view class="section-title">基本信息</view>
+
+    <!-- 房型名称 -->
+    <view class="form-item">
+      <view class="form-label required">房型名称</view>
+      <input
+        class="form-input"
+        placeholder="如：海景一室大床房"
+        value="{{formData.roomType}}"
+        data-field="roomType"
+        bindinput="onInputChange" />
+    </view>
+
+    <!-- 房间类型 -->
+    <view class="form-item">
+      <view class="form-label">房间类型</view>
+      <picker
+        class="form-picker"
+        mode="selector"
+        range="{{roomCategoryOptions}}"
+        value="{{roomCategoryOptions.indexOf(formData.roomCategory)}}"
+        bindchange="onRoomCategoryChange">
+        <view class="picker-text">{{formData.roomCategory}}</view>
+      </picker>
+    </view>
+
+    <!-- 面积 -->
+    <view class="form-item">
+      <view class="form-label required">房间面积</view>
+      <input
+        class="form-input"
+        placeholder="如：40m²"
+        value="{{formData.area}}"
+        data-field="area"
+        bindinput="onInputChange" />
+    </view>
+
+    <!-- 床型 -->
+    <view class="form-item">
+      <view class="form-label required">床型配置</view>
+      <input
+        class="form-input"
+        placeholder="如：特大床 2米"
+        value="{{formData.bedType}}"
+        data-field="bedType"
+        bindinput="onInputChange" />
+    </view>
+
+    <!-- 可住人数 -->
+    <view class="form-item">
+      <view class="form-label">最大入住人数</view>
+      <input
+        class="form-input"
+        type="number"
+        placeholder="2"
+        value="{{formData.maxGuests}}"
+        data-field="maxGuests"
+        bindinput="onNumberChange" />
+    </view>
+
+    <!-- 是否允许加人 -->
+    <view class="form-item switch-item">
+      <view class="form-label">允许加人</view>
+      <switch
+        checked="{{formData.allowExtraGuests}}"
+        data-field="allowExtraGuests"
+        bindchange="onSwitchChange" />
+    </view>
+
+    <!-- 早餐 -->
+    <view class="form-item">
+      <view class="form-label">早餐情况</view>
+      <picker
+        class="form-picker"
+        mode="selector"
+        range="{{breakfastOptions}}"
+        value="{{breakfastOptions.indexOf(formData.breakfast)}}"
+        bindchange="onBreakfastChange">
+        <view class="picker-text">{{formData.breakfast}}</view>
+      </picker>
+    </view>
+
+    <!-- 价格 -->
+    <view class="form-item">
+      <view class="form-label required">价格（元/晚）</view>
+      <input
+        class="form-input"
+        type="number"
+        placeholder="538"
+        value="{{formData.fixedPrice}}"
+        data-field="fixedPrice"
+        bindinput="onNumberChange" />
+    </view>
+
+    <!-- 房间状态 -->
+    <view class="form-item">
+      <view class="form-label">房间状态</view>
+      <picker class="form-picker" mode="selector" range="{{['可预订', '已满房', '维护中']}}" value="{{formData.status === 'available' ? 0 : formData.status === 'unavailable' ? 1 : 2}}" bindchange="onStatusChange">
+        <view class="picker-text">{{formData.status === 'available' ? '可预订' : formData.status === 'unavailable' ? '已满房' : '维护中'}}</view>
+      </picker>
+    </view>
+
+    <!-- 房型描述 -->
+    <view class="form-item">
+      <view class="form-label">房型描述</view>
+      <textarea
+        class="form-textarea"
+        placeholder="请输入房型描述..."
+        value="{{formData.description}}"
+        data-field="description"
+        bindinput="onInputChange" />
+    </view>
+  </view>
+
+  <!-- 标签 -->
+  <view class="form-section">
+    <view class="section-title">特色标签</view>
+
+    <view class="tag-input-row">
+      <input
+        class="tag-input"
+        placeholder="输入标签名称"
+        value="{{tagInput}}"
+        bindinput="onTagInput" />
+      <button class="tag-add-btn" size="mini" bindtap="addTag">添加</button>
+    </view>
+
+    <view class="tags-list" wx:if="{{formData.tags.length > 0}}">
+      <view class="tag-item" wx:for="{{formData.tags}}" wx:key="index">
+        <text class="tag-text">{{item}}</text>
+        <text class="tag-delete" data-index="{{index}}" bindtap="deleteTag">×</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 图片管理 -->
+  <view class="form-section">
+    <view class="section-title">
+      <text>房间图片</text>
+      <text class="image-count">（{{images.length}}/{{maxImages}}）</text>
+    </view>
+
+    <!-- 手动添加图片URL（备用方案） -->
+    <view class="manual-add-image" wx:if="{{images.length < maxImages}}">
+      <view class="input-row">
+        <input
+          class="url-input"
+          placeholder="输入云存储图片URL（cloud://...）"
+          value="{{imageUrlInput}}"
+          bindinput="onImageUrlInput"
+        />
+        <button class="url-add-btn" size="mini" bindtap="addImageUrl">添加</button>
+      </view>
+      <view class="tip-text">
+        💡 提示：如果上传失败，可以先在云开发控制台手动上传图片，然后复制云存储URL在此处添加
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="images-grid">
+      <!-- 已上传的图片 -->
+      <view class="image-item" wx:for="{{images}}" wx:key="index">
+        <image
+          class="image-thumb"
+          src="{{item}}"
+          mode="aspectFill"
+          data-url="{{item}}"
+          bindtap="previewImage" />
+        <view class="image-delete" data-index="{{index}}" bindtap="deleteImage">×</view>
+      </view>
+
+      <!-- 上传按钮 -->
+      <view class="image-upload" wx:if="{{images.length < maxImages}}" bindtap="chooseImage">
+        <text class="upload-icon">+</text>
+        <text class="upload-text">上传图片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设施服务 -->
+  <view class="form-section">
+    <view class="section-title">设施服务</view>
+
+    <!-- 服务类 -->
+    <view class="facility-group">
+      <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="services">
+        <text class="group-title">🛎️ 服务</text>
+        <text class="toggle-icon">{{showFacilities.services ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-options" wx:if="{{showFacilities.services}}">
+        <view
+          class="facility-option {{detailedFacilities.services.includes(item) ? 'active' : ''}}"
+          wx:for="{{facilityOptions.services}}"
+          wx:for-item="item"
+          wx:key="*this"
+          data-category="services"
+          data-facility="{{item}}"
+          bindtap="toggleFacility">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 基础类 -->
+    <view class="facility-group">
+      <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="basic">
+        <text class="group-title">🏠 基础</text>
+        <text class="toggle-icon">{{showFacilities.basic ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-options" wx:if="{{showFacilities.basic}}">
+        <view
+          class="facility-option {{detailedFacilities.basic.includes(item) ? 'active' : ''}}"
+          wx:for="{{facilityOptions.basic}}"
+          wx:for-item="item"
+          wx:key="*this"
+          data-category="basic"
+          data-facility="{{item}}"
+          bindtap="toggleFacility">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 卫浴类 -->
+    <view class="facility-group">
+      <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="bathroom">
+        <text class="group-title">🚿 卫浴</text>
+        <text class="toggle-icon">{{showFacilities.bathroom ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-options" wx:if="{{showFacilities.bathroom}}">
+        <view
+          class="facility-option {{detailedFacilities.bathroom.includes(item) ? 'active' : ''}}"
+          wx:for="{{facilityOptions.bathroom}}"
+          wx:for-item="item"
+          wx:key="*this"
+          data-category="bathroom"
+          data-facility="{{item}}"
+          bindtap="toggleFacility">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 厨房类 -->
+    <view class="facility-group">
+      <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="kitchen">
+        <text class="group-title">🍳 厨房</text>
+        <text class="toggle-icon">{{showFacilities.kitchen ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-options" wx:if="{{showFacilities.kitchen}}">
+        <view
+          class="facility-option {{detailedFacilities.kitchen.includes(item) ? 'active' : ''}}"
+          wx:for="{{facilityOptions.kitchen}}"
+          wx:for-item="item"
+          wx:key="*this"
+          data-category="kitchen"
+          data-facility="{{item}}"
+          bindtap="toggleFacility">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 周边配套 -->
+    <view class="facility-group">
+      <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="surroundings">
+        <text class="group-title">🏪 周边配套</text>
+        <text class="toggle-icon">{{showFacilities.surroundings ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-options" wx:if="{{showFacilities.surroundings}}">
+        <view
+          class="facility-option {{detailedFacilities.surroundings.includes(item) ? 'active' : ''}}"
+          wx:for="{{facilityOptions.surroundings}}"
+          wx:for-item="item"
+          wx:key="*this"
+          data-category="surroundings"
+          data-facility="{{item}}"
+          bindtap="toggleFacility">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 安全设施 -->
+    <view class="facility-group">
+      <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="safety">
+        <text class="group-title">🛡️ 安全</text>
+        <text class="toggle-icon">{{showFacilities.safety ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-options" wx:if="{{showFacilities.safety}}">
+        <view
+          class="facility-option {{detailedFacilities.safety.includes(item) ? 'active' : ''}}"
+          wx:for="{{facilityOptions.safety}}"
+          wx:for-item="item"
+          wx:key="*this"
+          data-category="safety"
+          data-facility="{{item}}"
+          bindtap="toggleFacility">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 娱乐设施 -->
+    <view class="facility-group">
+      <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="entertainment">
+        <text class="group-title">🎬 娱乐</text>
+        <text class="toggle-icon">{{showFacilities.entertainment ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-options" wx:if="{{showFacilities.entertainment}}">
+        <view
+          class="facility-option {{detailedFacilities.entertainment.includes(item) ? 'active' : ''}}"
+          wx:for="{{facilityOptions.entertainment}}"
+          wx:for-item="item"
+          wx:key="*this"
+          data-category="entertainment"
+          data-facility="{{item}}"
+          bindtap="toggleFacility">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 休闲设施 -->
+    <view class="facility-group">
+      <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="leisure">
+        <text class="group-title">🌿 休闲</text>
+        <text class="toggle-icon">{{showFacilities.leisure ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-options" wx:if="{{showFacilities.leisure}}">
+        <view
+          class="facility-option {{detailedFacilities.leisure.includes(item) ? 'active' : ''}}"
+          wx:for="{{facilityOptions.leisure}}"
+          wx:for-item="item"
+          wx:key="*this"
+          data-category="leisure"
+          data-facility="{{item}}"
+          bindtap="toggleFacility">
+          {{item}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 入住规则 -->
+  <view class="form-section">
+    <view class="section-title">入住规则</view>
+
+    <!-- 入住时间 -->
+    <view class="form-item">
+      <view class="form-label">入住时间</view>
+      <input
+        class="form-input"
+        placeholder="14:00后入住"
+        value="{{checkInRules.checkInTime}}"
+        data-field="checkInTime"
+        bindinput="onCheckInRuleChange" />
+    </view>
+
+    <!-- 退房时间 -->
+    <view class="form-item">
+      <view class="form-label">退房时间</view>
+      <input
+        class="form-input"
+        placeholder="12:00前退房"
+        value="{{checkInRules.checkOutTime}}"
+        data-field="checkOutTime"
+        bindinput="onCheckInRuleChange" />
+    </view>
+
+    <!-- 取消政策 -->
+    <view class="form-item">
+      <view class="form-label">取消政策</view>
+      <input
+        class="form-input"
+        placeholder="30分钟内免费取消"
+        value="{{checkInRules.cancelPolicy}}"
+        data-field="cancelPolicy"
+        bindinput="onCheckInRuleChange" />
+    </view>
+
+    <!-- 押金 -->
+    <view class="form-item">
+      <view class="form-label">押金（元）</view>
+      <input
+        class="form-input"
+        type="number"
+        placeholder="200"
+        value="{{checkInRules.deposit}}"
+        bindinput="onDepositChange" />
+    </view>
+
+    <!-- 立即确认 -->
+    <view class="form-item switch-item">
+      <view class="form-label">立即确认</view>
+      <switch
+        checked="{{checkInRules.instantConfirm}}"
+        bindchange="onInstantConfirmChange" />
+      <text class="switch-desc">下单即有房，无需等待确认</text>
+    </view>
+  </view>
+
+  <!-- 接待要求 -->
+  <view class="form-section">
+    <view class="section-title">接待要求</view>
+
+    <view class="requirement-list">
+      <view class="requirement-item switch-item">
+        <view class="requirement-label">
+          <text class="label-text">接待婴儿</text>
+        </view>
+        <switch
+          checked="{{guestRequirements.allowInfants}}"
+          data-field="allowInfants"
+          bindchange="onGuestRequirementChange" />
+      </view>
+
+      <view class="requirement-item switch-item">
+        <view class="requirement-label">
+          <text class="label-text">接待儿童</text>
+        </view>
+        <switch
+          checked="{{guestRequirements.allowChildren}}"
+          data-field="allowChildren"
+          bindchange="onGuestRequirementChange" />
+      </view>
+
+      <view class="requirement-item switch-item">
+        <view class="requirement-label">
+          <text class="label-text">接待老人</text>
+        </view>
+        <switch
+          checked="{{guestRequirements.allowElderly}}"
+          data-field="allowElderly"
+          bindchange="onGuestRequirementChange" />
+      </view>
+
+      <view class="requirement-item switch-item">
+        <view class="requirement-label">
+          <text class="label-text">接待海外游客</text>
+        </view>
+        <switch
+          checked="{{guestRequirements.allowOverseas}}"
+          data-field="allowOverseas"
+          bindchange="onGuestRequirementChange" />
+      </view>
+
+      <view class="requirement-item switch-item">
+        <view class="requirement-label">
+          <text class="label-text">接待港澳台游客</text>
+        </view>
+        <switch
+          checked="{{guestRequirements.allowHKMacaoTaiwan}}"
+          data-field="allowHKMacaoTaiwan"
+          bindchange="onGuestRequirementChange" />
+      </view>
+
+      <view class="requirement-item switch-item">
+        <view class="requirement-label">
+          <text class="label-text">允许携带宠物</text>
+        </view>
+        <switch
+          checked="{{guestRequirements.allowPets}}"
+          data-field="allowPets"
+          bindchange="onGuestRequirementChange" />
+      </view>
+
+      <view class="requirement-item switch-item">
+        <view class="requirement-label">
+          <text class="label-text">允许吸烟</text>
+        </view>
+        <switch
+          checked="{{guestRequirements.allowSmoking}}"
+          data-field="allowSmoking"
+          bindchange="onGuestRequirementChange" />
+      </view>
+
+      <view class="requirement-item switch-item">
+        <view class="requirement-label">
+          <text class="label-text">允许做饭</text>
+        </view>
+        <switch
+          checked="{{guestRequirements.allowCooking}}"
+          data-field="allowCooking"
+          bindchange="onGuestRequirementChange" />
+      </view>
+
+      <view class="requirement-item switch-item">
+        <view class="requirement-label">
+          <text class="label-text">允许聚会</text>
+        </view>
+        <switch
+          checked="{{guestRequirements.allowParty}}"
+          data-field="allowParty"
+          bindchange="onGuestRequirementChange" />
+      </view>
+
+      <view class="requirement-item switch-item">
+        <view class="requirement-label">
+          <text class="label-text">允许商业拍摄</text>
+        </view>
+        <switch
+          checked="{{guestRequirements.allowCommercialShoot}}"
+          data-field="allowCommercialShoot"
+          bindchange="onGuestRequirementChange" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部保存按钮 -->
+  <view class="bottom-save-bar">
+    <button
+      class="save-btn"
+      bindtap="saveRoom"
+      disabled="{{saving}}">
+      {{saving ? '保存中...' : (isEdit ? '保存修改' : '添加房型')}}
+    </button>
+  </view>
+
+</view>

@@ -57,6 +57,14 @@
       <text>🍴 美食攻略（真实数据）</text>
     </button>
 
+    <button
+      class="action-btn secondary"
+      bindtap="addLingFengRoom"
+      disabled="{{loading}}"
+    >
+      <text>🌊 添加"画海-聆风"房型</text>
+    </button>
+
     <view class="action-row">
       <button
         class="action-btn secondary"
@@ -76,13 +84,24 @@
 
     <view class="divider"></view>
 
-    <button
-      class="action-btn danger"
-      bindtap="clearAll"
-      disabled="{{loading}}"
-    >
-      <text>⚠️ 清空所有数据</text>
-    </button>
+    <view class="action-row">
+      <button
+        class="action-btn warning"
+        bindtap="clearRooms"
+        disabled="{{loading}}"
+      >
+        <text>🗑️ 清空房型数据</text>
+      </button>
+      <button
+        class="action-btn danger"
+        bindtap="clearAll"
+        disabled="{{loading}}"
+      >
+        <text>⚠️ 清空所有数据</text>
+      </button>
+    </view>
+
+    <view class="divider"></view>
 
     <button
       class="action-btn"

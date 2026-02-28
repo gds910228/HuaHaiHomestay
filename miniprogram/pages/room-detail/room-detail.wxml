@@ -1,0 +1,305 @@
+<!--pages/room-detail/room-detail.wxml-->
+<view class="room-detail-page" wx:if="{{!loading && room}}">
+
+  <!-- 图片轮播 -->
+  <view class="image-swiper-container">
+    <swiper
+      class="image-swiper"
+      indicator-dots="{{true}}"
+      indicator-color="rgba(255, 255, 255, 0.5)"
+      indicator-active-color="#fff"
+      autoplay="{{false}}"
+      bindchange="onImageChange">
+      <swiper-item wx:for="{{room.images}}" wx:key="index">
+        <image
+          class="room-image"
+          src="{{item}}"
+          mode="aspectFill"
+          bindtap="previewImage"
+          data-url="{{item}}"
+          data-urls="{{room.images}}" />
+      </swiper-item>
+    </swiper>
+    <view class="image-counter">{{currentImageIndex + 1}} / {{room.images.length}}</view>
+  </view>
+
+  <!-- 房型基本信息 -->
+  <view class="section-container info-section">
+    <view class="room-header">
+      <view class="room-title-row">
+        <text class="room-type">{{room.roomType}}</text>
+        <text class="room-category" wx:if="{{room.roomCategory}}">{{room.roomCategory}}</text>
+      </view>
+      <view class="room-tags" wx:if="{{room.tags && room.tags.length > 0}}">
+        <text class="tag" wx:for="{{room.tags}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
+      </view>
+    </view>
+
+    <view class="price-row">
+      <text class="price-symbol">¥</text>
+      <text class="price-value">{{room.displayPrice}}</text>
+      <text class="price-unit">/晚</text>
+    </view>
+
+    <view class="room-basic-info">
+      <view class="info-item">
+        <text class="info-icon">📐</text>
+        <text class="info-text">{{room.area || '面积未知'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-icon">🛏️</text>
+        <text class="info-text">{{room.bedType || '床型未知'}}</text>
+      </view>
+      <view class="info-item" wx:if="{{room.maxGuests}}">
+        <text class="info-icon">👥</text>
+        <text class="info-text">{{room.guestDisplay}}</text>
+      </view>
+      <view class="info-item" wx:if="{{room.breakfast}}">
+        <text class="info-icon">🍳</text>
+        <text class="info-text">{{room.breakfast}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 房型描述 -->
+  <view class="section-container" wx:if="{{room.description}}">
+    <view class="section-title">房型介绍</view>
+    <view class="description-text">{{room.description}}</view>
+  </view>
+
+  <!-- 设施服务 -->
+  <view class="section-container facilities-section" wx:if="{{room.detailedFacilities}}">
+    <view class="section-title">
+      <text>设施服务</text>
+      <text class="facility-count">（共{{room.detailedFacilities.services.length +
+        room.detailedFacilities.basic.length +
+        room.detailedFacilities.bathroom.length +
+        room.detailedFacilities.kitchen.length +
+        room.detailedFacilities.surroundings.length +
+        room.detailedFacilities.safety.length +
+        room.detailedFacilities.entertainment.length +
+        room.detailedFacilities.leisure.length}}项）</text>
+    </view>
+
+    <!-- 服务类 -->
+    <view class="facility-category" wx:if="{{room.detailedFacilities.services.length > 0}}">
+      <view class="category-header" bindtap="toggleFacilityCategory" data-category="services">
+        <text class="category-title">🛎️ 服务</text>
+        <text class="toggle-icon">{{showServices ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-list" wx:if="{{showServices}}">
+        <view class="facility-item" wx:for="{{room.detailedFacilities.services}}" wx:key="index">
+          <text class="facility-icon">✓</text>
+          <text class="facility-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 基础类 -->
+    <view class="facility-category" wx:if="{{room.detailedFacilities.basic.length > 0}}">
+      <view class="category-header" bindtap="toggleFacilityCategory" data-category="basic">
+        <text class="category-title">🏠 基础</text>
+        <text class="toggle-icon">{{showBasic ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-list" wx:if="{{showBasic}}">
+        <view class="facility-item" wx:for="{{room.detailedFacilities.basic}}" wx:key="index">
+          <text class="facility-icon">✓</text>
+          <text class="facility-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 卫浴类 -->
+    <view class="facility-category" wx:if="{{room.detailedFacilities.bathroom.length > 0}}">
+      <view class="category-header" bindtap="toggleFacilityCategory" data-category="bathroom">
+        <text class="category-title">🚿 卫浴</text>
+        <text class="toggle-icon">{{showBathroom ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-list" wx:if="{{showBathroom}}">
+        <view class="facility-item" wx:for="{{room.detailedFacilities.bathroom}}" wx:key="index">
+          <text class="facility-icon">✓</text>
+          <text class="facility-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 厨房类 -->
+    <view class="facility-category" wx:if="{{room.detailedFacilities.kitchen.length > 0}}">
+      <view class="category-header" bindtap="toggleFacilityCategory" data-category="kitchen">
+        <text class="category-title">🍳 厨房</text>
+        <text class="toggle-icon">{{showKitchen ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-list" wx:if="{{showKitchen}}">
+        <view class="facility-item" wx:for="{{room.detailedFacilities.kitchen}}" wx:key="index">
+          <text class="facility-icon">✓</text>
+          <text class="facility-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 周边配套 -->
+    <view class="facility-category" wx:if="{{room.detailedFacilities.surroundings.length > 0}}">
+      <view class="category-header" bindtap="toggleFacilityCategory" data-category="surroundings">
+        <text class="category-title">🏪 周边配套</text>
+        <text class="toggle-icon">{{showSurroundings ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-list" wx:if="{{showSurroundings}}">
+        <view class="facility-item" wx:for="{{room.detailedFacilities.surroundings}}" wx:key="index">
+          <text class="facility-icon">✓</text>
+          <text class="facility-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 安全设施 -->
+    <view class="facility-category" wx:if="{{room.detailedFacilities.safety.length > 0}}">
+      <view class="category-header" bindtap="toggleFacilityCategory" data-category="safety">
+        <text class="category-title">🛡️ 安全</text>
+        <text class="toggle-icon">{{showSafety ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-list" wx:if="{{showSafety}}">
+        <view class="facility-item" wx:for="{{room.detailedFacilities.safety}}" wx:key="index">
+          <text class="facility-icon">✓</text>
+          <text class="facility-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 娱乐设施 -->
+    <view class="facility-category" wx:if="{{room.detailedFacilities.entertainment.length > 0}}">
+      <view class="category-header" bindtap="toggleFacilityCategory" data-category="entertainment">
+        <text class="category-title">🎬 娱乐</text>
+        <text class="toggle-icon">{{showEntertainment ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-list" wx:if="{{showEntertainment}}">
+        <view class="facility-item" wx:for="{{room.detailedFacilities.entertainment}}" wx:key="index">
+          <text class="facility-icon">✓</text>
+          <text class="facility-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 休闲设施 -->
+    <view class="facility-category" wx:if="{{room.detailedFacilities.leisure.length > 0}}">
+      <view class="category-header" bindtap="toggleFacilityCategory" data-category="leisure">
+        <text class="category-title">🌿 休闲</text>
+        <text class="toggle-icon">{{showLeisure ? '▼' : '▶'}}</text>
+      </view>
+      <view class="facility-list" wx:if="{{showLeisure}}">
+        <view class="facility-item" wx:for="{{room.detailedFacilities.leisure}}" wx:key="index">
+          <text class="facility-icon">✓</text>
+          <text class="facility-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 入住须知 -->
+  <view class="section-container" wx:if="{{room.checkInRules}}">
+    <view class="section-title-with-toggle" bindtap="toggleCheckInRules">
+      <text class="section-title-text">入住须知</text>
+      <text class="toggle-icon">{{showCheckInRules ? '▼' : '▶'}}</text>
+    </view>
+
+    <view class="check-in-rules" wx:if="{{showCheckInRules}}">
+      <view class="rule-item" wx:if="{{room.checkInRules.checkInTime}}">
+        <text class="rule-label">入住时间：</text>
+        <text class="rule-value">{{room.checkInRules.checkInTime}}</text>
+      </view>
+      <view class="rule-item" wx:if="{{room.checkInRules.checkOutTime}}">
+        <text class="rule-label">退房时间：</text>
+        <text class="rule-value">{{room.checkInRules.checkOutTime}}</text>
+      </view>
+      <view class="rule-item" wx:if="{{room.checkInRules.cancelPolicy}}">
+        <text class="rule-label">取消政策：</text>
+        <text class="rule-value">{{room.checkInRules.cancelPolicy}}</text>
+      </view>
+      <view class="rule-item" wx:if="{{room.checkInRules.deposit}}">
+        <text class="rule-label">押金：</text>
+        <text class="rule-value">¥{{room.checkInRules.deposit}}（离店后退还）</text>
+      </view>
+      <view class="rule-item" wx:if="{{room.checkInRules.instantConfirm !== undefined}}">
+        <text class="rule-label">确认方式：</text>
+        <text class="rule-value">{{room.checkInRules.instantConfirm ? '立即确认（下单即有房）' : '需等待确认'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 接待要求 -->
+  <view class="section-container" wx:if="{{room.guestRequirements}}">
+    <view class="section-title-with-toggle" bindtap="toggleGuestRequirements">
+      <text class="section-title-text">接待要求</text>
+      <text class="toggle-icon">{{showGuestRequirements ? '▼' : '▶'}}</text>
+    </view>
+
+    <view class="guest-requirements" wx:if="{{showGuestRequirements}}">
+      <view class="requirement-item">
+        <text class="requirement-label">接待婴儿：</text>
+        <text class="requirement-value {{room.guestRequirements.allowInfants ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowInfants ? '✓ 允许' : '✗ 不允许'}}
+        </text>
+      </view>
+      <view class="requirement-item">
+        <text class="requirement-label">接待儿童：</text>
+        <text class="requirement-value {{room.guestRequirements.allowChildren ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowChildren ? '✓ 允许' : '✗ 不允许'}}
+        </text>
+      </view>
+      <view class="requirement-item">
+        <text class="requirement-label">接待老人：</text>
+        <text class="requirement-value {{room.guestRequirements.allowElderly ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowElderly ? '✓ 允许' : '✗ 不允许'}}
+        </text>
+      </view>
+      <view class="requirement-item">
+        <text class="requirement-label">携带宠物：</text>
+        <text class="requirement-value {{room.guestRequirements.allowPets ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowPets ? '✓ 允许' : '✗ 不允许'}}
+        </text>
+      </view>
+      <view class="requirement-item">
+        <text class="requirement-label">允许吸烟：</text>
+        <text class="requirement-value {{room.guestRequirements.allowSmoking ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowSmoking ? '✓ 允许' : '✗ 不允许'}}
+        </text>
+      </view>
+      <view class="requirement-item">
+        <text class="requirement-label">允许做饭：</text>
+        <text class="requirement-value {{room.guestRequirements.allowCooking ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowCooking ? '✓ 允许' : '✗ 不允许'}}
+        </text>
+      </view>
+      <view class="requirement-item">
+        <text class="requirement-label">允许聚会：</text>
+        <text class="requirement-value {{room.guestRequirements.allowParty ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowParty ? '✓ 允许' : '✗ 不允许'}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部占位，防止内容被操作栏遮挡 -->
+  <view class="bottom-placeholder"></view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-action-bar">
+    <view class="action-buttons">
+      <view class="action-btn secondary-btn" bindtap="handleFavorite">
+        <text class="action-icon">{{room.isFavorited ? '★' : '☆'}}</text>
+        <text class="action-text">收藏</text>
+      </view>
+      <view class="action-btn secondary-btn" bindtap="handleContact">
+        <text class="action-icon">📞</text>
+        <text class="action-text">客服</text>
+      </view>
+      <view class="action-btn primary-btn" bindtap="handleBooking">
+        <text class="btn-text">立即预订</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 加载中 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text class="loading-text">加载中...</text>
+</view>

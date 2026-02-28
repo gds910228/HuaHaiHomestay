@@ -45,12 +45,16 @@ exports.main = async (event, context) => {
         return await checkFavorite(event, openid);
       case 'getFavorites':
         return await getFavorites(openid);
+      case 'toggleFavorite':
+        return await toggleFavorite(event, openid);
 
       // ==================== 民宿相关 ====================
       case 'getHostelInfo':
         return await getHostelInfo();
       case 'getRooms':
         return await getRooms();
+      case 'getRoomDetail':
+        return await getRoomDetail(event);
 
       // ==================== 管理后台相关 ====================
       case 'adminLogin':
@@ -284,6 +288,53 @@ async function getFavorites(openid) {
   };
 }
 
+/**
+ * 切换收藏状态（用于攻略和房型）
+ */
+async function toggleFavorite(event, openid) {
+  const { guideId, category } = event;
+
+  // 检查是否已收藏
+  const existRes = await db.collection('favorites').where({
+    openid,
+    guideId,
+    category: category || 'guide'
+  }).count();
+
+  if (existRes.total > 0) {
+    // 已收藏，执行取消收藏
+    await db.collection('favorites').where({
+      openid,
+      guideId,
+      category: category || 'guide'
+    }).remove();
+
+    return {
+      success: true,
+      data: {
+        isFavorited: false
+      }
+    };
+  } else {
+    // 未收藏，执行添加收藏
+    await db.collection('favorites').add({
+      data: {
+        openid,
+        guideId,
+        category: category || 'guide',
+        createTime: new Date()
+      }
+    });
+
+    return {
+      success: true,
+      data: {
+        isFavorited: true
+      }
+    };
+  }
+}
+
 // ==================== 民宿相关函数 ====================
 
 /**
@@ -315,15 +366,63 @@ async function getHostelInfo() {
 
 /**
  * 获取房型列表
+ * 更新：支持新旧数据结构排序（fixedPrice 或 price.low）
  */
 async function getRooms() {
-  const res = await db.collection('rooms')
-    .orderBy('price.low', 'asc')
-    .get();
+  const res = await db.collection('rooms').get();
+
+  // 手动排序，兼容固定价格和范围价格
+  const sortedData = res.data.sort((a, b) => {
+    const priceA = a.fixedPrice || (a.price && a.price.low) || 0;
+    const priceB = b.fixedPrice || (b.price && b.price.low) || 0;
+    return priceA - priceB;
+  });
 
   return {
     success: true,
-    data: res.data
+    data: sortedData
+  };
+}
+
+/**
+ * 获取房型详情
+ */
+async function getRoomDetail(event) {
+  const { roomId } = event;
+
+  if (!roomId) {
+    return {
+      success: false,
+      errMsg: '房型ID不能为空'
+    };
+  }
+
+  const res = await db.collection('rooms').doc(roomId).get();
+
+  if (!res.data) {
+    return {
+      success: false,
+      errMsg: '房型不存在'
+    };
+  }
+
+  const room = res.data;
+
+  // 检查当前用户是否收藏了该房型（如果传入了openid）
+  const wxContext = cloud.getWXContext();
+  if (wxContext.OPENID) {
+    const favoriteRes = await db.collection('favorites').where({
+      openid: wxContext.OPENID,
+      guideId: roomId,
+      category: 'room'
+    }).count();
+
+    room.isFavorited = favoriteRes.total > 0;
+  }
+
+  return {
+    success: true,
+    data: room
   };
 }
 
@@ -449,18 +548,27 @@ async function adminSaveHostel(event) {
 
 /**
  * 获取房型列表（管理后台）
+ * 更新：支持新旧数据结构排序
  */
 async function adminGetRooms() {
-  const res = await db.collection('rooms').orderBy('price.low', 'asc').get();
+  const res = await db.collection('rooms').get();
+
+  // 手动排序，兼容固定价格和范围价格
+  const sortedData = res.data.sort((a, b) => {
+    const priceA = a.fixedPrice || (a.price && a.price.low) || 0;
+    const priceB = b.fixedPrice || (b.price && b.price.low) || 0;
+    return priceA - priceB;
+  });
 
   return {
     success: true,
-    data: res.data
+    data: sortedData
   };
 }
 
 /**
  * 保存房型
+ * 更新：支持新的数据结构字段
  */
 async function adminSaveRoom(event) {
   const { id, ...roomData } = event;
@@ -473,6 +581,7 @@ async function adminSaveRoom(event) {
   if (id) {
     await db.collection('rooms').doc(id).update({ data });
   } else {
+    data.createTime = new Date();
     await db.collection('rooms').add({ data });
   }
 

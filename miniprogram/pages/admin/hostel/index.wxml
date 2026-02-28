@@ -78,13 +78,17 @@
         wx:key="_id"
       >
         <view class="room-header">
-          <text class="room-title">{{item.roomType}}</text>
-          <text class="room-price">¥{{item.price.low}}-{{item.price.high}}</text>
+          <view class="room-title-row">
+            <text class="room-title">{{item.roomType}}</text>
+            <text class="room-category" wx:if="{{item.roomCategory}}">{{item.roomCategory}}</text>
+          </view>
+          <text class="room-price">{{item.fixedPrice ? '¥' + item.fixedPrice : (item.price ? '¥' + item.price.low + '-' + item.price.high : '价格未定')}}</text>
         </view>
 
         <view class="room-info">
           <text class="info-text">面积: {{item.area}}</text>
           <text class="info-text">床型: {{item.bedType}}</text>
+          <text class="info-text" wx:if="{{item.maxGuests}}">可住: {{item.maxGuests}}人</text>
         </view>
 
         <view class="room-tags" wx:if="{{item.tags && item.tags.length > 0}}">

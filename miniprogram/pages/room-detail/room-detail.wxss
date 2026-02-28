@@ -1,0 +1,370 @@
+/* pages/room-detail/room-detail.wxss */
+.room-detail-page {
+  min-height: 100vh;
+  background-color: #F5F5F5;
+  padding-bottom: 120rpx;
+}
+
+/* 加载中 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading-text {
+  font-size: 32rpx;
+  color: #999;
+}
+
+/* 图片轮播 */
+.image-swiper-container {
+  position: relative;
+  width: 100%;
+  height: 500rpx;
+}
+
+.image-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.room-image {
+  width: 100%;
+  height: 100%;
+}
+
+.image-counter {
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+/* 通用section样式 */
+.section-container {
+  background-color: #fff;
+  margin: 20rpx;
+  padding: 30rpx;
+  border-radius: 16rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.section-title-with-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.toggle-icon {
+  font-size: 24rpx;
+  color: #999;
+  padding: 10rpx;
+}
+
+/* 房型基本信息 */
+.info-section {
+  margin-top: -40rpx;
+  position: relative;
+  z-index: 10;
+  border-radius: 20rpx 20rpx 16rpx 16rpx;
+}
+
+.room-header {
+  margin-bottom: 20rpx;
+}
+
+.room-title-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.room-type {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  margin-right: 16rpx;
+}
+
+.room-category {
+  background-color: #E3F2FD;
+  color: #2E7DFF;
+  font-size: 24rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.room-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tag {
+  background-color: #FFF3E0;
+  color: #F57C00;
+  font-size: 24rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+/* 价格行 */
+.price-row {
+  display: flex;
+  align-items: baseline;
+  margin: 24rpx 0;
+}
+
+.price-symbol {
+  font-size: 32rpx;
+  color: #FF5722;
+  font-weight: bold;
+}
+
+.price-value {
+  font-size: 56rpx;
+  color: #FF5722;
+  font-weight: bold;
+  margin: 0 8rpx;
+}
+
+.price-unit {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 房型基本信息 */
+.room-basic-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.info-icon {
+  font-size: 32rpx;
+  margin-right: 8rpx;
+}
+
+.info-text {
+  color: #666;
+}
+
+/* 描述文本 */
+.description-text {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.8;
+}
+
+/* 设施服务 */
+.facility-count {
+  font-size: 24rpx;
+  color: #999;
+  font-weight: normal;
+  margin-left: 8rpx;
+}
+
+.facility-category {
+  margin-bottom: 24rpx;
+  border-bottom: 1rpx solid #F5F5F5;
+  padding-bottom: 20rpx;
+}
+
+.facility-category:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+}
+
+.category-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.facility-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 20rpx;
+}
+
+.facility-item {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  margin-bottom: 12rpx;
+  box-sizing: border-box;
+  padding-right: 20rpx;
+}
+
+.facility-icon {
+  color: #4CAF50;
+  font-size: 28rpx;
+  margin-right: 8rpx;
+  font-weight: bold;
+}
+
+.facility-name {
+  font-size: 28rpx;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 入住须知 */
+.check-in-rules {
+  background-color: #F9F9F9;
+  padding: 20rpx;
+  border-radius: 12rpx;
+}
+
+.rule-item {
+  display: flex;
+  margin-bottom: 16rpx;
+  font-size: 28rpx;
+}
+
+.rule-item:last-child {
+  margin-bottom: 0;
+}
+
+.rule-label {
+  color: #999;
+  min-width: 160rpx;
+}
+
+.rule-value {
+  flex: 1;
+  color: #333;
+}
+
+/* 接待要求 */
+.guest-requirements {
+  background-color: #F9F9F9;
+  padding: 20rpx;
+  border-radius: 12rpx;
+}
+
+.requirement-item {
+  display: flex;
+  margin-bottom: 16rpx;
+  font-size: 28rpx;
+}
+
+.requirement-item:last-child {
+  margin-bottom: 0;
+}
+
+.requirement-label {
+  color: #999;
+  min-width: 160rpx;
+}
+
+.requirement-value {
+  flex: 1;
+  font-weight: 500;
+}
+
+.requirement-value.allowed {
+  color: #4CAF50;
+}
+
+.requirement-value.not-allowed {
+  color: #F44336;
+}
+
+/* 底部占位 */
+.bottom-placeholder {
+  height: 40rpx;
+}
+
+/* 底部操作栏 */
+.bottom-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  padding: 16rpx 30rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  transition: all 0.3s;
+}
+
+.secondary-btn {
+  width: 120rpx;
+  height: 88rpx;
+  background-color: #F5F5F5;
+  color: #666;
+}
+
+.action-icon {
+  font-size: 36rpx;
+  margin-bottom: 4rpx;
+}
+
+.action-text {
+  font-size: 22rpx;
+}
+
+.primary-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #2E7DFF 0%, #1976D2 100%);
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
+  flex-direction: row;
+}
+
+.btn-text {
+  font-size: 32rpx;
+}

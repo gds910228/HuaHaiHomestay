@@ -45,6 +45,10 @@ exports.main = async (event, context) => {
         console.log('执行 initRooms');
         result = await initRooms();
         break;
+      case 'addLingFengRoom':
+        console.log('执行 addLingFengRoom');
+        result = await addLingFengRoom();
+        break;
       case 'initGuides':
         console.log('执行 initGuides');
         result = await initGuides();
@@ -52,6 +56,10 @@ exports.main = async (event, context) => {
       case 'clearAll':
         console.log('执行 clearAll');
         result = await clearAll();
+        break;
+      case 'clearRooms':
+        console.log('执行 clearRooms');
+        result = await clearRooms();
         break;
       case 'initFood':
         console.log('执行 initFood');
@@ -182,6 +190,7 @@ async function initHostel() {
 
 /**
  * 初始化房型数据
+ * 更新：增强数据结构，支持详细的房间信息、设施分类、入住规则等
  */
 async function initRooms() {
   console.log('2. 开始初始化房型数据');
@@ -202,8 +211,9 @@ async function initRooms() {
       };
     }
 
-    console.log('2.5 准备添加房型数据');
+    console.log('2.5 准备添加房型数据（增强版数据结构）');
     const roomsData = [
+      // 模拟房型1：海景大床房（旧数据结构，保留兼容）
       {
         roomType: '海景大床房',
         images: [
@@ -222,6 +232,7 @@ async function initRooms() {
         status: 'available',
         updateTime: new Date()
       },
+      // 模拟房型2：标准双床房（旧数据结构）
       {
         roomType: '标准双床房',
         images: [
@@ -240,6 +251,7 @@ async function initRooms() {
         status: 'available',
         updateTime: new Date()
       },
+      // 模拟房型3：家庭套房（旧数据结构）
       {
         roomType: '家庭套房',
         images: [
@@ -255,6 +267,145 @@ async function initRooms() {
         },
         tags: ['家庭', '套房', '海景', '多人'],
         facilities: ['空调', 'WiFi', '电视', '热水', '独立卫浴', '冰箱', '沙发', '茶几'],
+        status: 'available',
+        updateTime: new Date()
+      },
+      // 真实房型：画海-聆风（新增强数据结构）
+      {
+        roomType: '海景一室大床房',
+        roomCategory: '公寓',
+        images: [
+          // TODO: 需要上传15张真实图片到云存储，然后替换这些placeholder
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+1',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+2',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+3',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+4',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+5',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+6',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+7',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+8',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+9',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+10',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+11',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+12',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+13',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+14',
+          'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+15'
+        ],
+        description: '温馨舒适的公寓式海景房，超大落地窗直面大海，配备投影仪和音响系统，适合情侣度假或家庭出游。房间40平米，设施齐全，楼下就是海滩，步行可达青澳湾景区。',
+        area: '40m²',
+        bedType: '特大床 2米',
+        maxGuests: 2,
+        allowExtraGuests: false,
+        breakfast: '无早餐',
+        fixedPrice: 538, // 固定价格（替代 price: { low, high }）
+        tags: ['海景', '投影', '公寓', '特大床', '度假'],
+
+        // 入住规则
+        checkInRules: {
+          checkInTime: '14:00后入住',
+          checkOutTime: '12:00前退房',
+          cancelPolicy: '30分钟内免费取消，订单确认30分钟后取消订单将扣除全部房费',
+          deposit: 200,
+          instantConfirm: true // 立即确认
+        },
+
+        // 接待要求
+        guestRequirements: {
+          allowInfants: true,         // 接待婴儿
+          allowChildren: true,        // 接待儿童
+          allowElderly: true,         // 接待老人
+          allowOverseas: false,       // 不接待海外游客
+          allowHKMacaoTaiwan: false,  // 不接待港澳台游客
+          allowPets: false,           // 不允许携带宠物
+          allowSmoking: true,         // 允许吸烟
+          allowCooking: false,        // 不允许做饭
+          allowParty: true,           // 允许聚会
+          allowCommercialShoot: false // 不允许商业拍摄
+        },
+
+        // 详细设施分类（8大类）
+        detailedFacilities: {
+          // 服务类
+          services: [
+            '免费停车位',
+            '付费停车位',
+            '行李寄存',
+            '管家式服务'
+          ],
+          // 基础类
+          basic: [
+            '无线网络',
+            '电梯',
+            '落地窗',
+            '卧室-冷暖空调',
+            '暖气',
+            '晾衣架',
+            '电热水壶',
+            '沙发',
+            '电视',
+            '冰箱',
+            '洗衣机',
+            '免费瓶装水'
+          ],
+          // 卫浴类
+          bathroom: [
+            '一次性拖鞋',
+            '热水',
+            '独立卫浴',
+            '电吹风',
+            '洗浴用品',
+            '牙具',
+            '浴巾',
+            '毛巾',
+            '干湿分离'
+          ],
+          // 厨房类
+          kitchen: [
+            '电磁炉',
+            '洗涤用品'
+            // 注意：微波炉、餐具、刀具菜板、烹饪锅具、燃气灶 不提供
+          ],
+          // 周边配套
+          surroundings: [
+            '超市',
+            '便利店',
+            '餐厅',
+            '药店',
+            '公园',
+            '海滩',
+            '儿童乐园',
+            '充电桩'
+          ],
+          // 安全设施
+          safety: [
+            '急救包',
+            '智能门锁',
+            '门禁卡',
+            '保安',
+            '火灾警报器',
+            '灭火器'
+          ],
+          // 娱乐设施
+          entertainment: [
+            '投影设备',
+            '音响',
+            '读书品茶'
+          ],
+          // 休闲设施
+          leisure: [
+            '落地窗',
+            '儿童防护设施'
+          ]
+        },
+
+        // 兼容旧字段：简单设施列表（用于快速展示）
+        facilities: [
+          '无线网络', '电梯', '落地窗', '冷暖空调', '投影设备',
+          '音响', '独立卫浴', '干湿分离', '冰箱', '洗衣机',
+          '智能门锁', '超大观景窗', '管家式服务'
+        ],
+
         status: 'available',
         updateTime: new Date()
       }
@@ -427,4 +578,231 @@ async function clearAll() {
     message: '所有数据已清空',
     data: cleared
   };
+}
+
+/**
+ * 添加"画海-聆风"房型
+ * 检查是否已存在，如果不存在则添加
+ */
+async function addLingFengRoom() {
+  console.log('6. 开始添加"画海-聆风"房型');
+
+  try {
+    // 检查是否已存在"海景一室大床房"
+    console.log('6.1 检查房型是否已存在');
+    const existing = await db.collection('rooms').where({
+      roomType: '海景一室大床房'
+    }).get();
+
+    if (existing.data.length > 0) {
+      console.log('6.2 ⚠️ "画海-聆风"房型已存在，跳过添加');
+      return {
+        success: true,
+        message: '"画海-聆风"房型已存在，无需重复添加',
+        exists: true
+      };
+    }
+
+    console.log('6.3 准备添加"画海-聆风"房型数据');
+
+    // "画海-聆风"房型数据
+    const lingFengRoom = {
+      roomType: '海景一室大床房',
+      roomCategory: '公寓',
+      images: [
+        // TODO: 需要上传15张真实图片到云存储，然后替换这些placeholder
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+1',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+2',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+3',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+4',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+5',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+6',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+7',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+8',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+9',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+10',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+11',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+12',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+13',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+14',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=画海-聆风+15'
+      ],
+      description: '温馨舒适的公寓式海景房，超大落地窗直面大海，配备投影仪和音响系统，适合情侣度假或家庭出游。房间40平米，设施齐全，楼下就是海滩，步行可达青澳湾景区。',
+      area: '40m²',
+      bedType: '特大床 2米',
+      maxGuests: 2,
+      allowExtraGuests: false,
+      breakfast: '无早餐',
+      fixedPrice: 538, // 固定价格（替代 price: { low, high }）
+      tags: ['海景', '投影', '公寓', '特大床', '度假'],
+
+      // 入住规则
+      checkInRules: {
+        checkInTime: '14:00后入住',
+        checkOutTime: '12:00前退房',
+        cancelPolicy: '30分钟内免费取消，订单确认30分钟后取消订单将扣除全部房费',
+        deposit: 200,
+        instantConfirm: true // 立即确认
+      },
+
+      // 接待要求
+      guestRequirements: {
+        allowInfants: true,         // 接待婴儿
+        allowChildren: true,        // 接待儿童
+        allowElderly: true,         // 接待老人
+        allowOverseas: false,       // 不接待海外游客
+        allowHKMacaoTaiwan: false,  // 不接待港澳台游客
+        allowPets: false,           // 不允许携带宠物
+        allowSmoking: true,         // 允许吸烟
+        allowCooking: false,        // 不允许做饭
+        allowParty: true,           // 允许聚会
+        allowCommercialShoot: false // 不允许商业拍摄
+      },
+
+      // 详细设施分类（8大类）
+      detailedFacilities: {
+        // 服务类
+        services: [
+          '免费停车位',
+          '付费停车位',
+          '行李寄存',
+          '管家式服务'
+        ],
+        // 基础类
+        basic: [
+          '无线网络',
+          '电梯',
+          '落地窗',
+          '卧室-冷暖空调',
+          '暖气',
+          '晾衣架',
+          '电热水壶',
+          '沙发',
+          '电视',
+          '冰箱',
+          '洗衣机',
+          '免费瓶装水'
+        ],
+        // 卫浴类
+        bathroom: [
+          '一次性拖鞋',
+          '热水',
+          '独立卫浴',
+          '电吹风',
+          '洗浴用品',
+          '牙具',
+          '浴巾',
+          '毛巾',
+          '干湿分离'
+        ],
+        // 厨房类
+        kitchen: [
+          '电磁炉',
+          '洗涤用品'
+          // 注意：微波炉、餐具、刀具菜板、烹饪锅具、燃气灶 不提供
+        ],
+        // 周边配套
+        surroundings: [
+          '超市',
+          '便利店',
+          '餐厅',
+          '药店',
+          '公园',
+          '海滩',
+          '儿童乐园',
+          '充电桩'
+        ],
+        // 安全设施
+        safety: [
+          '急救包',
+          '智能门锁',
+          '门禁卡',
+          '保安',
+          '火灾警报器',
+          '灭火器'
+        ],
+        // 娱乐设施
+        entertainment: [
+          '投影设备',
+          '音响',
+          '读书品茶'
+        ],
+        // 休闲设施
+        leisure: [
+          '落地窗',
+          '儿童防护设施'
+        ]
+      },
+
+      // 兼容旧字段：简单设施列表（用于快速展示）
+      facilities: [
+        '无线网络', '电梯', '落地窗', '冷暖空调', '投影设备',
+        '音响', '独立卫浴', '干湿分离', '冰箱', '洗衣机',
+        '智能门锁', '超大观景窗', '管家式服务'
+      ],
+
+      status: 'available',
+      createTime: new Date(),
+      updateTime: new Date()
+    };
+
+    console.log('6.4 开始添加房型');
+    const addResult = await db.collection('rooms').add({
+      data: lingFengRoom
+    });
+
+    if (addResult._id || addResult.id) {
+      console.log(`6.5 ✅ "画海-聆风"房型添加成功, ID: ${addResult._id || addResult.id}`);
+      return {
+        success: true,
+        message: '"画海-聆风"房型添加成功',
+        data: lingFengRoom,
+        roomId: addResult._id || addResult.id
+      };
+    } else {
+      console.log('6.6 ❌ "画海-聆风"房型添加失败');
+      return {
+        success: false,
+        errMsg: '"画海-聆风"房型添加失败'
+      };
+    }
+  } catch (err) {
+    console.error('6.X 添加"画海-聆风"房型出错:', err);
+    return {
+      success: false,
+      errMsg: err.message
+    };
+  }
+}
+
+/**
+ * 清空rooms集合
+ */
+async function clearRooms() {
+  console.log('7. 开始清空rooms集合');
+
+  try {
+    const res = await db.collection('rooms').get();
+    console.log(`7.1 rooms集合有 ${res.data.length} 条记录`);
+
+    let deleteCount = 0;
+    for (const doc of res.data) {
+      await db.collection('rooms').doc(doc._id).remove();
+      deleteCount++;
+    }
+
+    console.log(`7.2 删除了 ${deleteCount} 条记录`);
+
+    return {
+      success: true,
+      message: `已清空rooms集合（删除了${deleteCount}条记录）`,
+      count: deleteCount
+    };
+  } catch (err) {
+    console.error('7.X 清空rooms集合失败:', err);
+    return {
+      success: false,
+      errMsg: err.message
+    };
+  }
 }

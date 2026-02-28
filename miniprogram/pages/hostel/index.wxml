@@ -65,15 +65,24 @@
             <image class="room-image" src="{{img}}" mode="aspectFill"></image>
           </swiper-item>
         </swiper>
+        <view class="view-detail-hint">
+          <text class="hint-text">查看详情 ›</text>
+        </view>
       </view>
 
       <view class="room-content">
-        <text class="room-title">{{item.roomType}}</text>
+        <view class="room-title-row">
+          <text class="room-title">{{item.roomType}}</text>
+          <text class="room-category" wx:if="{{item.roomCategory}}">{{item.roomCategory}}</text>
+        </view>
+
         <text class="room-desc">{{item.description}}</text>
 
         <view class="room-info">
           <text class="info-tag">{{item.area}}</text>
           <text class="info-tag">{{item.bedType}}</text>
+          <text class="info-tag" wx:if="{{item.guestDisplay}}">👥 {{item.guestDisplay}}</text>
+          <text class="info-tag" wx:if="{{item.breakfast}}">🍳 {{item.breakfast}}</text>
         </view>
 
         <view class="room-tags" wx:if="{{item.tags && item.tags.length > 0}}">
@@ -83,11 +92,11 @@
         <view class="room-footer">
           <view class="price-range">
             <text class="price-label">参考价</text>
-            <text class="price-value">¥{{item.price.low}}-{{item.price.high}}</text>
+            <text class="price-value">{{item.priceText}}</text>
           </view>
-          <view class="room-status" wx:if="{{item.status}}">
-            <text class="status-dot"></text>
-            <text class="status-text">{{item.status}}</text>
+          <view class="room-status" wx:if="{{item.status === 'available'}}">
+            <text class="status-dot available"></text>
+            <text class="status-text">可预订</text>
           </view>
         </view>
       </view>
