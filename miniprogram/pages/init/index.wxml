@@ -75,6 +75,14 @@
 
     <button
       class="action-btn secondary"
+      bindtap="addSanFangRoom"
+      disabled="{{loading}}"
+    >
+      <text>🏡 添加"画海-三房一厅"房型</text>
+    </button>
+
+    <button
+      class="action-btn secondary"
       bindtap="updateRoomFacilities"
       disabled="{{loading}}"
     >

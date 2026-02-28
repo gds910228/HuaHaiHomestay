@@ -71,6 +71,12 @@ Page({
     await this.executeInit('addWangHaiRoom', '添加"画海-望海"房型');
   },
 
+  // 添加"画海-三房一厅"房型
+  async addSanFangRoom() {
+    if (this.data.loading) return;
+    await this.executeInit('addSanFangRoom', '添加"画海-三房一厅"房型');
+  },
+
   // 更新房型设施数据
   async updateRoomFacilities() {
     if (this.data.loading) return;

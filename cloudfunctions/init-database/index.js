@@ -53,6 +53,10 @@ exports.main = async (event, context) => {
         console.log('执行 addWangHaiRoom');
         result = await addWangHaiRoom();
         break;
+      case 'addSanFangRoom':
+        console.log('执行 addSanFangRoom');
+        result = await addSanFangRoom();
+        break;
       case 'initGuides':
         console.log('执行 initGuides');
         result = await initGuides();
@@ -968,6 +972,206 @@ async function addWangHaiRoom() {
     };
   } catch (err) {
     console.error('7.X 添加"画海-望海"房型失败:', err);
+    return {
+      success: false,
+      errMsg: err.message
+    };
+  }
+}
+
+/**
+ * 添加"画海-三房一厅"房型
+ * 海景三室一厅套房，Ins风双投影，楼下沙滩，县城中心
+ */
+async function addSanFangRoom() {
+  console.log('8. 开始添加"画海-三房一厅"房型');
+
+  try {
+    // 检查是否已存在"海景三室一厅套房"
+    console.log('8.1 检查房型是否已存在');
+    const existing = await db.collection('rooms').where({
+      roomType: '海景三室一厅套房'
+    }).get();
+
+    if (existing.data.length > 0) {
+      console.log('8.2 ⚠️ "画海-三房一厅"房型已存在，跳过添加');
+      return {
+        success: true,
+        message: '"画海-三房一厅"房型已存在，无需重复添加',
+        exists: true
+      };
+    }
+
+    console.log('8.3 准备添加"画海-三房一厅"房型数据');
+
+    // "画海-三房一厅"房型数据
+    const sanFangRoom = {
+      roomType: '海景三室一厅套房',
+      roomCategory: '公寓',
+      images: [
+        // TODO: 需要上传15张真实图片到云存储，然后替换这些placeholder
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+1',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+2',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+3',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+4',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+5',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+6',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+7',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+8',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+9',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+10',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+11',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+12',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+13',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+14',
+        'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=画海-三房一厅+15'
+      ],
+      description: '画海·三房一厅-Ins风双投影特色民宿，楼下沙滩，县城中心，后宅镇，网红小夜市，楼下公交站。优选民宿，经济型，干净卫生设施齐全。奶油风、海景、近沙滩、小而美。共100平米，3卧室1厅2卫，1张2米特大床+2张1.8米大床，可住6-8人。',
+      area: '100m²',
+      bedType: '1张2米特大床 + 2张1.8米大床（卧室1+卧室2+卧室3）',
+      maxGuests: 6,
+      allowExtraGuests: true,
+      extraGuestPrice: 50, // 加人费用 ¥50/人/晚
+      extraGuestLimit: 2, // 最多加2人
+      breakfast: '无早餐',
+      fixedPrice: 1380, // 固定价格
+      tags: ['海景', '奶油风', '近沙滩', '小而美', '免费瓶装水', '海滩', '干湿分离', '优选民宿', '双投影'],
+
+      // 入住规则
+      checkInRules: {
+        checkInTime: '14:00后入住',
+        checkOutTime: '12:00前退房',
+        cancelPolicy: '30分钟内免费取消，订单确认30分钟后取消订单将扣除全部房费',
+        deposit: 200,
+        instantConfirm: true // 立即确认
+      },
+
+      // 接待要求
+      guestRequirements: {
+        allowInfants: true,         // 接待婴儿
+        allowChildren: true,        // 接待儿童
+        allowElderly: true,         // 接待老人
+        allowOverseas: false,       // 不接待海外游客
+        allowHKMacaoTaiwan: false,  // 不接待港澳台游客
+        allowPets: false,           // 不允许携带宠物
+        allowSmoking: true,         // 允许吸烟
+        allowCooking: false,        // 不允许做饭
+        allowParty: true,           // 允许聚会
+        allowCommercialShoot: true  // 允许商业拍摄
+      },
+
+      // 详细设施分类（8大类）
+      detailedFacilities: {
+        // 服务类
+        services: [
+          '免费停车位',
+          '付费停车位',
+          '行李寄存',
+          '管家式服务'
+        ],
+        // 基础类
+        basic: [
+          '无线网络',
+          '电梯',
+          '落地窗',
+          '卧室-冷暖空调',
+          '客厅-冷暖空调',
+          '暖气',
+          '晾衣架',
+          '电热水壶',
+          '沙发',
+          '电视',
+          '冰箱',
+          '洗衣机',
+          '免费瓶装水'
+        ],
+        // 卫浴类
+        bathroom: [
+          '一次性拖鞋',
+          '热水',
+          '独立卫浴',
+          '电吹风',
+          '洗浴用品',
+          '牙刷',
+          '浴巾',
+          '毛巾',
+          '干湿分离'
+        ],
+        // 厨房类
+        kitchen: [
+          '微波炉',
+          '餐具',
+          '刀具菜板',
+          '烹饪锅具',
+          '电磁炉',
+          '燃气灶',
+          '洗涤用品',
+          '餐桌'
+        ],
+        // 周边配套
+        surroundings: [
+          '超市',
+          '便利店',
+          '餐厅',
+          '药店',
+          '公园',
+          '海滩',
+          '菜市场',
+          '提款机',
+          '儿童乐园'
+        ],
+        // 安全设施
+        safety: [
+          '急救包',
+          '保安',
+          '火灾警报器',
+          '灭火器'
+        ],
+        // 娱乐设施
+        entertainment: [
+          '投影设备',
+          '音响',
+          '桌游',
+          '读书品茶'
+        ],
+        // 休闲设施
+        leisure: [
+          '落地窗'
+        ],
+        // 儿童设施
+        children: [
+          '儿童玩具'
+        ]
+      },
+
+      // 兼容旧字段（取基础和卫浴的前10项作为简化设施列表）
+      facilities: [
+        '无线网络', '电梯', '落地窗', '卧室-冷暖空调', '客厅-冷暖空调',
+        '暖气', '晾衣架', '电热水壶', '沙发', '电视'
+      ],
+
+      status: 'available', // 房间状态：available（可预订）、unavailable（已满房）、maintenance（维护中）
+      createTime: new Date(),
+      updateTime: new Date()
+    };
+
+    // 添加到数据库
+    console.log('8.4 插入"画海-三房一厅"房型到数据库');
+    const result = await db.collection('rooms').add({
+      data: sanFangRoom
+    });
+
+    console.log('8.5 ✅ "画海-三房一厅"房型添加成功，ID:', result._id);
+
+    return {
+      success: true,
+      message: '成功添加"画海-三房一厅"房型',
+      roomId: result._id,
+      roomType: sanFangRoom.roomType,
+      data: sanFangRoom
+    };
+  } catch (err) {
+    console.error('8.X 添加"画海-三房一厅"房型失败:', err);
     return {
       success: false,
       errMsg: err.message
