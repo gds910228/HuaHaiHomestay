@@ -6,7 +6,7 @@
     <view class="user-info">
       <image
         class="user-avatar"
-        src="/images/default-avatar.png"
+        src="/images/logo.jpg"
         mode="aspectFill"
       ></image>
       <view class="user-detail">
