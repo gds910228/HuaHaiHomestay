@@ -1,146 +1,131 @@
 <!--pages/init/index.wxml-->
 <view class="init-container">
-  <!-- 提示卡片 -->
-  <view class="tip-card card">
-    <text class="tip-title">📝 数据库初始化工具</text>
-    <text class="tip-desc">此工具用于初始化小程序的数据库数据。首次使用建议依次执行以下操作：</text>
-    <view class="tip-steps">
-      <text class="step-item">1. 部署 init-database 云函数</text>
-      <text class="step-item">2. 点击"初始化全部数据"按钮</text>
-      <text class="step-item">3. 等待执行完成</text>
-      <text class="step-item">4. 返回首页查看效果</text>
-    </view>
+  <!-- 标题卡片 -->
+  <view class="header-card">
+    <text class="app-logo">🏡 画海民宿</text>
+    <text class="app-desc">数据管理工具</text>
   </view>
 
-  <!-- 操作按钮 -->
+  <!-- 操作区域 -->
   <view class="actions-section">
-    <text class="section-title">🚀 初始化操作</text>
 
-    <button
-      class="action-btn primary"
-      bindtap="initAll"
-      disabled="{{loading}}"
-    >
-      <text>📦 初始化全部数据</text>
-    </button>
-
-    <view class="action-row">
+    <!-- 快速初始化 -->
+    <view class="action-group">
+      <text class="group-title">📦 快速初始化</text>
       <button
-        class="action-btn secondary"
-        bindtap="initHostel"
+        class="action-btn primary"
+        bindtap="initAll"
         disabled="{{loading}}"
       >
-        <text>🏠 民宿信息</text>
-      </button>
-      <button
-        class="action-btn secondary"
-        bindtap="initRooms"
-        disabled="{{loading}}"
-      >
-        <text>🛏️ 房型数据</text>
+        <text>初始化全部数据（首次使用）</text>
       </button>
     </view>
 
-    <button
-      class="action-btn secondary"
-      bindtap="initGuides"
-      disabled="{{loading}}"
-    >
-      <text>📝 攻略数据</text>
-    </button>
-
-    <button
-      class="action-btn secondary"
-      bindtap="initFood"
-      disabled="{{loading}}"
-    >
-      <text>🍴 美食攻略（真实数据）</text>
-    </button>
-
-    <button
-      class="action-btn secondary"
-      bindtap="addLingFengRoom"
-      disabled="{{loading}}"
-    >
-      <text>🌊 添加"画海-聆风"房型</text>
-    </button>
-
-    <button
-      class="action-btn secondary"
-      bindtap="addWangHaiRoom"
-      disabled="{{loading}}"
-    >
-      <text>🏖️ 添加"画海-望海"房型</text>
-    </button>
-
-    <button
-      class="action-btn secondary"
-      bindtap="addSanFangRoom"
-      disabled="{{loading}}"
-    >
-      <text>🏡 添加"画海-三房一厅"房型</text>
-    </button>
-
-    <button
-      class="action-btn secondary"
-      bindtap="updateRoomFacilities"
-      disabled="{{loading}}"
-    >
-      <text>🔧 更新房型设施数据</text>
-    </button>
-
-    <view class="action-row">
+    <!-- 房型管理 -->
+    <view class="action-group">
+      <text class="group-title">🛏️ 房型管理</text>
+      <view class="button-grid">
+        <button
+          class="grid-btn secondary"
+          bindtap="addLingFengRoom"
+          disabled="{{loading}}"
+        >
+          <text class="btn-emoji">🌊</text>
+          <text class="btn-text">聆风</text>
+          <text class="btn-subtext">一室</text>
+        </button>
+        <button
+          class="grid-btn secondary"
+          bindtap="addWangHaiRoom"
+          disabled="{{loading}}"
+        >
+          <text class="btn-emoji">🏖️</text>
+          <text class="btn-text">望海</text>
+          <text class="btn-subtext">二室</text>
+        </button>
+        <button
+          class="grid-btn secondary"
+          bindtap="addSanFangRoom"
+          disabled="{{loading}}"
+        >
+          <text class="btn-emoji">🏡</text>
+          <text class="btn-text">三房</text>
+          <text class="btn-subtext">三室</text>
+        </button>
+      </view>
       <button
-        class="action-btn secondary"
-        bindtap="goToAdmin"
+        class="full-btn secondary"
+        bindtap="updateRoomFacilities"
         disabled="{{loading}}"
       >
-        <text>⚙️ 管理后台</text>
-      </button>
-      <button
-        class="action-btn secondary"
-        bindtap="goToAdminGuides"
-        disabled="{{loading}}"
-      >
-        <text>📝 编辑攻略</text>
+        <text>🔧 更新所有房型设施数据</text>
       </button>
     </view>
 
-    <view class="divider"></view>
-
-    <view class="action-row">
+    <!-- 内容管理 -->
+    <view class="action-group">
+      <text class="group-title">📚 内容管理</text>
       <button
-        class="action-btn warning"
-        bindtap="clearRooms"
+        class="full-btn secondary"
+        bindtap="initFood"
         disabled="{{loading}}"
       >
-        <text>🗑️ 清空房型数据</text>
-      </button>
-      <button
-        class="action-btn danger"
-        bindtap="clearAll"
-        disabled="{{loading}}"
-      >
-        <text>⚠️ 清空所有数据</text>
+        <text>🍴 导入美食攻略（真实数据）</text>
       </button>
     </view>
 
-    <view class="divider"></view>
+    <!-- 数据维护 -->
+    <view class="action-group danger-group">
+      <text class="group-title">⚠️ 数据维护（危险操作）</text>
+      <view class="button-row">
+        <button
+          class="half-btn warning"
+          bindtap="clearRooms"
+          disabled="{{loading}}"
+        >
+          <text>清空房型</text>
+        </button>
+        <button
+          class="half-btn"
+          bindtap="clearAll"
+          disabled="{{loading}}"
+        >
+          <text>清空全部</text>
+        </button>
+      </view>
+    </view>
 
-    <button
-      class="action-btn"
-      bindtap="clearLogs"
-      disabled="{{loading}}"
-    >
-      <text>🗑️ 清空日志</text>
-    </button>
+    <!-- 快捷入口 -->
+    <view class="action-group">
+      <text class="group-title">🔗 快捷入口</text>
+      <view class="button-row">
+        <button
+          class="half-btn secondary"
+          bindtap="goToAdmin"
+          disabled="{{loading}}"
+        >
+          <text>⚙️ 管理后台</text>
+        </button>
+        <button
+          class="half-btn secondary"
+          bindtap="goToAdminGuides"
+          disabled="{{loading}}"
+        >
+          <text>📝 编辑攻略</text>
+        </button>
+      </view>
+    </view>
+
   </view>
 
   <!-- 执行日志 -->
   <view class="logs-section card">
     <view class="logs-header">
       <text class="logs-title">📋 执行日志</text>
-      <text class="logs-count">{{logs.length}} 条</text>
+      <view class="logs-actions">
+        <text class="logs-count">{{logs.length}} 条</text>
+        <text class="clear-logs" bindtap="clearLogs">清空</text>
+      </view>
     </view>
     <scroll-view class="logs-content" scroll-y scroll-into-view="log-top">
       <text id="log-top"></text>

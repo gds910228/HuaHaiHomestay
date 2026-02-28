@@ -73,13 +73,14 @@
 
 .form-textarea {
   width: 100%;
-  min-height: 160rpx;
+  min-height: 240rpx;
   padding: 20rpx 24rpx;
   background-color: #F5F7FA;
   border-radius: 12rpx;
   font-size: 28rpx;
   color: #333;
   box-sizing: border-box;
+  line-height: 1.6;
 }
 
 /* 开关项 */

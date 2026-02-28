@@ -3,6 +3,7 @@
   <!-- 未登录状态 -->
   <view class="login-section" wx:if="{{!isAdmin}}">
     <view class="login-card">
+      <image class="app-logo-image" src="/images/logo.jpg" mode="aspectFit"></image>
       <text class="login-title">管理后台</text>
       <text class="login-desc">请登录以管理内容</text>
       <button class="login-btn btn-primary" bindtap="login">
@@ -15,6 +16,7 @@
   <view class="admin-content" wx:if="{{isAdmin}}">
     <!-- 欢迎卡片 -->
     <view class="welcome-card card">
+      <image class="app-logo-image" src="/images/logo.jpg" mode="aspectFit"></image>
       <text class="welcome-title">欢迎回来</text>
       <text class="welcome-desc">管理画海民宿的内容</text>
     </view>

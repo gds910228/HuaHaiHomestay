@@ -3,60 +3,66 @@
   min-height: 100vh;
   padding: 24rpx;
   padding-bottom: 120rpx;
+  background-color: #F5F7FA;
 }
 
-/* 提示卡片 */
-.tip-card {
-  padding: 32rpx;
+/* 标题卡片 */
+.header-card {
+  padding: 40rpx 32rpx;
   margin-bottom: 24rpx;
   background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+  border-radius: 20rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 24rpx rgba(46, 125, 255, 0.25);
 }
 
-.tip-title {
+.app-logo {
   display: block;
-  font-size: 36rpx;
+  font-size: 48rpx;
   font-weight: bold;
   color: #FFFFFF;
-  margin-bottom: 16rpx;
+  margin-bottom: 8rpx;
 }
 
-.tip-desc {
+.app-desc {
   display: block;
   font-size: 26rpx;
-  color: rgba(255, 255, 255, 0.95);
-  line-height: 1.6;
-  margin-bottom: 24rpx;
-}
-
-.tip-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 20rpx;
-  border-radius: 12rpx;
-}
-
-.step-item {
-  font-size: 24rpx;
-  color: #FFFFFF;
-  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* 操作区域 */
 .actions-section {
-  margin-bottom: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
 }
 
-.section-title {
+.action-group {
+  background: #FFFFFF;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.group-title {
   display: block;
   font-size: 28rpx;
   font-weight: bold;
   color: #333333;
-  margin-bottom: 16rpx;
+  margin-bottom: 20rpx;
 }
 
-.action-btn {
+.danger-group {
+  background: #FFF8F8;
+  border: 2rpx solid #FFCDD2;
+}
+
+.danger-group .group-title {
+  color: #D32F2F;
+}
+
+/* 按钮样式 */
+.action-btn, .full-btn {
   width: 100%;
   height: 88rpx;
   display: flex;
@@ -68,34 +74,198 @@
   padding: 0;
   background: #FFFFFF;
   border: 2rpx solid #E0E0E0;
+  color: #666666;
 }
 
-.action-btn.primary {
+.action-btn:last-child, .full-btn:last-child {
+  margin-bottom: 0;
+}
+
+.action-btn.primary, .full-btn.primary {
   background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
   color: #FFFFFF;
   border: none;
-  box-shadow: 0 8rpx 16rpx rgba(46, 125, 255, 0.2);
+  box-shadow: 0 8rpx 16rpx rgba(46, 125, 255, 0.25);
 }
 
-.action-btn.secondary {
-  background: #FFFFFF;
+.action-btn.secondary, .full-btn.secondary {
+  background: #F5F7FA;
   color: #2E7DFF;
   border-color: #2E7DFF;
 }
 
-.action-btn.danger {
+/* 网格按钮（房型卡片） */
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.grid-btn {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx;
+  background: #F5F7FA;
+  border: 2rpx solid #E0E0E0;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+  color: #666666;
+  margin-bottom: 0;
+}
+
+.grid-btn.secondary {
+  background: #E8F5E9;
+  border-color: #4CAF50;
+  color: #2E7D32;
+}
+
+.btn-emoji {
+  font-size: 36rpx;
+  margin-bottom: 4rpx;
+}
+
+.btn-text {
+  font-size: 26rpx;
+  font-weight: bold;
+  margin-bottom: 2rpx;
+}
+
+.btn-subtext {
+  font-size: 20rpx;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* 按钮行 */
+.button-row {
+  display: flex;
+  gap: 12rpx;
+}
+
+.half-btn {
+  flex: 1;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  padding: 0;
+  background: #F5F7FA;
+  border: 2rpx solid #E0E0E0;
+  color: #666666;
+}
+
+.half-btn.secondary {
+  background: #F5F7FA;
+  color: #2E7DFF;
+  border-color: #2E7DFF;
+}
+
+.half-btn.warning {
+  background: #FFF3E0;
+  color: #F57C00;
+  border-color: #FF9800;
+}
+
+.half-btn:last-child {
   background: #FFEBEE;
   color: #F44336;
   border-color: #F44336;
 }
 
-.action-row {
+/* 执行日志 */
+.logs-section {
+  background: #FFFFFF;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.logs-header {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.logs-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.logs-actions {
+  display: flex;
+  align-items: center;
   gap: 16rpx;
 }
 
-.action-row .action-btn {
-  flex: 1;
+.logs-count {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.clear-logs {
+  font-size: 24rpx;
+  color: #2E7DFF;
+  padding: 8rpx 16rpx;
+  border-radius: 8rpx;
+  background: #E8F5E9;
+}
+
+.logs-content {
+  max-height: 400rpx;
+  background: #F5F7FA;
+  border-radius: 12rpx;
+  padding: 16rpx;
+}
+
+.log-item {
+  display: block;
+  font-size: 22rpx;
+  color: #666666;
+  line-height: 1.6;
+  margin-bottom: 8rpx;
+  font-family: 'Courier New', monospace;
+}
+
+.log-empty {
+  display: block;
+  text-align: center;
+  font-size: 24rpx;
+  color: #999999;
+  padding: 40rpx 0;
+}
+
+/* 底部按钮 */
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
+  padding: 16rpx 24rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  z-index: 100;
+}
+
+.home-btn {
+  width: 100%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+  color: #FFFFFF;
+  border-radius: 44rpx;
+  border: none;
+  font-size: 28rpx;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .divider {

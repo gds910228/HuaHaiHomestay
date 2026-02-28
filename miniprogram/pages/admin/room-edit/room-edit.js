@@ -167,6 +167,28 @@ Page({
       if (res.result.success && res.result.data) {
         const room = res.result.data;
 
+        // 确保detailedFacilities的所有类别都被正确初始化为数组
+        const defaultFacilities = {
+          services: [],
+          basic: [],
+          bathroom: [],
+          kitchen: [],
+          surroundings: [],
+          safety: [],
+          entertainment: [],
+          leisure: []
+        };
+
+        const loadedFacilities = room.detailedFacilities || {};
+        const detailedFacilities = {};
+        const categories = ['services', 'basic', 'bathroom', 'kitchen', 'surroundings', 'safety', 'entertainment', 'leisure'];
+
+        categories.forEach(cat => {
+          detailedFacilities[cat] = Array.isArray(loadedFacilities[cat]) ? loadedFacilities[cat] : [];
+        });
+
+        console.log('加载的设施数据:', detailedFacilities);
+
         this.setData({
           formData: {
             roomType: room.roomType || '',
@@ -190,7 +212,7 @@ Page({
             instantConfirm: room.checkInRules?.instantConfirm !== false
           },
           guestRequirements: room.guestRequirements || this.data.guestRequirements,
-          detailedFacilities: room.detailedFacilities || this.data.detailedFacilities
+          detailedFacilities: detailedFacilities
         });
       } else {
         throw new Error(res.result.errMsg || '加载失败');
@@ -258,6 +280,17 @@ Page({
     const index = e.detail.value;
     this.setData({
       'formData.breakfast': this.data.breakfastOptions[index]
+    });
+  },
+
+  /**
+   * 房间状态选择
+   */
+  onStatusChange(e) {
+    const statusOptions = ['available', 'unavailable', 'maintenance'];
+    const index = e.detail.value;
+    this.setData({
+      'formData.status': statusOptions[index]
     });
   },
 
