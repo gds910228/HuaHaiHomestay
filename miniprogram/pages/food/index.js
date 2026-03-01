@@ -41,10 +41,12 @@ Page({
 
         // 调试：打印每个店铺的图片信息
         guides.forEach((guide, index) => {
+          const hasImages = guide.images && guide.images.length > 0;
           console.log(`[调试] 店铺${index + 1}: ${guide.title}`);
           console.log(`  cover: "${guide.cover}"`);
           console.log(`  images:`, guide.images);
-          console.log(`  有图片: ${guide.cover ? '是' : '否'}`);
+          console.log(`  images.length: ${guide.images ? guide.images.length : 0}`);
+          console.log(`  有图片: ${hasImages ? '是' : '否'}`);
         });
 
         const grouped = this.groupGuidesByArea(guides);
