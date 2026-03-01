@@ -39,14 +39,19 @@ Page({
         const guides = res.result.data || [];
         console.log('[美食页面] 获取到美食数据:', guides.length, '条');
 
-        // 调试：打印每个店铺的图片信息
-        guides.forEach((guide, index) => {
+        // 预处理：判断每个店铺是否有真实图片（非占位图）
+        guides.forEach((guide) => {
           const hasImages = guide.images && guide.images.length > 0;
-          console.log(`[调试] 店铺${index + 1}: ${guide.title}`);
-          console.log(`  cover: "${guide.cover}"`);
-          console.log(`  images:`, guide.images);
+          const firstImage = hasImages ? guide.images[0] : '';
+          const isPlaceholder = firstImage && firstImage.includes('placeholder');
+
+          // 添加一个新字段用于判断是否有真实图片
+          guide.hasRealImage = hasImages && !isPlaceholder;
+
+          console.log(`[调试] ${guide.title}:`);
           console.log(`  images.length: ${guide.images ? guide.images.length : 0}`);
-          console.log(`  有图片: ${hasImages ? '是' : '否'}`);
+          console.log(`  第一张图包含placeholder: ${isPlaceholder ? '是' : '否'}`);
+          console.log(`  有真实图片: ${guide.hasRealImage ? '是' : '否'}`);
         });
 
         const grouped = this.groupGuidesByArea(guides);
