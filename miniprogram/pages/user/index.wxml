@@ -39,18 +39,20 @@
         class="favorite-item"
         wx:for="{{favorites}}"
         wx:key="_id"
-        data-id="{{item._id}}"
+        data-id="{{item._id || item.roomId}}"
+        data-category="{{item.category}}"
         bindtap="openGuide"
       >
-        <image class="favorite-image" src="{{item.cover}}" mode="aspectFill"></image>
+        <image class="favorite-image" src="{{item.displayImage}}" mode="aspectFill"></image>
         <view class="favorite-content">
-          <text class="favorite-title">{{item.title}}</text>
-          <text class="favorite-desc">{{item.summary}}</text>
+          <text class="favorite-title">{{item.displayTitle}}</text>
+          <text class="favorite-desc">{{item.displayDesc}}</text>
         </view>
         <view
           class="favorite-remove"
           catchtap="removeFavorite"
-          data-id="{{item._id}}"
+          data-id="{{item._id || item.roomId}}"
+          data-favorite-id="{{item.favoriteId}}"
         >
           <text>✕</text>
         </view>

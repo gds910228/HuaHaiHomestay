@@ -269,22 +269,9 @@ async function getFavorites(openid) {
     .where({ openid })
     .get();
 
-  const favorites = [];
-
-  for (const item of res.data) {
-    const guideRes = await db.collection('guides').doc(item.guideId).get();
-    if (guideRes.data) {
-      favorites.push({
-        ...item,
-        createTimeStr: formatTime(item.createTime),
-        guide: guideRes.data
-      });
-    }
-  }
-
   return {
     success: true,
-    data: favorites
+    data: res.data
   };
 }
 

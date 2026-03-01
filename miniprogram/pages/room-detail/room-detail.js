@@ -248,7 +248,7 @@ Page({
     } else {
       // 使用默认民宿电话
       wx.makePhoneCall({
-        phoneNumber: '13800138000'
+        phoneNumber: '18907208020'
       });
     }
   },
@@ -270,7 +270,7 @@ Page({
       success(res) {
         if (res.confirm) {
           wx.makePhoneCall({
-            phoneNumber: '13800138000'
+            phoneNumber: '18907208020'
           });
         }
       }
