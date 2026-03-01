@@ -39,6 +39,14 @@ Page({
         const guides = res.result.data || [];
         console.log('[美食页面] 获取到美食数据:', guides.length, '条');
 
+        // 调试：打印每个店铺的图片信息
+        guides.forEach((guide, index) => {
+          console.log(`[调试] 店铺${index + 1}: ${guide.title}`);
+          console.log(`  cover: "${guide.cover}"`);
+          console.log(`  images:`, guide.images);
+          console.log(`  有图片: ${guide.cover ? '是' : '否'}`);
+        });
+
         const grouped = this.groupGuidesByArea(guides);
         console.log('[美食页面] 分组结果:', grouped);
 
