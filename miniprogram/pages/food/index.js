@@ -166,6 +166,19 @@ Page({
     });
   },
 
+  // 预览图片
+  previewImage(e) {
+    const { url, images } = e.currentTarget.dataset;
+
+    // 如果有 images 数组，使用它；否则用单个图片
+    const imageUrls = images && images.length > 0 ? images : [url];
+
+    wx.previewImage({
+      current: url,
+      urls: imageUrls
+    });
+  },
+
   // 一键导航
   navigate(e) {
     const { latitude, longitude, title, address } = e.currentTarget.dataset;

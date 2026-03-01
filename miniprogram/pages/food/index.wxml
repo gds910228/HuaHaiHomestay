@@ -43,7 +43,10 @@
           <image wx:if="{{guide.cover && !guide.cover.includes('placeholder')}}"
                  class="food-image"
                  src="{{guide.cover}}"
-                 mode="aspectFill"></image>
+                 mode="aspectFill"
+                 data-url="{{guide.cover}}"
+                 data-images="{{guide.images}}"
+                 bindtap="previewImage"></image>
 
           <view class="food-info">
             <text class="food-title">{{guide.title}}</text>
