@@ -1,0 +1,32 @@
+<!--components/optimized-image/index.wxml-->
+<view class="optimized-image-container {{mode}}" style="width: {{width}}; height: {{height}};">
+  <!-- 实际图片 -->
+  <image
+    class="optimized-image {{loaded ? 'loaded' : 'loading'}} {{errored ? 'error' : ''}}"
+    src="{{src}}"
+    mode="{{imageMode}}"
+    lazy-load="{{lazyLoad}}"
+    show-menu-by-longpress="{{showMenuByLongpress}}"
+    bindload="handleLoad"
+    binderror="handleError"
+    wx:if="{{!errored}}"
+  ></image>
+
+  <!-- 加载占位 -->
+  <view class="image-placeholder" wx:if="{{!loaded && !errored}}">
+    <view class="placeholder-loading">
+      <view class="loading-spinner"></view>
+    </view>
+  </view>
+
+  <!-- 错误占位 -->
+  <view class="image-error" wx:if="{{errored}}">
+    <text class="error-icon">🖼️</text>
+    <text class="error-text">图片加载失败</text>
+  </view>
+
+  <!-- 提示徽章 -->
+  <view class="image-badge" wx:if="{{badge && loaded}}">
+    <text class="badge-text">{{badge}}</text>
+  </view>
+</view>

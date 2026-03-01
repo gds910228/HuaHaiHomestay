@@ -11,7 +11,12 @@
 
   <!-- 分类导航 -->
   <view class="categories-container">
-    <view class="category-card" wx:for="{{categories}}" wx:key="id" data-id="{{item.id}}" bindtap="navigateToCategory" style="background: {{item.color}}">
+    <view class="category-card fade-in-up clickable hover-lift"
+          wx:for="{{categories}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="navigateToCategory"
+          style="background: {{item.color}}; animation-delay: {{index * 100}}ms">
       <view class="card-content">
         <view class="card-icon">{{item.icon}}</view>
         <view class="card-text">

@@ -1,19 +1,25 @@
 /* pages/food/index.wxss */
 .food-container {
   min-height: 100vh;
-  background: #F5F7FA;
+  background: var(--bg-gray);
   padding-bottom: 40rpx;
+}
+
+/* 骨架屏容器 */
+.skeleton-wrapper {
+  padding: 0 var(--space-lg);
 }
 
 /* 选项卡容器 */
 .tabs-container {
   display: flex;
   justify-content: space-around;
-  background: #FFFFFF;
-  margin: 24rpx;
-  border-radius: 16rpx;
-  padding: 8rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  background: var(--bg-white);
+  margin: var(--space-lg);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xs);
+  box-shadow: var(--shadow-md);
+  animation: fadeInDown 0.5s var(--ease-out);
 }
 
 .tab-item {
@@ -23,13 +29,17 @@
   align-items: center;
   justify-content: center;
   padding: 16rpx 12rpx;
-  border-radius: 12rpx;
-  transition: all 0.3s;
+  border-radius: var(--radius-md);
+  transition: all var(--duration-normal) var(--ease-default);
   position: relative;
 }
 
+.tab-item:active {
+  transform: scale(0.95);
+}
+
 .tab-item.active {
-  background: linear-gradient(135deg, #FF6B35 0%, #FF8C61 100%);
+  background: linear-gradient(135deg, var(--accent-food) 0%, #FFA568 100%);
 }
 
 .tab-icon {
@@ -65,7 +75,7 @@
 /* 页面标题 */
 .page-header {
   padding: 32rpx 24rpx;
-  background: linear-gradient(135deg, #FF6B35 0%, #4CAF50 100%);
+  background: linear-gradient(135deg, var(--accent-food) 0%, #FFA568 100%);
 }
 
 .page-title {
@@ -176,7 +186,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: 1rpx solid #F0F0F0;
+  border-bottom: 1rpx solid var(--border-color-light);
 }
 
 .no-image-icon {
@@ -241,7 +251,7 @@
   justify-content: flex-end;
   padding-top: 16rpx;
   margin-top: 8rpx;
-  border-top: 1rpx solid #F0F0F0;
+  border-top: 1rpx solid var(--border-color-light);
 }
 
 .food-card.no-image .food-actions {
@@ -251,15 +261,15 @@
 
 /* 导航按钮 */
 .nav-btn {
-  background: linear-gradient(135deg, #2E7DFF 0%, #1565C0 100%);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+  color: var(--text-white);
   border: none;
   border-radius: 12rpx;
   padding: 12rpx 28rpx;
   font-size: 26rpx;
   font-weight: 500;
   box-shadow: 0 4rpx 12rpx rgba(46, 117, 255, 0.3);
-  transition: all 0.2s;
+  transition: all var(--duration-normal) var(--ease-default);
   display: inline-flex;
   align-items: center;
   justify-content: center;

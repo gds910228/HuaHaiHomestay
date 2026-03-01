@@ -4,6 +4,7 @@ Page({
     guides: [],
     groupedGuides: {},
     loading: false,
+    isFirstLoad: true,  // 首次加载标记
     currentTab: 0,  // 当前选中的选项卡索引
     tabs: []  // 选项卡列表
   },
@@ -70,7 +71,8 @@ Page({
           guides,
           groupedGuides: grouped,
           tabs: tabs,
-          loading: false
+          loading: false,
+          isFirstLoad: false  // 首次加载完成
         });
 
         if (guides.length === 0) {
@@ -212,5 +214,22 @@ Page({
       name: title,
       address: address || title
     });
+  },
+
+  // 返回首页
+  goHome() {
+    wx.switchTab({
+      url: '/pages/home/index'
+    });
+  },
+
+  // 图片加载成功
+  onImageLoad(e) {
+    console.log('[美食] 图片加载成功:', e.detail);
+  },
+
+  // 图片加载失败
+  onImageError(e) {
+    console.log('[美食] 图片加载失败:', e.detail);
   }
 });

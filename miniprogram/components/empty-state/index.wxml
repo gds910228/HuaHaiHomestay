@@ -1,0 +1,19 @@
+<!--components/empty-state/index.wxml-->
+<view class="empty-state">
+  <!-- 图标或图片 -->
+  <view class="empty-icon">
+    <image wx:if="{{image}}" class="empty-image" src="{{image}}" mode="aspectFit"></image>
+    <text wx:else class="empty-emoji">{{icon || '📭'}}</text>
+  </view>
+
+  <!-- 标题 -->
+  <text class="empty-title">{{title}}</text>
+
+  <!-- 描述 -->
+  <text class="empty-desc" wx:if="{{description}}">{{description}}</text>
+
+  <!-- 操作按钮 -->
+  <view class="empty-action" wx:if="{{actionText}}">
+    <button class="action-btn btn-primary" bindtap="handleAction">{{actionText}}</button>
+  </view>
+</view>

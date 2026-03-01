@@ -1,0 +1,101 @@
+/* components/unified-card/index.wxss */
+.unified-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  margin: var(--space-lg);
+  transition: all var(--duration-normal) var(--ease-default);
+  overflow: hidden;
+}
+
+/* 可点击状态 */
+.unified-card.clickable:active {
+  transform: scale(0.98);
+}
+
+/* 阴影级别 */
+.unified-card.shadow-none {
+  box-shadow: none;
+}
+
+.unified-card.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.unified-card.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.unified-card.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+/* 卡片头部 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1rpx solid var(--border-color-light);
+}
+
+.card-title {
+  font-size: var(--font-xl);
+  font-weight: bold;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+.card-subtitle {
+  font-size: var(--font-sm);
+  color: var(--text-tertiary);
+  display: block;
+}
+
+.card-extra {
+  font-size: var(--font-sm);
+  color: var(--primary-blue);
+}
+
+/* 卡片内容 */
+.card-body {
+  padding: var(--space-lg);
+}
+
+.card-body.padding-none {
+  padding: 0;
+}
+
+.card-body.padding-small {
+  padding: var(--space-md);
+}
+
+.card-body.padding-large {
+  padding: var(--space-xl);
+}
+
+/* 卡片底部 */
+.card-footer {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1rpx solid var(--border-color-light);
+  background: var(--bg-gray);
+}
+
+.card-footer-text {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+}
+
+/* 特殊卡片类型 */
+.unified-card.card-media {
+  padding: 0;
+}
+
+.unified-card.card-list {
+  padding: 0;
+}
+
+.unified-card.card-list .card-body {
+  padding: var(--space-md) var(--space-lg);
+}

@@ -29,9 +29,14 @@
     </view>
 
     <!-- 空状态 -->
-    <view class="empty-state" wx:if="{{!loading && favorites.length === 0}}">
-      <text class="empty-text">暂无收藏，去首页看看吧</text>
-    </view>
+    <empty-state
+      wx:if="{{!loading && favorites.length === 0}}"
+      icon="⭐"
+      title="暂无收藏"
+      description="去首页发现更多精彩内容吧"
+      actionText="去首页逛逛"
+      bind:action="goHome"
+    ></empty-state>
 
     <!-- 收藏列表 -->
     <view class="favorites-list" wx:if="{{!loading && favorites.length > 0}}">

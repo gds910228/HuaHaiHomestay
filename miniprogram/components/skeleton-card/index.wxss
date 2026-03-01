@@ -1,0 +1,71 @@
+/* components/skeleton-card/index.wxss */
+.skeleton-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin: var(--space-lg);
+  overflow: hidden;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 320rpx;
+  background: linear-gradient(
+    90deg,
+    var(--bg-gray) 25%,
+    var(--bg-gray-light) 50%,
+    var(--bg-gray) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.skeleton-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.skeleton-title {
+  height: 40rpx;
+  width: 70%;
+  background: linear-gradient(
+    90deg,
+    var(--bg-gray) 25%,
+    var(--bg-gray-light) 50%,
+    var(--bg-gray) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-sm);
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.skeleton-text {
+  height: 28rpx;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--bg-gray) 25%,
+    var(--bg-gray-light) 50%,
+    var(--bg-gray) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-sm);
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.skeleton-text.short {
+  width: 50%;
+  animation-delay: 0.2s;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

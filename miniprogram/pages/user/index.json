@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "我的",
-  "backgroundColor": "#F5F7FA"
+  "backgroundColor": "#F5F7FA",
+  "usingComponents": {
+    "empty-state": "/components/empty-state/index"
+  }
 }

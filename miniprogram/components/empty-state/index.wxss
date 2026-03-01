@@ -1,0 +1,64 @@
+/* components/empty-state/index.wxss */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl) var(--space-xl);
+  min-height: 400rpx;
+}
+
+.empty-icon {
+  margin-bottom: var(--space-lg);
+}
+
+.empty-emoji {
+  font-size: 120rpx;
+  display: block;
+  opacity: 0.6;
+}
+
+.empty-image {
+  width: 200rpx;
+  height: 200rpx;
+  display: block;
+}
+
+.empty-title {
+  font-size: var(--font-xl);
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
+.empty-desc {
+  font-size: var(--font-base);
+  color: var(--text-tertiary);
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: var(--space-xl);
+  max-width: 500rpx;
+}
+
+.empty-action {
+  margin-top: var(--space-lg);
+}
+
+.action-btn {
+  min-width: 240rpx;
+}
+
+/* 不同类型 */
+.empty-state.type-simple {
+  padding: var(--space-xl);
+  min-height: auto;
+}
+
+.empty-state.type-simple .empty-emoji {
+  font-size: 80rpx;
+}
+
+.empty-state.type-simple .empty-title {
+  font-size: var(--font-lg);
+}

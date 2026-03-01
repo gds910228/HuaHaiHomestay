@@ -1,0 +1,13 @@
+<!--components/skeleton-card/index.wxml-->
+<view class="skeleton-card">
+  <!-- 图片骨架 -->
+  <view class="skeleton-image" wx:if="{{showImage}}"></view>
+
+  <!-- 内容骨架 -->
+  <view class="skeleton-content">
+    <view class="skeleton-title"></view>
+    <view class="skeleton-text"></view>
+    <view class="skeleton-text"></view>
+    <view class="skeleton-text short" wx:if="{{showMoreText}}"></view>
+  </view>
+</view>

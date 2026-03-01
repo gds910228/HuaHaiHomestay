@@ -192,5 +192,12 @@ Page({
     wx.navigateTo({
       url: '/pages/init/index'
     });
+  },
+
+  // 返回首页
+  goHome() {
+    wx.switchTab({
+      url: '/pages/home/index'
+    });
   }
 });

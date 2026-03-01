@@ -1,14 +1,14 @@
 /* pages/home/index.wxss */
 .home-container {
   min-height: 100vh;
-  background: #F5F7FA;
+  background: var(--bg-gray);
   padding-bottom: 40rpx;
 }
 
 /* 顶部欢迎区 */
 .header-banner {
   position: relative;
-  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
   padding: 80rpx 32rpx 60rpx;
   overflow: hidden;
 }
@@ -22,7 +22,7 @@
   display: block;
   font-size: 48rpx;
   font-weight: bold;
-  color: #FFFFFF;
+  color: var(--text-white);
   margin-bottom: 12rpx;
 }
 
@@ -38,7 +38,7 @@
   left: 0;
   right: 0;
   height: 60rpx;
-  background: #F5F7FA;
+  background: var(--bg-gray);
   border-radius: 50% 50% 0 0 / 100% 100% 0;
 }
 
@@ -55,15 +55,15 @@
   display: flex;
   align-items: center;
   padding: 48rpx 32rpx;
-  background: #FFFFFF;
-  border-radius: 20rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s;
+  background: var(--bg-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--duration-normal) var(--ease-default);
 }
 
 .category-card:active {
   transform: translateY(-4rpx);
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
 }
 
 .card-icon {
@@ -80,7 +80,7 @@
 .card-title {
   font-size: 36rpx;
   font-weight: bold;
-  color: #FFFFFF;
+  color: var(--text-white);
   margin-bottom: 8rpx;
 }
 

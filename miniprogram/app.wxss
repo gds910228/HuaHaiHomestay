@@ -1,7 +1,12 @@
-/**app.wxss - 海洋蓝主题**/
+/**
+ * 画海民宿 - 设计系统
+ * Design System for HuaHai Homestay
+ */
 page {
   background: #F5F7FA;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.5;
 }
 
 .container {
@@ -11,80 +16,462 @@ page {
   min-height: 100vh;
 }
 
-/* 主题色变量 */
+/* ============================================
+   设计令牌 (Design Tokens)
+   ============================================ */
+
 page {
-  --primary-color: #2E7DFF;
-  --secondary-color: #4FC3F7;
-  --accent-color: #0288D1;
+  /* === 主色系 === */
+  --primary-blue: #2E7DFF;
+  --primary-blue-light: #4FC3F7;
+  --primary-blue-dark: #1976D2;
+
+  /* === 分类辅助色 === */
+  --accent-food: #FF8C42;
+  --accent-spot: #7E57C2;
+  --accent-route: #26A69A;
+  --accent-info: #FFA726;
+
+  /* === 功能色 === */
+  --color-success: #4CAF50;
+  --color-warning: #FFA726;
+  --color-error: #F44336;
+  --color-info: #2E7DFF;
+
+  /* === 文本色 === */
   --text-primary: #333333;
   --text-secondary: #666666;
-  --text-light: #999999;
+  --text-tertiary: #999999;
+  --text-placeholder: #CCCCCC;
+  --text-white: #FFFFFF;
+
+  /* === 背景色 === */
   --bg-white: #FFFFFF;
   --bg-gray: #F5F7FA;
+  --bg-gray-light: #FAFAFA;
+  --bg-blue-light: #E3F2FD;
+
+  /* === 边框色 === */
   --border-color: #E0E0E0;
+  --border-color-light: #F0F0F0;
+  --divider-color: #EEEEEE;
+
+  /* === 阴影 === */
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 12rpx 32rpx rgba(0, 0, 0, 0.10);
+
+  /* === 圆角 === */
+  --radius-sm: 8rpx;
+  --radius-md: 12rpx;
+  --radius-lg: 16rpx;
+  --radius-xl: 20rpx;
+  --radius-round: 50%;
+
+  /* === 间距 === */
+  --space-xs: 8rpx;
+  --space-sm: 12rpx;
+  --space-md: 16rpx;
+  --space-lg: 24rpx;
+  --space-xl: 32rpx;
+  --space-2xl: 48rpx;
+
+  /* === 字体大小 === */
+  --font-xs: 22rpx;
+  --font-sm: 24rpx;
+  --font-base: 28rpx;
+  --font-lg: 32rpx;
+  --font-xl: 36rpx;
+  --font-2xl: 40rpx;
+  --font-3xl: 48rpx;
+
+  /* === 动画 === */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-/* 通用按钮样式 */
+/* ============================================
+   通用组件样式
+   ============================================ */
+
+/* === 按钮组件 === */
 .btn-primary {
-  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
-  color: #FFFFFF;
-  border-radius: 50rpx;
-  padding: 24rpx 48rpx;
-  font-size: 32rpx;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
+  color: var(--text-white);
+  border-radius: var(--radius-xl);
+  padding: 24rpx var(--space-2xl);
+  font-size: var(--font-lg);
   font-weight: 500;
-  box-shadow: 0 8rpx 16rpx rgba(46, 125, 255, 0.2);
+  box-shadow: var(--shadow-md);
+  transition: all var(--duration-normal) var(--ease-default);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary {
-  background: #FFFFFF;
-  color: #2E7DFF;
-  border: 2rpx solid #2E7DFF;
-  border-radius: 50rpx;
-  padding: 24rpx 48rpx;
-  font-size: 32rpx;
+  background: var(--bg-white);
+  color: var(--primary-blue);
+  border: 2rpx solid var(--primary-blue);
+  border-radius: var(--radius-xl);
+  padding: 24rpx var(--space-2xl);
+  font-size: var(--font-lg);
+  transition: all var(--duration-normal) var(--ease-default);
 }
 
+.btn-secondary:active {
+  background: var(--bg-blue-light);
+}
+
+.btn-small {
+  padding: 12rpx 24rpx;
+  font-size: var(--font-sm);
+  border-radius: var(--radius-md);
+}
+
+.btn-large {
+  padding: 32rpx 48rpx;
+  font-size: var(--font-xl);
+  border-radius: var(--radius-xl);
+}
+
+/* === 卡片组件 === */
+.card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin: var(--space-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--duration-normal) var(--ease-default);
+}
+
+.card:active {
+  box-shadow: var(--shadow-sm);
+}
+
+.card-no-margin {
+  margin: 0;
+}
+
+.card-no-padding {
+  padding: 0;
+}
+
+/* === 文本样式 === */
+.text-primary { color: var(--primary-blue); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-error { color: var(--color-error); }
+
+/* === 字体大小 === */
+.text-xs { font-size: var(--font-xs); }
+.text-sm { font-size: var(--font-sm); }
+.text-base { font-size: var(--font-base); }
+.text-lg { font-size: var(--font-lg); }
+.text-xl { font-size: var(--font-xl); }
+.text-2xl { font-size: var(--font-2xl); }
+.text-3xl { font-size: var(--font-3xl); }
+
+/* === 字体粗细 === */
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-bold { font-weight: 700; }
+
+/* === 文本对齐 === */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* === 间距工具类 === */
+.m-0 { margin: 0; }
+.mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+.ml-0 { margin-left: 0; }
+.mr-0 { margin-right: 0; }
+
+.mt-xs { margin-top: var(--space-xs); }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+
+.mb-xs { margin-bottom: var(--space-xs); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+.ml-xs { margin-left: var(--space-xs); }
+.ml-sm { margin-left: var(--space-sm); }
+.ml-md { margin-left: var(--space-md); }
+.ml-lg { margin-left: var(--space-lg); }
+.ml-xl { margin-left: var(--space-xl); }
+
+.mr-xs { margin-right: var(--space-xs); }
+.mr-sm { margin-right: var(--space-sm); }
+.mr-md { margin-right: var(--space-md); }
+.mr-lg { margin-right: var(--space-lg); }
+.mr-xl { margin-right: var(--space-xl); }
+
+.p-0 { padding: 0; }
+.pt-0 { padding-top: 0; }
+.pb-0 { padding-bottom: 0; }
+.pl-0 { padding-left: 0; }
+.pr-0 { padding-right: 0; }
+
+.pt-xs { padding-top: var(--space-xs); }
+.pt-sm { padding-top: var(--space-sm); }
+.pt-md { padding-top: var(--space-md); }
+.pt-lg { padding-top: var(--space-lg); }
+.pt-xl { padding-top: var(--space-xl); }
+
+.pb-xs { padding-bottom: var(--space-xs); }
+.pb-sm { padding-bottom: var(--space-sm); }
+.pb-md { padding-bottom: var(--space-md); }
+.pb-lg { padding-bottom: var(--space-lg); }
+.pb-xl { padding-bottom: var(--space-xl); }
+
+/* === Flex布局工具类 === */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.flex-1 { flex: 1; }
+.flex-wrap { flex-wrap: wrap; }
+
+/* === 其他工具类 === */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.rounded { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-full { border-radius: var(--radius-round); }
+.shadow { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+
+/* === 按钮重置 === */
 button {
   background: initial;
   border: none;
+  padding: 0;
+  margin: 0;
 }
 
 button:focus {
-  outline: 0;
+  outline: none;
 }
 
 button::after {
   border: none;
 }
 
-/* 卡片样式 */
-.card {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  margin: 24rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+/* ============================================
+   动画效果
+   ============================================ */
+
+/* === 淡入动画 === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-/* 文本样式 */
-.text-primary {
-  color: #2E7DFF;
+.fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out);
 }
 
-.text-secondary {
-  color: #666666;
+/* === 淡入上滑动画 === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.text-light {
-  color: #999999;
+.fade-in-up {
+  animation: fadeInUp var(--duration-normal) var(--ease-out);
 }
 
-/* 间距工具类 */
-.mt-16 { margin-top: 16rpx; }
-.mt-24 { margin-top: 24rpx; }
-.mt-32 { margin-top: 32rpx; }
-.mb-16 { margin-bottom: 16rpx; }
-.mb-24 { margin-bottom: 24rpx; }
-.mb-32 { margin-bottom: 32rpx; }
-.ml-16 { margin-left: 16rpx; }
-.mr-16 { margin-right: 16rpx; }
+/* === 淡入下滑动画 === */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-down {
+  animation: fadeInDown var(--duration-normal) var(--ease-out);
+}
+
+/* === 缩放动画 === */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.scale-in {
+  animation: scaleIn var(--duration-normal) var(--ease-out);
+}
+
+/* === 滑入动画 === */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight var(--duration-normal) var(--ease-out);
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-in-left {
+  animation: slideInLeft var(--duration-normal) var(--ease-out);
+}
+
+/* === 弹跳动画 === */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20rpx);
+  }
+}
+
+.bounce {
+  animation: bounce var(--duration-slow) var(--ease-bounce);
+}
+
+/* === 脉冲动画 === */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.pulse {
+  animation: pulse 2s var(--ease-in-out) infinite;
+}
+
+/* === 旋转动画 === */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* === 摇晃动画 === */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-10rpx);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(10rpx);
+  }
+}
+
+.shake {
+  animation: shake var(--duration-slow) var(--ease-in-out);
+}
+
+/* === 工具类 === */
+.transition-all {
+  transition: all var(--duration-normal) var(--ease-default);
+}
+
+.transition-transform {
+  transition: transform var(--duration-normal) var(--ease-default);
+}
+
+.transition-opacity {
+  transition: opacity var(--duration-normal) var(--ease-default);
+}
+
+.transition-colors {
+  transition: color var(--duration-normal) var(--ease-default),
+              background-color var(--duration-normal) var(--ease-default);
+}
+
+/* === 悬停效果（仅在有hover的设备上） === */
+.hover-lift:active {
+  transform: translateY(-4rpx);
+  box-shadow: var(--shadow-lg);
+}
+
+.hover-scale:active {
+  transform: scale(1.02);
+}
+
+.hover-shrink:active {
+  transform: scale(0.98);
+}
+
+/* === 按钮点击反馈 === */
+.clickable {
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.clickable:active {
+  transform: scale(0.95);
+  opacity: 0.8;
+}

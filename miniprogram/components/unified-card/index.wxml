@@ -1,0 +1,23 @@
+<!--components/unified-card/index.wxml-->
+<view class="unified-card card-{{type}} {{shadowClass}} {{clickable ? 'clickable' : ''}}" bindtap="handleTap">
+  <!-- 卡片头部 -->
+  <view class="card-header" wx:if="{{title || subtitle}}">
+    <view class="header-left">
+      <text class="card-title" wx:if="{{title}}">{{title}}</text>
+      <text class="card-subtitle" wx:if="{{subtitle}}">{{subtitle}}</text>
+    </view>
+    <view class="header-right" wx:if="{{extra}}">
+      <text class="card-extra">{{extra}}</text>
+    </view>
+  </view>
+
+  <!-- 卡片内容 -->
+  <view class="card-body {{paddingClass}}">
+    <slot></slot>
+  </view>
+
+  <!-- 卡片底部 -->
+  <view class="card-footer" wx:if="{{footer}}">
+    <text class="card-footer-text">{{footer}}</text>
+  </view>
+</view>

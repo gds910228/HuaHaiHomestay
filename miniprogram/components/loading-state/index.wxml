@@ -1,0 +1,14 @@
+<!--components/loading-state/index.wxml-->
+<view class="loading-container {{type}}">
+  <!-- 加载动画 -->
+  <view class="loading-spinner" wx:if="{{type === 'spinner'}}">
+    <view class="spinner-dot"></view>
+    <view class="spinner-dot"></view>
+    <view class="spinner-dot"></view>
+  </view>
+
+  <!-- 文字加载 -->
+  <view class="loading-text">
+    <text>{{text || '加载中...'}}</text>
+  </view>
+</view>

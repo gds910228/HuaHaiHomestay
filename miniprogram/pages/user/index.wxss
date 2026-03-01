@@ -1,13 +1,13 @@
 /* pages/user/index.wxss */
 .user-container {
   min-height: 100vh;
-  background: #F5F7FA;
+  background: var(--bg-gray);
 }
 
 /* 用户信息卡片 */
 .user-header {
   position: relative;
-  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
   padding: 60rpx 24rpx 80rpx;
   margin-bottom: -40rpx;
 }
@@ -18,7 +18,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
 }
 
 .user-info {
@@ -45,7 +45,7 @@
   display: block;
   font-size: 36rpx;
   font-weight: bold;
-  color: #FFFFFF;
+  color: var(--text-white);
   margin-bottom: 8rpx;
 }
 
@@ -61,7 +61,7 @@
   border: 2rpx solid rgba(255, 255, 255, 0.3);
   border-radius: 32rpx;
   font-size: 24rpx;
-  color: #FFFFFF;
+  color: var(--text-white);
 }
 
 /* 统计信息 */
@@ -81,18 +81,18 @@
 .stat-value {
   font-size: 48rpx;
   font-weight: bold;
-  color: #2E7DFF;
+  color: var(--primary-blue);
   margin-bottom: 8rpx;
 }
 
 .stat-label {
   font-size: 24rpx;
-  color: #666666;
+  color: var(--text-secondary);
 }
 
 .stat-divider {
   width: 1rpx;
-  background: #E0E0E0;
+  background: var(--border-color);
 }
 
 /* 收藏和历史 */
@@ -112,17 +112,17 @@
 .section-title {
   font-size: 32rpx;
   font-weight: bold;
-  color: #333333;
+  color: var(--text-primary);
 }
 
 .section-empty {
   font-size: 24rpx;
-  color: #999999;
+  color: var(--text-tertiary);
 }
 
 .clear-btn {
   font-size: 24rpx;
-  color: #2E7DFF;
+  color: var(--primary-blue);
 }
 
 /* 收藏列表 */
@@ -136,13 +136,13 @@
   display: flex;
   align-items: center;
   padding: 16rpx;
-  background: #F5F7FA;
-  border-radius: 12rpx;
-  transition: all 0.2s;
+  background: var(--bg-gray);
+  border-radius: var(--radius-md);
+  transition: all var(--duration-normal) var(--ease-default);
 }
 
 .favorite-item:active {
-  background: #E8F0FE;
+  background: var(--bg-blue-light);
 }
 
 .favorite-image {
@@ -160,7 +160,7 @@
 
 .favorite-title {
   font-size: 28rpx;
-  color: #333333;
+  color: var(--text-primary);
   margin-bottom: 8rpx;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -169,7 +169,7 @@
 
 .favorite-time {
   font-size: 22rpx;
-  color: #999999;
+  color: var(--text-tertiary);
 }
 
 .favorite-remove {
@@ -178,10 +178,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FFFFFF;
+  background: var(--bg-white);
   border-radius: 50%;
   font-size: 28rpx;
-  color: #999999;
+  color: var(--text-tertiary);
 }
 
 /* 历史列表 */
@@ -195,14 +195,14 @@
   display: flex;
   align-items: center;
   padding: 16rpx;
-  background: #F5F7FA;
-  border-radius: 12rpx;
+  background: var(--bg-gray);
+  border-radius: var(--radius-md);
 }
 
 .history-image {
   width: 120rpx;
   height: 120rpx;
-  border-radius: 8rpx;
+  border-radius: var(--radius-sm);
   margin-right: 16rpx;
 }
 
@@ -214,7 +214,7 @@
 
 .history-title {
   font-size: 28rpx;
-  color: #333333;
+  color: var(--text-primary);
   margin-bottom: 8rpx;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -223,7 +223,7 @@
 
 .history-time {
   font-size: 22rpx;
-  color: #999999;
+  color: var(--text-tertiary);
 }
 
 .empty-state {
@@ -233,7 +233,7 @@
 
 .empty-text {
   font-size: 26rpx;
-  color: #999999;
+  color: var(--text-tertiary);
 }
 
 /* 功能菜单 */
@@ -261,18 +261,18 @@
 
 .menu-label {
   font-size: 28rpx;
-  color: #333333;
+  color: var(--text-primary);
 }
 
 .menu-arrow {
   font-size: 36rpx;
-  color: #999999;
+  color: var(--text-tertiary);
   font-weight: 300;
 }
 
 .menu-divider {
   height: 1rpx;
-  background: #F0F0F0;
+  background: var(--border-color-light);
 }
 
 /* 未登录提示 */
@@ -283,5 +283,5 @@
 
 .tip-text {
   font-size: 24rpx;
-  color: #999999;
+  color: var(--text-tertiary);
 }
