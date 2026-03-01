@@ -2,7 +2,8 @@
 Page({
   data: {
     logs: [],
-    loading: false
+    loading: false,
+    verified: false // 密码验证标志
   },
 
   onLoad() {
@@ -13,14 +14,15 @@ Page({
   // 验证密码
   verifyPassword() {
     wx.showModal({
-      title: '身份验证',
-      content: '数据初始化是敏感操作，请输入管理员密码',
+      title: '数据初始化是敏感操作',
+      content: '',
       editable: true,
-      placeholderText: '请输入密码',
+      placeholderText: '请输入管理员密码',
       success: (res) => {
         if (res.confirm) {
-          if (res.content === 'huahai2024') {
-            // 密码正确，初始化页面
+          if (res.content === 'huahai2026') {
+            // 密码正确，显示页面内容
+            this.setData({ verified: true });
             this.initPage();
           } else {
             wx.showToast({

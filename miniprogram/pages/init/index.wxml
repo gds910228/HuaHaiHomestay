@@ -1,5 +1,5 @@
 <!--pages/init/index.wxml-->
-<view class="init-container">
+<view class="init-container" wx:if="{{verified}}">
   <!-- 标题卡片 -->
   <view class="header-card">
     <text class="app-logo">🏡 画海民宿</text>
