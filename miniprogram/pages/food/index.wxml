@@ -39,8 +39,8 @@
              wx:for="{{groupedGuides[tabs[currentTab].key]}}"
              wx:key="_id"
              wx:for-item="guide">
-        <view class="food-card {{guide.cover && !guide.cover.includes('placeholder') ? 'has-image' : 'no-image'}}">
-          <image wx:if="{{guide.cover && !guide.cover.includes('placeholder')}}"
+        <view class="food-card {{guide.cover ? 'has-image' : 'no-image'}}">
+          <image wx:if="{{guide.cover}}"
                  class="food-image"
                  src="{{guide.cover}}"
                  mode="aspectFill"
@@ -49,7 +49,7 @@
                  bindtap="previewImage"></image>
 
           <!-- 无图片时的默认图标 -->
-          <view wx:if="{{!guide.cover || guide.cover.includes('placeholder')}}" class="food-no-image">
+          <view wx:if="{{!guide.cover}}" class="food-no-image">
             <text class="no-image-icon">🍽️</text>
             <text class="no-image-text">暂无图片</text>
           </view>
