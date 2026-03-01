@@ -44,7 +44,7 @@
       <input
         class="form-input"
         type="number"
-        placeholder="13800138000"
+        placeholder="18907208020"
         value="{{formData.phone}}"
         data-field="phone"
         bindinput="onInputChange" />
