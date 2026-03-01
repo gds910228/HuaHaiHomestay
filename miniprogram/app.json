@@ -15,7 +15,8 @@
     "pages/admin/hostel/index",
     "pages/admin/hostel-edit/index",
     "pages/admin/room-edit/room-edit",
-    "pages/init/index"
+    "pages/init/index",
+    "pages/debug-guide/debug"
   ],
   "window": {
     "backgroundColor": "#F5F7FA",

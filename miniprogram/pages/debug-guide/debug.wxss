@@ -1,0 +1,45 @@
+/* pages/debug-guide/debug.wxss */
+.debug-container {
+  padding: 20rpx;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.section {
+  background: #f5f5f5;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.content {
+  font-size: 24rpx;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.tips {
+  background: #fff3cd;
+  padding: 20rpx;
+  border-radius: 8rpx;
+}
+
+.tip-text {
+  font-size: 26rpx;
+  display: block;
+  margin-bottom: 10rpx;
+  color: #856404;
+}
