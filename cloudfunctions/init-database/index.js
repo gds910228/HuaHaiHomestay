@@ -146,8 +146,8 @@ async function initHostel() {
       name: '画海民宿',
       description: '欢迎来到画海民宿，我们位于美丽的南澳岛青澳湾，为您提供舒适的住宿环境和贴心的服务。民宿出门即是海滩，环境优美，是您度假的理想选择。',
       address: '广东省汕头市南澳县后宅镇青澳湾',
-      phone: '13800138000',
-      wechat: 'huahai_hostel',
+      phone: '18907208020',
+      wechat: 'qingaiyisheng321',
       location: {
         latitude: 23.4234,
         longitude: 117.0234
