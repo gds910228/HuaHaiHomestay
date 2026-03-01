@@ -124,10 +124,29 @@ async function getGuides(event) {
 
   return {
     success: true,
-    data: res.data.map(item => ({
-      ...item,
-      categoryName: categoryMap[item.category] || item.category
-    }))
+    data: res.data.map(item => {
+      // 确保 images 数组存在
+      if (!item.images || item.images.length === 0) {
+        if (item.cover) {
+          item.images = [item.cover];
+        } else {
+          item.images = [];
+        }
+      }
+
+      // 确定显示的封面图：优先使用真实图片，避免占位图
+      let finalCover = item.cover;
+      if (!finalCover || finalCover.includes('placeholder')) {
+        // 如果 cover 是占位图或不存在，使用 images 数组的第一张
+        finalCover = item.images && item.images.length > 0 ? item.images[0] : '';
+      }
+
+      return {
+        ...item,
+        cover: finalCover, // 覆盖 cover 字段，使用真实的图片
+        categoryName: categoryMap[item.category] || item.category
+      };
+    })
   };
 }
 
