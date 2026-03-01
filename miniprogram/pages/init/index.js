@@ -6,6 +6,42 @@ Page({
   },
 
   onLoad() {
+    // 验证密码
+    this.verifyPassword();
+  },
+
+  // 验证密码
+  verifyPassword() {
+    wx.showModal({
+      title: '身份验证',
+      content: '数据初始化是敏感操作，请输入管理员密码',
+      editable: true,
+      placeholderText: '请输入密码',
+      success: (res) => {
+        if (res.confirm) {
+          if (res.content === 'huahai2024') {
+            // 密码正确，初始化页面
+            this.initPage();
+          } else {
+            wx.showToast({
+              title: '密码错误',
+              icon: 'none'
+            });
+            // 延迟返回，防止用户看到内容
+            setTimeout(() => {
+              wx.navigateBack();
+            }, 1500);
+          }
+        } else {
+          // 用户取消，返回上一页
+          wx.navigateBack();
+        }
+      }
+    });
+  },
+
+  // 初始化页面
+  initPage() {
     this.addLog('📋 数据库初始化工具');
     this.addLog('━━━━━━━━━━━━━━━━');
     this.addLog('提示：此页面用于初始化数据库数据');

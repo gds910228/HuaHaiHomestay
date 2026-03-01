@@ -146,11 +146,22 @@ async function getGuideDetail(event) {
     };
   }
 
+  const guide = res.data;
+
+  // 确保 images 数组不为空，如果为空且有 cover，则使用 cover
+  if (!guide.images || guide.images.length === 0) {
+    if (guide.cover) {
+      guide.images = [guide.cover];
+    } else {
+      guide.images = [];
+    }
+  }
+
   return {
     success: true,
     data: {
-      ...res.data,
-      categoryName: categoryMap[res.data.category] || res.data.category
+      ...guide,
+      categoryName: categoryMap[guide.category] || guide.category
     }
   };
 }
