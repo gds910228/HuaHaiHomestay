@@ -3,7 +3,7 @@
   <!-- 页面标题 -->
   <view class="page-header">
     <text class="page-title">🍴 美食推荐</text>
-    <text class="page-subtitle">本地人推荐的{{guides.length}}家餐厅</text>
+    <text class="page-subtitle">本地人推荐的美食攻略</text>
   </view>
 
   <!-- 加载状态 -->
@@ -47,6 +47,12 @@
                  data-url="{{guide.cover}}"
                  data-images="{{guide.images}}"
                  bindtap="previewImage"></image>
+
+          <!-- 无图片时的默认图标 -->
+          <view wx:if="{{!guide.cover || guide.cover.includes('placeholder')}}" class="food-no-image">
+            <text class="no-image-icon">🍽️</text>
+            <text class="no-image-text">暂无图片</text>
+          </view>
 
           <view class="food-info">
             <text class="food-title">{{guide.title}}</text>
