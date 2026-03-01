@@ -158,6 +158,10 @@
   padding: 24rpx;
 }
 
+.food-card.no-image .food-info {
+  padding: 24rpx;
+}
+
 /* 无图片的卡片 */
 .food-card.no-image {
   padding: 0;
