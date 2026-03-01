@@ -55,6 +55,9 @@ Page({
           console.log(`  有真实图片: ${guide.hasRealImage ? '是' : '否'}`);
         });
 
+        // 检查收藏状态
+        await this.checkFavoritesStatus(guides);
+
         const grouped = this.groupGuidesByArea(guides);
         console.log('[美食页面] 分组结果:', grouped);
 
@@ -231,5 +234,99 @@ Page({
   // 图片加载失败
   onImageError(e) {
     console.log('[美食] 图片加载失败:', e.detail);
+  },
+
+  // 批量检查收藏状态
+  async checkFavoritesStatus(guides) {
+    try {
+      // 获取所有收藏记录
+      const res = await wx.cloud.callFunction({
+        name: 'huahai',
+        data: {
+          type: 'getFavorites'
+        }
+      });
+
+      if (res.result.success && res.result.data) {
+        const favorites = res.result.data;
+
+        // 为每个guide设置收藏状态
+        guides.forEach(guide => {
+          const isFavorited = favorites.some(fav =>
+            fav.guideId === guide._id && fav.category === 'guide'
+          );
+          guide.isFavorited = isFavorited;
+        });
+
+        console.log('[美食] 收藏状态检查完成');
+      }
+    } catch (err) {
+      console.error('[美食] 检查收藏状态失败:', err);
+    }
+  },
+
+  // 切换收藏状态
+  async toggleFavorite(e) {
+    const { id } = e.currentTarget.dataset;
+
+    if (!id) return;
+
+    try {
+      wx.showLoading({ title: '处理中...', mask: true });
+
+      // 调用云函数切换收藏
+      const res = await wx.cloud.callFunction({
+        name: 'huahai',
+        data: {
+          type: 'toggleFavorite',
+          guideId: id,
+          category: 'guide'
+        }
+      });
+
+      wx.hideLoading();
+
+      if (res.result.success) {
+        const { isFavorited } = res.result.data;
+
+        // 更新本地数据
+        const guides = this.data.guides.map(guide => {
+          if (guide._id === id) {
+            return { ...guide, isFavorited };
+          }
+          return guide;
+        });
+
+        // 更新分组数据
+        const groupedGuides = { ...this.data.groupedGuides };
+        Object.keys(groupedGuides).forEach(key => {
+          groupedGuides[key] = groupedGuides[key].map(guide => {
+            if (guide._id === id) {
+              return { ...guide, isFavorited };
+            }
+            return guide;
+          });
+        });
+
+        this.setData({
+          guides,
+          groupedGuides
+        });
+
+        wx.showToast({
+          title: isFavorited ? '已收藏' : '已取消收藏',
+          icon: 'success'
+        });
+      } else {
+        throw new Error('操作失败');
+      }
+    } catch (err) {
+      console.error('[美食] 收藏操作失败:', err);
+      wx.hideLoading();
+      wx.showToast({
+        title: '操作失败',
+        icon: 'none'
+      });
+    }
   }
 });

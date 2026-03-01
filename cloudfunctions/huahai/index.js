@@ -189,6 +189,18 @@ async function getGuideDetail(event) {
   console.log('最终 images.length:', guide.images.length);
   console.log('========================');
 
+  // 检查当前用户是否收藏了该攻略
+  const wxContext = cloud.getWXContext();
+  if (wxContext.OPENID) {
+    const favoriteRes = await db.collection('favorites').where({
+      openid: wxContext.OPENID,
+      guideId: id,
+      category: 'guide'
+    }).count();
+
+    guide.isFavorited = favoriteRes.total > 0;
+  }
+
   return {
     success: true,
     data: {
@@ -299,7 +311,9 @@ async function checkFavorite(event, openid) {
 
   return {
     success: true,
-    data: res.total > 0
+    data: {
+      isFavorited: res.total > 0
+    }
   };
 }
 

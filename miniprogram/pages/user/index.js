@@ -65,9 +65,10 @@ Page({
                 item.displayDesc = `${item.area} · ${item.bedType}`;
                 item.displayImage = item.images && item.images[0] ? item.images[0] : '';
               } else {
+                // 攻略/美食：优先使用images[0]，没有则使用cover
                 item.displayTitle = item.title;
-                item.displayDesc = item.summary;
-                item.displayImage = item.cover;
+                item.displayDesc = item.summary || item.address || '';
+                item.displayImage = (item.images && item.images.length > 0) ? item.images[0] : (item.cover || '');
               }
               return item;
             }
@@ -80,6 +81,8 @@ Page({
 
         const results = await Promise.all(promises);
         const validFavorites = results.filter(item => item !== null);
+
+        console.log('[收藏列表] 加载完成，共', validFavorites.length, '条');
 
         this.setData({
           favorites: validFavorites,
@@ -116,7 +119,7 @@ Page({
 
   // 取消收藏
   async removeFavorite(e) {
-    const { id, favoriteId } = e.currentTarget.dataset;
+    const { id, category } = e.currentTarget.dataset;
 
     wx.showModal({
       title: '提示',
@@ -132,15 +135,21 @@ Page({
               data: {
                 type: 'toggleFavorite',
                 guideId: id,
-                category: favoriteId ? undefined : 'room' // 如果有favoriteId说明是从列表来的
+                category: category || 'guide'
               }
             });
 
             wx.hideLoading();
 
             if (favRes.result.success) {
-              // 重新加载收藏列表
-              this.loadFavorites();
+              // 立即从本地列表中移除该项
+              const favorites = this.data.favorites.filter(item => {
+                return item._id !== id;
+              });
+
+              this.setData({
+                favorites
+              });
 
               wx.showToast({
                 title: '已取消收藏',

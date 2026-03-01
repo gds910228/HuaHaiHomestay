@@ -41,23 +41,36 @@
     <!-- 收藏列表 -->
     <view class="favorites-list" wx:if="{{!loading && favorites.length > 0}}">
       <view
-        class="favorite-item"
+        class="favorite-item fade-in"
         wx:for="{{favorites}}"
         wx:key="_id"
         data-id="{{item._id || item.roomId}}"
         data-category="{{item.category}}"
         bindtap="openGuide"
       >
-        <image class="favorite-image" src="{{item.displayImage}}" mode="aspectFill"></image>
+        <!-- 有图片时显示图片 -->
+        <image
+          wx:if="{{item.displayImage}}"
+          class="favorite-image"
+          src="{{item.displayImage}}"
+          mode="aspectFill"
+        ></image>
+
+        <!-- 无图片时显示默认图标 -->
+        <view wx:else class="favorite-image-placeholder">
+          <text class="placeholder-icon">{{item.category === 'room' ? '🏠' : '🍽️'}}</text>
+        </view>
+
         <view class="favorite-content">
           <text class="favorite-title">{{item.displayTitle}}</text>
           <text class="favorite-desc">{{item.displayDesc}}</text>
         </view>
         <view
-          class="favorite-remove"
+          class="favorite-remove clickable"
           catchtap="removeFavorite"
           data-id="{{item._id || item.roomId}}"
           data-favorite-id="{{item.favoriteId}}"
+          data-category="{{item.category}}"
         >
           <text>✕</text>
         </view>

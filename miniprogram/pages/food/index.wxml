@@ -90,7 +90,14 @@
                   data-address="{{guide.address}}"
                   catchtap="navigate"
                 >
-                <text>🧭 一键导航</text>
+                <text>🧭 导航</text>
+              </button>
+              <button
+                  class="favorite-btn clickable {{guide.isFavorited ? 'favorited' : ''}}"
+                  data-id="{{guide._id}}"
+                  catchtap="toggleFavorite"
+                >
+                <text>{{guide.isFavorited ? '★ 已收藏' : '☆ 收藏'}}</text>
               </button>
             </view>
           </view>

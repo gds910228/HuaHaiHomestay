@@ -8,8 +8,10 @@
 .user-header {
   position: relative;
   background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
-  padding: 60rpx 24rpx 80rpx;
-  margin-bottom: -40rpx;
+  padding: 60rpx 24rpx 40rpx;
+  margin-bottom: 0;
+  border-radius: 0 0 40rpx 40rpx;
+  overflow: hidden;
 }
 
 .user-bg {
@@ -19,6 +21,7 @@
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
+  border-radius: 0 0 40rpx 40rpx;
 }
 
 .user-info {
@@ -98,7 +101,7 @@
 /* 收藏和历史 */
 .favorites-section,
 .history-section {
-  margin: 0 24rpx 24rpx;
+  margin: 32rpx 24rpx 24rpx;
   padding: 32rpx;
 }
 
@@ -148,8 +151,25 @@
 .favorite-image {
   width: 120rpx;
   height: 120rpx;
-  border-radius: 8rpx;
-  margin-right: 16rpx;
+  border-radius: var(--radius-md);
+  margin-right: var(--space-md);
+}
+
+/* 无图片时的占位 */
+.favorite-image-placeholder {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: var(--radius-md);
+  margin-right: var(--space-md);
+  background: linear-gradient(135deg, var(--bg-gray) 0%, var(--bg-gray-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid var(--border-color);
+}
+
+.placeholder-icon {
+  font-size: 48rpx;
 }
 
 .favorite-content {

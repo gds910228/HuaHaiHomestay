@@ -248,7 +248,9 @@
 
 .food-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16rpx;
   padding-top: 16rpx;
   margin-top: 8rpx;
   border-top: 1rpx solid var(--border-color-light);
@@ -261,11 +263,12 @@
 
 /* 导航按钮 */
 .nav-btn {
+  flex: 1;
   background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
   color: var(--text-white);
   border: none;
   border-radius: 12rpx;
-  padding: 12rpx 28rpx;
+  padding: 12rpx 20rpx;
   font-size: 26rpx;
   font-weight: 500;
   box-shadow: 0 4rpx 12rpx rgba(46, 117, 255, 0.3);
@@ -281,5 +284,36 @@
 }
 
 .nav-btn text {
+  display: inline-block;
+}
+
+/* 收藏按钮 */
+.favorite-btn {
+  flex: 1;
+  background: var(--bg-gray);
+  color: var(--text-secondary);
+  border: 2rpx solid var(--border-color);
+  border-radius: 12rpx;
+  padding: 12rpx 20rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+  transition: all var(--duration-normal) var(--ease-default);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorite-btn:active {
+  transform: scale(0.95);
+}
+
+.favorite-btn.favorited {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+  color: var(--text-white);
+  border-color: #FF6B6B;
+  box-shadow: 0 4rpx 12rpx rgba(255, 107, 107, 0.3);
+}
+
+.favorite-btn text {
   display: inline-block;
 }

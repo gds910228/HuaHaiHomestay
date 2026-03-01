@@ -11,7 +11,6 @@ Page({
     if (options.id) {
       this.setData({ id: options.id });
       this.loadGuideDetail();
-      this.checkFavorite();
     }
   },
 
@@ -29,7 +28,11 @@ Page({
       });
 
       if (res.result.success) {
-        this.setData({ guide: res.result.data });
+        const guide = res.result.data;
+        this.setData({
+          guide: guide,
+          isFavorite: guide.isFavorited || false
+        });
       }
     } catch (err) {
       console.error('加载详情失败', err);
@@ -42,46 +45,45 @@ Page({
     }
   },
 
-  // 检查是否已收藏（本地存储）
-  checkFavorite() {
+  // 收藏/取消收藏（调用云函数）
+  async toggleFavorite() {
     try {
-      const favorites = wx.getStorageSync('favorites') || [];
-      const isFavorite = favorites.includes(this.data.id);
-      this.setData({ isFavorite });
-    } catch (err) {
-      console.error('检查收藏状态失败', err);
-    }
-  },
+      wx.showLoading({
+        title: '处理中...',
+        mask: true
+      });
 
-  // 收藏/取消收藏（本地存储）
-  toggleFavorite() {
-    try {
-      let favorites = wx.getStorageSync('favorites') || [];
+      // 调用云函数收藏/取消收藏
+      const res = await wx.cloud.callFunction({
+        name: 'huahai',
+        data: {
+          type: 'toggleFavorite',
+          guideId: this.data.id,
+          category: 'guide'
+        }
+      });
 
-      if (this.data.isFavorite) {
-        // 取消收藏
-        favorites = favorites.filter(id => id !== this.data.id);
+      wx.hideLoading();
+
+      if (res.result.success) {
+        const { isFavorited } = res.result.data;
+
+        this.setData({
+          isFavorite: isFavorited
+        });
+
         wx.showToast({
-          title: '已取消收藏',
+          title: isFavorited ? '已收藏' : '已取消收藏',
           icon: 'success'
         });
       } else {
-        // 添加收藏
-        favorites.push(this.data.id);
-        wx.showToast({
-          title: '已收藏',
-          icon: 'success'
-        });
+        throw new Error(res.result.errMsg || '操作失败');
       }
-
-      wx.setStorageSync('favorites', favorites);
-      this.setData({
-        isFavorite: !this.data.isFavorite
-      });
     } catch (err) {
-      console.error('收藏操作失败', err);
+      console.error('收藏操作失败:', err);
+      wx.hideLoading();
       wx.showToast({
-        title: '操作失败',
+        title: err.message || '操作失败',
         icon: 'none'
       });
     }
