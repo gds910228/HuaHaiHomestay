@@ -19,5 +19,23 @@ Page({
     wx.navigateTo({
       url: `/pages/${id}/index`
     });
+  },
+
+  // 分享给朋友
+  onShareAppMessage() {
+    return {
+      title: '画海民宿 - 南澳岛旅游攻略与住宿',
+      path: '/pages/home/index',
+      imageUrl: '/images/logo.jpg'
+    };
+  },
+
+  // 分享到朋友圈
+  onShareTimeline() {
+    return {
+      title: '画海民宿 - 南澳岛旅游攻略与住宿',
+      query: '',
+      imageUrl: '/images/logo.jpg'
+    };
   }
 });

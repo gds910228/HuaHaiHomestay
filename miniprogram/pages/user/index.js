@@ -208,5 +208,23 @@ Page({
     wx.switchTab({
       url: '/pages/home/index'
     });
+  },
+
+  // 分享给朋友
+  onShareAppMessage() {
+    return {
+      title: '画海民宿 - 收藏你的南澳岛记忆',
+      path: '/pages/user/index',
+      imageUrl: '/images/logo.jpg'
+    };
+  },
+
+  // 分享到朋友圈
+  onShareTimeline() {
+    return {
+      title: '画海民宿 - 发现南澳岛的美好',
+      query: '',
+      imageUrl: '/images/logo.jpg'
+    };
   }
 });

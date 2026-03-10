@@ -286,7 +286,7 @@ Page({
     return {
       title: room ? `${room.roomType} - 画海民宿` : '画海民宿房型',
       path: `/pages/room-detail/room-detail?id=${this.data.roomId}`,
-      imageUrl: room && room.images && room.images.length > 0 ? room.images[0] : ''
+      imageUrl: (room && room.images && room.images.length > 0) ? room.images[0] : '/images/logo.jpg'
     };
   },
 
@@ -299,7 +299,7 @@ Page({
     return {
       title: room ? `${room.roomType} - 画海民宿` : '画海民宿房型',
       query: `id=${this.data.roomId}`,
-      imageUrl: room && room.images && room.images.length > 0 ? room.images[0] : ''
+      imageUrl: (room && room.images && room.images.length > 0) ? room.images[0] : '/images/logo.jpg'
     };
   }
 });

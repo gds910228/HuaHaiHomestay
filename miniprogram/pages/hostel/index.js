@@ -159,5 +159,25 @@ Page({
     wx.navigateTo({
       url: `/pages/room-detail/room-detail?id=${room._id}`
     });
+  },
+
+  // 分享给朋友
+  onShareAppMessage() {
+    const { hostel } = this.data;
+    return {
+      title: hostel ? `${hostel.name} - 优质民宿体验` : '画海民宿 - 优质民宿体验',
+      path: '/pages/hostel/index',
+      imageUrl: '/images/logo.jpg'
+    };
+  },
+
+  // 分享到朋友圈
+  onShareTimeline() {
+    const { hostel } = this.data;
+    return {
+      title: hostel ? `${hostel.name} - 南澳岛优质民宿` : '画海民宿 - 南澳岛优质民宿',
+      query: '',
+      imageUrl: '/images/logo.jpg'
+    };
   }
 });

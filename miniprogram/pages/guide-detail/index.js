@@ -108,13 +108,23 @@ Page({
     });
   },
 
-  // 分享
+  // 分享给朋友
   onShareAppMessage() {
     const { guide } = this.data;
     return {
-      title: guide ? guide.title : '画海民宿',
+      title: guide ? `${guide.title} - 画海民宿` : '画海民宿 - 南澳岛旅游攻略',
       path: `/pages/guide-detail/index?id=${this.data.id}`,
-      imageUrl: guide ? guide.cover : ''
+      imageUrl: (guide && guide.cover) ? guide.cover : '/images/logo.jpg'
+    };
+  },
+
+  // 分享到朋友圈
+  onShareTimeline() {
+    const { guide } = this.data;
+    return {
+      title: guide ? `${guide.title} - 画海民宿` : '画海民宿 - 南澳岛旅游攻略',
+      query: `id=${this.data.id}`,
+      imageUrl: (guide && guide.cover) ? guide.cover : '/images/logo.jpg'
     };
   },
 
