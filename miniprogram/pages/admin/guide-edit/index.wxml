@@ -27,14 +27,47 @@
       </picker>
     </view>
 
+    <!-- 标签管理 -->
     <view class="form-item">
       <text class="form-label">标签</text>
-      <input
-        class="form-input"
-        placeholder="用逗号分隔，如：海鲜,地道,必吃"
-        value="{{form.tags.join(',')}}"
-        bindinput="onTagsInput"
-      />
+
+      <!-- 已选标签 chips -->
+      <view class="tag-chip-list" wx:if="{{form.tags.length > 0}}">
+        <view class="tag-chip selected" wx:for="{{form.tags}}" wx:key="*this" wx:for-item="tag">
+          <text class="tag-chip-text">{{tag}}</text>
+          <text class="tag-chip-close" catchtap="removeTag" data-index="{{index}}">×</text>
+        </view>
+      </view>
+
+      <!-- 添加标签输入区 -->
+      <view class="tag-input-row">
+        <input
+          class="form-input tag-input"
+          placeholder="输入标签后回车，如：必打卡"
+          value="{{tagInput}}"
+          bindinput="onTagInput"
+          bindconfirm="addTag"
+          confirm-type="done"
+        />
+        <view class="tag-add-btn" bindtap="addTag">添加</view>
+      </view>
+
+      <!-- 推荐标签云 -->
+      <block wx:if="{{suggestedTags.length > 0}}">
+        <text class="tag-cloud-label">常用标签（点击快速添加）</text>
+        <view class="tag-cloud">
+          <view
+            class="tag-chip cloud {{form.tags.indexOf(item.name) > -1 ? 'selected' : ''}}"
+            wx:for="{{suggestedTags}}"
+            wx:key="name"
+            data-tag="{{item.name}}"
+            bindtap="toggleSuggestedTag"
+          >
+            <text class="tag-chip-text">{{item.name}}</text>
+            <text class="tag-chip-count" wx:if="{{item.count}}">·{{item.count}}</text>
+          </view>
+        </view>
+      </block>
     </view>
 
     <view class="form-item">
@@ -96,17 +129,46 @@
       </view>
     </view>
 
-    <!-- 详细内容 -->
+    <!-- 富文本正文 -->
     <view class="form-item">
       <text class="form-label">详细内容 *</text>
-      <textarea
-        class="form-textarea rich-text"
-        placeholder="支持HTML标签，如：h3标题、p段落、strong加粗等"
-        value="{{form.content}}"
-        data-field="content"
-        bindinput="onInput"
-        maxlength="-1"
-      />
+
+      <!-- 工具栏 -->
+      <view class="editor-toolbar">
+        <view class="tb-btn {{formats.header == 2 ? 'active' : ''}}" data-name="header" data-value="2" bindtap="formatTap">H</view>
+        <view class="tb-btn {{formats.bold ? 'active' : ''}}" data-name="bold" bindtap="formatTap">
+          <text class="tb-bold">B</text>
+        </view>
+        <view class="tb-btn {{formats.italic ? 'active' : ''}}" data-name="italic" bindtap="formatTap">
+          <text class="tb-italic">I</text>
+        </view>
+        <view class="tb-btn {{formats.underline ? 'active' : ''}}" data-name="underline" bindtap="formatTap">
+          <text class="tb-underline">U</text>
+        </view>
+        <view class="tb-btn" data-name="list" data-value="ordered" bindtap="formatTap">1.</view>
+        <view class="tb-btn" data-name="list" data-value="bullet" bindtap="formatTap">•</view>
+        <view class="tb-btn" data-name="align" data-value="left" bindtap="formatTap">⇤</view>
+        <view class="tb-btn" data-name="align" data-value="center" bindtap="formatTap">≡</view>
+        <view class="tb-btn primary" bindtap="insertImage">🖼 图</view>
+        <view class="tb-btn" bindtap="editorUndo">↺</view>
+        <view class="tb-btn" bindtap="editorRedo">↻</view>
+        <view class="tb-btn danger" bindtap="editorClear">清</view>
+      </view>
+
+      <!-- 富文本编辑器 -->
+      <editor
+        id="editor"
+        class="rich-editor"
+        placeholder="在此输入正文，支持加粗、斜体、列表、插入图片..."
+        show-img-size="{{true}}"
+        show-img-toolbar="{{true}}"
+        show-img-resize="{{true}}"
+        bindready="onEditorReady"
+        bindstatuschange="onStatusChange"
+        bindinput="onContentInput"
+        bindfocus="onEditorFocus"
+        bindblur="onEditorBlur"
+      ></editor>
     </view>
 
     <view class="form-item">

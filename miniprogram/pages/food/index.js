@@ -6,15 +6,54 @@ Page({
     loading: false,
     isFirstLoad: true,  // 首次加载标记
     currentTab: 0,  // 当前选中的选项卡索引
-    tabs: []  // 选项卡列表
+    tabs: [],  // 选项卡列表
+
+    // ===== 标签筛选 =====
+    tagOptions: [],     // 该分类下的全部标签 [{name, count}]
+    activeTag: '',      // 当前选中的标签，空字符串表示全部
+    tagsExpanded: false // 标签栏是否展开（默认收起为两行）
   },
 
   onLoad() {
+    this.loadTagOptions();
     this.loadGuides();
   },
 
   onShow() {
     this.loadGuides();
+  },
+
+  // 加载该分类下的可选标签
+  async loadTagOptions() {
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'huahai',
+        data: { type: 'getAllTags', category: 'food' }
+      });
+      if (res.result && res.result.success) {
+        this.setData({
+          tagOptions: res.result.data || []
+        });
+      }
+    } catch (err) {
+      console.warn('[美食页面] 加载标签失败', err);
+    }
+  },
+
+  // 选中/取消选中某个标签
+  selectTag(e) {
+    const tag = e.currentTarget.dataset.tag || '';
+    if (tag === this.data.activeTag) {
+      this.setData({ activeTag: '' });
+    } else {
+      this.setData({ activeTag: tag });
+    }
+    this.loadGuides();
+  },
+
+  // 展开/收起标签栏
+  toggleTagsExpanded() {
+    this.setData({ tagsExpanded: !this.data.tagsExpanded });
   },
 
   // 加载美食数据
@@ -25,20 +64,34 @@ Page({
 
     try {
       console.log('[美食页面] 开始加载数据...');
+      const callData = {
+        type: 'getGuides',
+        category: 'food',
+        pageSize: 100
+      };
+      if (this.data.activeTag) {
+        callData.tag = this.data.activeTag;
+      }
+
       const res = await wx.cloud.callFunction({
         name: 'huahai',
-        data: {
-          type: 'getGuides',
-          category: 'food',
-          pageSize: 100
-        }
+        data: callData
       });
 
       console.log('[美食页面] 云函数返回结果:', res);
 
       if (res.result && res.result.success) {
-        const guides = res.result.data || [];
-        console.log('[美食页面] 获取到美食数据:', guides.length, '条');
+        let guides = res.result.data || [];
+        console.log('[美食页面] 云函数返回:', guides.length, '条，activeTag=', this.data.activeTag);
+
+        // ===== 前端兜底过滤 =====
+        // 云函数若未及时部署/筛选未生效，这里再按 tags 数组做一次过滤，保证体验一致
+        if (this.data.activeTag) {
+          const t = this.data.activeTag;
+          const before = guides.length;
+          guides = guides.filter(g => Array.isArray(g.tags) && g.tags.indexOf(t) > -1);
+          console.log('[美食页面] 前端兜底按标签过滤:', t, before, '→', guides.length);
+        }
 
         // 预处理：判断每个店铺是否有真实图片（非占位图）
         guides.forEach((guide) => {

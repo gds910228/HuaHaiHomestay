@@ -35,6 +35,8 @@ exports.main = async (event, context) => {
         return await getGuideById(event);
       case 'incrementViews':
         return await incrementViews(event);
+      case 'getAllTags':
+        return await getAllTags(event);
 
       // ==================== 收藏相关 ====================
       case 'addFavorite':
@@ -97,7 +99,7 @@ exports.main = async (event, context) => {
  * 获取攻略列表
  */
 async function getGuides(event) {
-  const { category, page = 1, pageSize = 10 } = event;
+  const { category, tag, page = 1, pageSize = 10 } = event;
 
   const query = db.collection('guides');
 
@@ -109,6 +111,20 @@ async function getGuides(event) {
   // 分类筛选
   if (category) {
     whereCondition.category = category;
+  }
+
+  // 标签筛选（tags 是字符串数组字段，直接赋值即匹配"数组包含该值"）
+  if (tag) {
+    if (Array.isArray(tag)) {
+      // 多标签：任一命中即可
+      if (tag.length === 1) {
+        whereCondition.tags = tag[0];
+      } else if (tag.length > 1) {
+        whereCondition.tags = _.in(tag);
+      }
+    } else {
+      whereCondition.tags = tag;
+    }
   }
 
   // 只查询已发布的
@@ -189,6 +205,11 @@ async function getGuideDetail(event) {
   console.log('最终 images.length:', guide.images.length);
   console.log('========================');
 
+  // 刷新富文本正文里 editor 插入的图片链接（cloud:// 文件 ID 的 tempFileURL 仅 2 小时有效）
+  if (guide.content && typeof guide.content === 'string') {
+    guide.content = await refreshContentImages(guide.content);
+  }
+
   // 检查当前用户是否收藏了该攻略
   const wxContext = cloud.getWXContext();
   if (wxContext.OPENID) {
@@ -245,6 +266,52 @@ async function incrementViews(event) {
 
   return {
     success: true
+  };
+}
+
+/**
+ * 获取全部标签（去重、按出现频次降序）
+ * 可选参数 category 用于按分类范围聚合
+ */
+async function getAllTags(event) {
+  const { category } = event || {};
+
+  const where = { status: 'published' };
+  if (category) where.category = category;
+
+  // 云数据库单次 .get() 最多返回 100 条，分页拉满
+  const PAGE = 100;
+  let all = [];
+  let offset = 0;
+  // 防御性上限 5000 条，避免极端情况下死循环
+  while (offset < 5000) {
+    const res = await db.collection('guides')
+      .where(where)
+      .field({ tags: true })
+      .skip(offset)
+      .limit(PAGE)
+      .get();
+    all = all.concat(res.data || []);
+    if (!res.data || res.data.length < PAGE) break;
+    offset += PAGE;
+  }
+
+  const counter = {};
+  all.forEach(item => {
+    (item.tags || []).forEach(t => {
+      const tag = String(t || '').trim();
+      if (!tag) return;
+      counter[tag] = (counter[tag] || 0) + 1;
+    });
+  });
+
+  const list = Object.keys(counter)
+    .map(name => ({ name, count: counter[name] }))
+    .sort((a, b) => b.count - a.count);
+
+  return {
+    success: true,
+    data: list
   };
 }
 
@@ -498,12 +565,13 @@ async function adminLogin(event) {
  * 获取所有攻略（管理后台）
  */
 async function adminGetGuides(event) {
-  const { category, status } = event;
+  const { category, status, tag } = event;
   const query = db.collection('guides').orderBy('updateTime', 'desc');
 
   const where = {};
   if (category) where.category = category;
   if (status) where.status = status;
+  if (tag) where.tags = tag;
 
   if (Object.keys(where).length > 0) {
     query.where(where);
@@ -522,7 +590,8 @@ async function adminGetGuides(event) {
  * 保存攻略（新增或编辑）
  */
 async function adminSaveGuide(event) {
-  const { id, ...guideData } = event;
+  // eslint-disable-next-line no-unused-vars
+  const { id, type, ...guideData } = event;
 
   const data = {
     ...guideData,
@@ -533,7 +602,11 @@ async function adminSaveGuide(event) {
     // 编辑
     await db.collection('guides').doc(id).update({ data });
   } else {
-    // 新增
+    // 新增：默认发布状态
+    if (!data.status) data.status = 'published';
+    if (typeof data.views !== 'number') data.views = 0;
+    if (typeof data.likes !== 'number') data.likes = 0;
+    if (typeof data.weight !== 'number') data.weight = 0;
     data.createTime = new Date();
     await db.collection('guides').add({ data });
   }
@@ -648,6 +721,66 @@ async function adminDeleteRoom(event) {
 }
 
 // ==================== 工具函数 ====================
+
+/**
+ * 解析富文本，提取 editor 写入的 data-fileid，重新换发 tempFileURL 后替换 src。
+ * 兼容两种历史 HTML：
+ *  1) 新版（推荐）：<img src="https://tmp-url" data-fileid="cloud://...">
+ *  2) 旧版：<img src="cloud://..."> 直接以 cloud:// 作为 src
+ */
+async function refreshContentImages(html) {
+  if (!html) return html;
+
+  const fileIds = new Set();
+
+  // 收集 data-fileid="cloud://..."
+  const fileIdRegex = /data-fileid=["']([^"']+)["']/g;
+  let m;
+  while ((m = fileIdRegex.exec(html)) !== null) {
+    if (m[1] && m[1].indexOf('cloud://') === 0) fileIds.add(m[1]);
+  }
+
+  // 收集 src="cloud://..."（旧版兼容）
+  const srcCloudRegex = /src=["'](cloud:\/\/[^"']+)["']/g;
+  while ((m = srcCloudRegex.exec(html)) !== null) {
+    fileIds.add(m[1]);
+  }
+
+  if (fileIds.size === 0) return html;
+
+  let urlMap = {};
+  try {
+    const res = await cloud.getTempFileURL({ fileList: Array.from(fileIds) });
+    (res.fileList || []).forEach(f => {
+      if (f.fileID && f.tempFileURL) urlMap[f.fileID] = f.tempFileURL;
+    });
+  } catch (err) {
+    console.warn('refreshContentImages getTempFileURL 失败:', err);
+    return html;
+  }
+
+  // 替换：把 <img ... data-fileid="cloud://X" ...> 中的 src 替换为新链接
+  html = html.replace(/<img\b([^>]*)>/g, (tag, attrs) => {
+    const fidMatch = /data-fileid=["']([^"']+)["']/.exec(attrs);
+    if (fidMatch && urlMap[fidMatch[1]]) {
+      // 替换/插入 src
+      if (/\bsrc=["'][^"']*["']/.test(attrs)) {
+        attrs = attrs.replace(/\bsrc=["'][^"']*["']/, `src="${urlMap[fidMatch[1]]}"`);
+      } else {
+        attrs = ` src="${urlMap[fidMatch[1]]}"` + attrs;
+      }
+    } else {
+      // 旧版：src 就是 cloud:// 协议，直接替换
+      const srcMatch = /\bsrc=["'](cloud:\/\/[^"']+)["']/.exec(attrs);
+      if (srcMatch && urlMap[srcMatch[1]]) {
+        attrs = attrs.replace(/\bsrc=["'](cloud:\/\/[^"']+)["']/, `src="${urlMap[srcMatch[1]]}"`);
+      }
+    }
+    return `<img${attrs}>`;
+  });
+
+  return html;
+}
 
 /**
  * 格式化时间

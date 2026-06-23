@@ -6,6 +6,24 @@
     <text class="page-subtitle">本地人推荐的美食攻略</text>
   </view>
 
+  <!-- 标签筛选 -->
+  <view class="tag-filter-bar" wx:if="{{tagOptions.length > 0}}">
+    <view class="tag-filter-wrap {{tagsExpanded ? 'expanded' : 'collapsed'}}">
+      <view class="tag-filter-item {{activeTag === '' ? 'active' : ''}}" data-tag="" bindtap="selectTag">全部</view>
+      <view
+        class="tag-filter-item {{activeTag === item.name ? 'active' : ''}}"
+        wx:for="{{tagOptions}}"
+        wx:key="name"
+        data-tag="{{item.name}}"
+        bindtap="selectTag"
+      >{{item.name}}</view>
+    </view>
+    <view class="tag-filter-toggle" bindtap="toggleTagsExpanded" wx:if="{{tagOptions.length > 8}}">
+      <text wx:if="{{!tagsExpanded}}">展开 ▾</text>
+      <text wx:else>收起 ▴</text>
+    </view>
+  </view>
+
   <!-- 加载状态 -->
   <loading-state wx:if="{{loading}}" text="正在加载美食推荐..."></loading-state>
 
@@ -47,7 +65,9 @@
              wx:key="_id"
              wx:for-item="guide"
              style="animation-delay: {{index * 100}}ms">
-        <view class="food-card {{guide.hasRealImage ? 'has-image' : 'no-image'}} clickable hover-lift">
+        <view class="food-card {{guide.hasRealImage ? 'has-image' : 'no-image'}} clickable hover-lift"
+              data-id="{{guide._id}}"
+              bindtap="viewGuide">
 
           <!-- 优化的图片组件 -->
           <optimized-image

@@ -31,6 +31,7 @@
   background: #f5f5f5;
   border-radius: 8rpx;
   font-size: 28rpx;
+  box-sizing: border-box;
 }
 
 .form-picker {
@@ -41,6 +42,7 @@
   display: flex;
   align-items: center;
   padding: 0 20rpx;
+  box-sizing: border-box;
 }
 
 .picker-value {
@@ -56,13 +58,98 @@
   border-radius: 8rpx;
   font-size: 28rpx;
   line-height: 1.6;
+  box-sizing: border-box;
 }
 
-.form-textarea.rich-text {
-  min-height: 400rpx;
+/* ============ 标签 ============ */
+.tag-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
 }
 
-/* 图片上传 */
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 20rpx;
+  border-radius: 28rpx;
+  background: #f0f4ff;
+  font-size: 24rpx;
+  color: #2E7DFF;
+  line-height: 1.4;
+  border: 2rpx solid transparent;
+}
+
+.tag-chip.selected {
+  background: #2E7DFF;
+  color: #fff;
+}
+
+.tag-chip.cloud {
+  background: #f5f5f5;
+  color: #666;
+  border: 2rpx solid #eee;
+}
+
+.tag-chip.cloud.selected {
+  background: #2E7DFF;
+  color: #fff;
+  border-color: #2E7DFF;
+}
+
+.tag-chip-text {
+  font-size: 24rpx;
+}
+
+.tag-chip-close {
+  margin-left: 10rpx;
+  font-size: 28rpx;
+  line-height: 1;
+}
+
+.tag-chip-count {
+  margin-left: 6rpx;
+  font-size: 20rpx;
+  opacity: 0.7;
+}
+
+.tag-input-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.tag-input {
+  flex: 1;
+}
+
+.tag-add-btn {
+  flex: none;
+  padding: 0 28rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: #2E7DFF;
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+}
+
+.tag-cloud-label {
+  display: block;
+  margin-top: 24rpx;
+  margin-bottom: 16rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+/* ============ 图片上传 ============ */
 .image-upload {
   display: flex;
   flex-wrap: wrap;
@@ -126,7 +213,64 @@
   color: #999;
 }
 
-/* 底部按钮 */
+/* ============ 富文本编辑器 ============ */
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+  padding: 12rpx;
+  background: #fafafa;
+  border-radius: 8rpx;
+}
+
+.tb-btn {
+  min-width: 56rpx;
+  height: 56rpx;
+  padding: 0 14rpx;
+  line-height: 56rpx;
+  text-align: center;
+  background: #fff;
+  border: 2rpx solid #eaeaea;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.tb-btn.active {
+  background: #2E7DFF;
+  color: #fff;
+  border-color: #2E7DFF;
+}
+
+.tb-btn.primary {
+  background: #2E7DFF;
+  color: #fff;
+  border-color: #2E7DFF;
+}
+
+.tb-btn.danger {
+  color: #e64340;
+  border-color: #fbd5d4;
+}
+
+.tb-bold { font-weight: bold; }
+.tb-italic { font-style: italic; }
+.tb-underline { text-decoration: underline; }
+
+.rich-editor {
+  width: 100%;
+  min-height: 460rpx;
+  padding: 20rpx;
+  background: #fff;
+  border: 2rpx solid #eaeaea;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  line-height: 1.7;
+  box-sizing: border-box;
+}
+
+/* ============ 底部按钮 ============ */
 .bottom-actions {
   position: fixed;
   bottom: 0;
