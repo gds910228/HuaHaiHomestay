@@ -18,15 +18,14 @@
 .hero-photo {
   position: absolute;
   inset: 0;
-  /* SVG 海平面 + 落日剪影 (无外部图片资源依赖) */
   background:
     radial-gradient(ellipse 70% 100% at 75% 30%, rgba(232, 145, 109, 0.55) 0%, transparent 70%),
     linear-gradient(180deg, #2C6378 0%, #1E5266 55%, #0F3848 100%);
+  overflow: hidden;
 }
 
-.hero-photo::before {
-  /* 太阳 */
-  content: '';
+/* 太阳 · 呼吸脉动 + 光晕扩散 */
+.hero-sun {
   position: absolute;
   top: 80rpx;
   right: 130rpx;
@@ -34,21 +33,85 @@
   height: 110rpx;
   border-radius: 50%;
   background: radial-gradient(circle, #F4C29B 0%, #E8916D 60%, #C76F4E 100%);
-  box-shadow: 0 0 80rpx rgba(232, 145, 109, 0.45);
+  box-shadow:
+    0 0 80rpx rgba(232, 145, 109, 0.45),
+    0 0 160rpx rgba(232, 145, 109, 0.25);
+  animation: sun-pulse 4.5s ease-in-out infinite;
 }
 
-.hero-photo::after {
-  /* 海平线波浪 */
-  content: '';
+@keyframes sun-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 80rpx rgba(232, 145, 109, 0.45),
+      0 0 160rpx rgba(232, 145, 109, 0.25);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow:
+      0 0 100rpx rgba(232, 145, 109, 0.6),
+      0 0 220rpx rgba(232, 145, 109, 0.35);
+  }
+}
+
+/* 海平面波浪 · 横向漂移 */
+.hero-wave {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: -10%;
+  right: -10%;
   bottom: 0;
   height: 180rpx;
   background:
-    radial-gradient(ellipse 80% 60rpx at 30% 100%, rgba(255,255,255,0.18) 0%, transparent 70%),
-    radial-gradient(ellipse 100% 80rpx at 80% 100%, rgba(255,255,255,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 80rpx 60rpx at 20% 100%, rgba(255,255,255,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 120rpx 80rpx at 50% 100%, rgba(255,255,255,0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 100rpx 70rpx at 80% 100%, rgba(255,255,255,0.18) 0%, transparent 70%),
     linear-gradient(180deg, transparent 0%, rgba(15, 56, 72, 0.55) 100%);
+  animation: wave-drift 7s ease-in-out infinite;
+}
+
+@keyframes wave-drift {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(40rpx); }
+}
+
+/* 飘云 · 从右向左缓慢漂过 */
+.hero-cloud {
+  position: absolute;
+  height: 40rpx;
+  border-radius: 50rpx;
+  background: rgba(255, 255, 255, 0.18);
+  filter: blur(6rpx);
+}
+
+.cloud-1 {
+  top: 60rpx;
+  left: 40%;
+  width: 220rpx;
+  animation: cloud-drift-1 22s linear infinite;
+}
+
+.cloud-2 {
+  top: 140rpx;
+  left: 60%;
+  width: 160rpx;
+  height: 28rpx;
+  background: rgba(255, 255, 255, 0.12);
+  animation: cloud-drift-2 28s linear infinite;
+  animation-delay: -10s;
+}
+
+@keyframes cloud-drift-1 {
+  0%   { transform: translateX(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(-140%); opacity: 0; }
+}
+
+@keyframes cloud-drift-2 {
+  0%   { transform: translateX(0); opacity: 0; }
+  15%  { opacity: 0.9; }
+  85%  { opacity: 0.9; }
+  100% { transform: translateX(-160%); opacity: 0; }
 }
 
 .hero-tint {
@@ -124,6 +187,52 @@
   box-sizing: border-box;
   border-radius: var(--radius-xl);
   overflow: hidden;
+  transition: transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
+  box-shadow: 0 4rpx 16rpx rgba(94, 72, 50, 0.04);
+}
+
+.home-cat:active {
+  transform: scale(0.97);
+  box-shadow: 0 2rpx 8rpx rgba(94, 72, 50, 0.06);
+}
+
+/* 卡片右上 halo · 类目色光晕呼吸 */
+.cat-halo {
+  position: absolute;
+  top: -50rpx;
+  right: -50rpx;
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, currentColor 0%, transparent 65%);
+  opacity: 0.18;
+  pointer-events: none;
+  animation: halo-breathe 4s ease-in-out infinite;
+}
+
+@keyframes halo-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.18; }
+  50%      { transform: scale(1.15); opacity: 0.28; }
+}
+
+/* 卡片左下角小光点 · 间歇闪烁 */
+.cat-spark {
+  position: absolute;
+  left: 30rpx;
+  bottom: 90rpx;
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+  pointer-events: none;
+  animation: spark-twinkle 3.2s ease-in-out infinite;
+}
+
+@keyframes spark-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  20%      { opacity: 0.7; transform: scale(1.2); }
+  40%      { opacity: 0.3; transform: scale(0.9); }
 }
 
 .home-cat-spot {
@@ -143,19 +252,31 @@
   color: var(--cat-info);
 }
 
-.cat-icon-wrap {
-  width: 72rpx;
-  height: 72rpx;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* 错开每张卡的动画相位,让 4 张卡的光晕/光点不同步 */
+.home-cat:nth-child(1) .cat-halo  { animation-delay: 0s; }
+.home-cat:nth-child(2) .cat-halo  { animation-delay: -1s; }
+.home-cat:nth-child(3) .cat-halo  { animation-delay: -2s; }
+.home-cat:nth-child(4) .cat-halo  { animation-delay: -3s; }
+.home-cat:nth-child(1) .cat-spark { animation-delay: 0s; }
+.home-cat:nth-child(2) .cat-spark { animation-delay: -0.8s; }
+.home-cat:nth-child(3) .cat-spark { animation-delay: -1.6s; }
+.home-cat:nth-child(4) .cat-spark { animation-delay: -2.4s; }
+
+/* 图标 · 直接显示,无方框 */
+.cat-icon {
+  width: 76rpx;
+  height: 76rpx;
+  filter: drop-shadow(0 2rpx 6rpx rgba(0, 0, 0, 0.08));
+  animation: icon-float 5s ease-in-out infinite;
 }
 
-.cat-icon {
-  width: 44rpx;
-  height: 44rpx;
+.home-cat:nth-child(2) .cat-icon { animation-delay: -1.2s; }
+.home-cat:nth-child(3) .cat-icon { animation-delay: -2.4s; }
+.home-cat:nth-child(4) .cat-icon { animation-delay: -3.6s; }
+
+@keyframes icon-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6rpx); }
 }
 
 .cat-meta {
@@ -182,7 +303,17 @@
   width: 36rpx;
   height: 36rpx;
   opacity: 0.85;
+  animation: arrow-nudge 2.6s ease-in-out infinite;
 }
+
+@keyframes arrow-nudge {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(6rpx); }
+}
+
+.home-cat:nth-child(2) .cat-arrow { animation-delay: -0.6s; }
+.home-cat:nth-child(3) .cat-arrow { animation-delay: -1.2s; }
+.home-cat:nth-child(4) .cat-arrow { animation-delay: -1.8s; }
 
 .cat-arrow image {
   width: 100%;
@@ -193,7 +324,7 @@
 .home-hostel-card {
   position: relative;
   margin: var(--space-2xl) var(--space-lg) 0;
-  height: 280rpx;
+  min-height: 320rpx;
   border-radius: var(--radius-2xl);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
@@ -205,6 +336,20 @@
   background:
     radial-gradient(ellipse 60% 100% at 80% 50%, rgba(232, 145, 109, 0.35) 0%, transparent 70%),
     linear-gradient(135deg, #1E5266 0%, #0F3848 100%);
+  animation: hostel-glow 6s ease-in-out infinite;
+}
+
+@keyframes hostel-glow {
+  0%, 100% {
+    background:
+      radial-gradient(ellipse 60% 100% at 80% 50%, rgba(232, 145, 109, 0.35) 0%, transparent 70%),
+      linear-gradient(135deg, #1E5266 0%, #0F3848 100%);
+  }
+  50% {
+    background:
+      radial-gradient(ellipse 80% 100% at 75% 45%, rgba(232, 145, 109, 0.5) 0%, transparent 72%),
+      linear-gradient(135deg, #1E5266 0%, #0F3848 100%);
+  }
 }
 
 .hostel-card-content {
@@ -212,10 +357,19 @@
   z-index: 2;
   padding: var(--space-xl);
   color: var(--text-white);
-  height: 100%;
+  min-height: 320rpx;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.hostel-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: var(--font-base);
+  font-weight: 500;
+  margin-top: auto;
 }
 
 .hostel-card-eyebrow {
@@ -236,6 +390,7 @@
   font-size: var(--font-sm);
   opacity: 0.8;
   margin-top: 4rpx;
+  margin-bottom: var(--space-md);
 }
 
 .hostel-card-cta {

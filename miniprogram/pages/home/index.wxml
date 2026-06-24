@@ -3,6 +3,10 @@
   <!-- Hero · 沉浸式头图 -->
   <view class="home-hero">
     <view class="hero-photo">
+      <view class="hero-cloud cloud-1"></view>
+      <view class="hero-cloud cloud-2"></view>
+      <view class="hero-sun"></view>
+      <view class="hero-wave"></view>
       <view class="hero-tint"></view>
     </view>
     <view class="hero-meta">
@@ -28,9 +32,9 @@
       bindtap="navigateToCategory"
       style="animation-delay: {{index * 60}}ms"
     >
-      <view class="cat-icon-wrap">
-        <image class="cat-icon" src="{{item.iconSrc}}" mode="aspectFit"></image>
-      </view>
+      <image class="cat-icon" src="{{item.iconSrc}}" mode="aspectFit"></image>
+      <view class="cat-spark"></view>
+      <view class="cat-halo"></view>
       <view class="cat-meta">
         <view class="cat-name">{{item.name}}</view>
         <view class="cat-desc">{{item.desc}}</view>
