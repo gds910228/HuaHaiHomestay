@@ -254,23 +254,33 @@ Page({
   },
 
   /**
-   * 立即预订
+   * 咨询民宿主 (仅提供联系方式)
    */
   handleBooking() {
     const { room } = this.data;
-
     if (!room) return;
 
-    // TODO: 实现预订功能
-    wx.showModal({
-      title: '预订提示',
-      content: '预订功能即将上线，敬请期待！\n\n如需预订，请直接联系客服。',
-      confirmText: '联系客服',
-      cancelText: '我知道了',
-      success(res) {
-        if (res.confirm) {
+    wx.showActionSheet({
+      itemList: ['拨打电话:18907208020', '复制微信号'],
+      success: (res) => {
+        if (res.tapIndex === 0) {
           wx.makePhoneCall({
-            phoneNumber: '18907208020'
+            phoneNumber: '18907208020',
+            fail: (err) => {
+              console.warn('拨打电话取消或失败', err);
+            }
+          });
+        } else if (res.tapIndex === 1) {
+          wx.setClipboardData({
+            data: 'qingaiyisheng321',
+            success: () => {
+              wx.showModal({
+                title: '微信号已复制',
+                content: '微信号 qingaiyisheng321 已复制到剪贴板,可打开微信添加民宿主咨询',
+                showCancel: false,
+                confirmText: '我知道了'
+              });
+            }
           });
         }
       }

@@ -95,7 +95,7 @@
           <text class="room-title">{{item.roomType}}</text>
           <view class="room-status" wx:if="{{item.status === 'available'}}">
             <view class="status-dot"></view>
-            <text class="status-text">可预订</text>
+            <text class="status-text">在房</text>
           </view>
         </view>
 
@@ -128,7 +128,7 @@
 
   <!-- 底部咨询按钮 -->
   <view class="bottom-action">
-    <button class="btn-accent action-btn" bindtap="copyWechat">立即咨询预订</button>
+    <button class="btn-accent action-btn" bindtap="copyWechat">联系民宿主</button>
   </view>
 </view>
 

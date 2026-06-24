@@ -100,8 +100,8 @@
     <!-- 房间状态 -->
     <view class="form-item">
       <view class="form-label">房间状态</view>
-      <picker class="form-picker" mode="selector" range="{{['可预订', '已满房', '维护中']}}" value="{{formData.status === 'available' ? 0 : formData.status === 'unavailable' ? 1 : 2}}" bindchange="onStatusChange">
-        <view class="picker-text">{{formData.status === 'available' ? '可预订' : formData.status === 'unavailable' ? '已满房' : '维护中'}}</view>
+      <picker class="form-picker" mode="selector" range="{{['在房', '已满', '维护中']}}" value="{{formData.status === 'available' ? 0 : formData.status === 'unavailable' ? 1 : 2}}" bindchange="onStatusChange">
+        <view class="picker-text">{{formData.status === 'available' ? '在房' : formData.status === 'unavailable' ? '已满' : '维护中'}}</view>
       </picker>
     </view>
 
@@ -402,7 +402,7 @@
       <switch
         checked="{{checkInRules.instantConfirm}}"
         bindchange="onInstantConfirmChange" />
-      <text class="switch-desc">下单即有房，无需等待确认</text>
+      <text class="switch-desc">咨询即可确认有房,无需等待</text>
     </view>
   </view>
 

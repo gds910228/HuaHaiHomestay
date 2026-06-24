@@ -257,7 +257,7 @@
     <view class="collapsible-head" bindtap="toggleCheckInRules">
       <view>
         <view class="section-eyebrow">CHECK-IN · 入住须知</view>
-        <view class="section-title">订房前必读</view>
+        <view class="section-title">入住前必读</view>
       </view>
       <image class="chevron {{showCheckInRules ? 'open' : ''}}" src="/images/icons/chevron-down.svg" mode="aspectFit"></image>
     </view>
@@ -280,7 +280,7 @@
       </view>
       <view class="rule-item" wx:if="{{room.checkInRules.instantConfirm !== undefined}}">
         <text class="rule-label">确认方式</text>
-        <text class="rule-value">{{room.checkInRules.instantConfirm ? '立即确认(下单即有房)' : '需等待确认'}}</text>
+        <text class="rule-value">{{room.checkInRules.instantConfirm ? '即时确认有房' : '需提前与民宿主确认'}}</text>
       </view>
     </view>
   </view>
@@ -365,7 +365,7 @@
         <text class="action-text">客服</text>
       </view>
       <view class="action-btn book-btn" bindtap="handleBooking">
-        <text class="btn-text">立即预订</text>
+        <text class="btn-text">咨询民宿主</text>
       </view>
     </view>
   </view>

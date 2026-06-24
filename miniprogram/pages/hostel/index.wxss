@@ -2,7 +2,7 @@
 .hostel-container {
   min-height: 100vh;
   background: var(--bg-canvas);
-  padding-bottom: 180rpx;
+  padding-bottom: 120rpx;
 }
 
 /* ============ 相册 ============ */
@@ -419,12 +419,16 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: var(--space-md) var(--space-lg);
-  padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+  padding: 10rpx var(--space-lg);
+  padding-bottom: 10rpx;
   background: rgba(251, 247, 240, 0.92);
   backdrop-filter: blur(20rpx);
   box-shadow: 0 -4rpx 16rpx rgba(94, 72, 50, 0.06);
   z-index: 10;
+}
+
+.bottom-action .action-btn {
+  height: 80rpx;
 }
 
 .action-btn {
