@@ -31,7 +31,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '画海民宿 · 南澳岛攻略与住宿',
+      title: '画海 · 南澳岛旅行手记',
       path: '/pages/home/index',
       imageUrl: '/images/logo.jpg'
     };
@@ -39,7 +39,7 @@ Page({
 
   onShareTimeline() {
     return {
-      title: '画海民宿 · 南澳岛攻略与住宿',
+      title: '画海 · 南澳岛旅行手记',
       query: '',
       imageUrl: '/images/logo.jpg'
     };

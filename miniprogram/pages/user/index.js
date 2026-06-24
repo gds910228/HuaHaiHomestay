@@ -191,7 +191,7 @@ Page({
   showAbout() {
     wx.showModal({
       title: '关于我们',
-      content: '画海民宿小程序 v1.0.0\n为游客提供南澳岛旅游攻略与住宿信息',
+      content: '画海小程序 v1.0.0\n南澳岛旅行攻略与实景记录',
       showCancel: false
     });
   },

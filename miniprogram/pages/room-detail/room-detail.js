@@ -254,6 +254,17 @@ Page({
   },
 
   /**
+   * 返回上一页
+   */
+  handleBack() {
+    wx.navigateBack({
+      fail: () => {
+        wx.switchTab({ url: '/pages/hostel/index' });
+      }
+    });
+  },
+
+  /**
    * 咨询民宿主 (仅提供联系方式)
    */
   handleBooking() {

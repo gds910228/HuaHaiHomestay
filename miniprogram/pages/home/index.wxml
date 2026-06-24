@@ -12,7 +12,7 @@
     <view class="hero-meta">
       <view class="hero-eyebrow-line">HUAHAI · 画海</view>
       <view class="hero-headline">在南澳,听海起风</view>
-      <view class="hero-sub">精选攻略 · 海岛住宿 · 慢游南澳</view>
+      <view class="hero-sub">精选攻略 · 海岛风物 · 慢游南澳</view>
     </view>
   </view>
 
@@ -64,11 +64,11 @@
     <view class="hostel-glow"></view>
 
     <view class="hostel-card-content">
-      <view class="hostel-card-eyebrow">STAY · 入住画海</view>
+      <view class="hostel-card-eyebrow">PLACE · 画海实景</view>
       <view class="hostel-card-title">海景房 · 落日窗</view>
       <view class="hostel-card-desc">慢下来,与潮汐同频</view>
       <view class="hostel-card-cta">
-        <text>查看房型</text>
+        <text>看看画海</text>
         <image class="hostel-card-arrow" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12 h 14'/%3E%3Cpath d='M13 5 l 7 7 -7 7'/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
     </view>

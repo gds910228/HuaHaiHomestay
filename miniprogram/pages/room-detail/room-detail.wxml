@@ -34,12 +34,6 @@
       </view>
     </view>
 
-    <view class="price-row">
-      <text class="price-symbol">¥</text>
-      <text class="price-value tabular-nums">{{room.displayPrice}}</text>
-      <text class="price-unit">/晚</text>
-    </view>
-
     <view class="room-basic-info">
       <view class="basic-info-item">
         <image class="basic-info-icon" src="/images/icons/area.svg" mode="aspectFit"></image>
@@ -256,14 +250,14 @@
   <view class="section-block" wx:if="{{room.checkInRules}}">
     <view class="collapsible-head" bindtap="toggleCheckInRules">
       <view>
-        <view class="section-eyebrow">CHECK-IN · 入住须知</view>
-        <view class="section-title">入住前必读</view>
+        <view class="section-eyebrow">NOTES · 空间须知</view>
+        <view class="section-title">来之前知道这些</view>
       </view>
       <image class="chevron {{showCheckInRules ? 'open' : ''}}" src="/images/icons/chevron-down.svg" mode="aspectFit"></image>
     </view>
     <view class="rules-list" wx:if="{{showCheckInRules}}">
       <view class="rule-item" wx:if="{{room.checkInRules.checkInTime}}">
-        <text class="rule-label">入住时间</text>
+        <text class="rule-label">开放时间</text>
         <text class="rule-value">{{room.checkInRules.checkInTime}}</text>
       </view>
       <view class="rule-item" wx:if="{{room.checkInRules.checkOutTime}}">
@@ -273,10 +267,6 @@
       <view class="rule-item" wx:if="{{room.checkInRules.cancelPolicy}}">
         <text class="rule-label">取消政策</text>
         <text class="rule-value">{{room.checkInRules.cancelPolicy}}</text>
-      </view>
-      <view class="rule-item" wx:if="{{room.checkInRules.deposit}}">
-        <text class="rule-label">押金</text>
-        <text class="rule-value tabular-nums">¥{{room.checkInRules.deposit}}(离店后退还)</text>
       </view>
       <view class="rule-item" wx:if="{{room.checkInRules.instantConfirm !== undefined}}">
         <text class="rule-label">确认方式</text>
@@ -360,12 +350,8 @@
         ></image>
         <text class="action-text">收藏</text>
       </view>
-      <view class="action-btn ghost-btn" bindtap="handleContact">
-        <image class="action-btn-icon" src="/images/icons/phone-brand.svg" mode="aspectFit"></image>
-        <text class="action-text">客服</text>
-      </view>
-      <view class="action-btn book-btn" bindtap="handleBooking">
-        <text class="btn-text">咨询民宿主</text>
+      <view class="action-btn back-btn" bindtap="handleBack">
+        <text class="btn-text">返回上一页</text>
       </view>
     </view>
   </view>

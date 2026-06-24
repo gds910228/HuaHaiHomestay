@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "画海民宿",
+  "navigationBarTitleText": "画海 · 南澳",
   "backgroundColor": "#FBF7F0",
   "usingComponents": {
     "loading-state": "/components/loading-state/index"

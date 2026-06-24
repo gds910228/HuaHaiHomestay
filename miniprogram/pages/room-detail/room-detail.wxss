@@ -312,7 +312,8 @@
 .action-btn-icon { width: 36rpx; height: 36rpx; }
 .action-text { font-size: 22rpx; color: var(--text-secondary); letter-spacing: 0.5rpx; }
 
-.book-btn {
+.book-btn,
+.back-btn {
   flex: 2.2;
   background: var(--brand-primary);
   color: var(--text-white);

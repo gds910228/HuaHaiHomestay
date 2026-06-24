@@ -23,7 +23,7 @@
 
   <!-- 民宿信息 -->
   <view class="hostel-info">
-    <view class="info-eyebrow">STAY · 南澳 · 画海</view>
+    <view class="info-eyebrow">PLACE · 画海 · 南澳岛上的家</view>
     <text class="info-title">{{hostel.name}}</text>
     <text class="info-desc">{{hostel.description}}</text>
 
@@ -38,18 +38,6 @@
           <view class="cell-value text-ellipsis">{{hostel.address}}</view>
         </view>
         <image class="cell-arrow" src="/images/icons/chevron-right.svg" mode="aspectFit"></image>
-      </view>
-    </view>
-
-    <!-- 联系按钮 -->
-    <view class="contact-actions">
-      <view class="contact-btn contact-btn-primary clickable" bindtap="makeCall">
-        <image class="btn-icon" src="/images/icons/phone-white.svg" mode="aspectFit"></image>
-        <text class="btn-text">电话咨询</text>
-      </view>
-      <view class="contact-btn contact-btn-accent clickable" bindtap="copyWechat">
-        <image class="btn-icon" src="/images/icons/chat-white.svg" mode="aspectFit"></image>
-        <text class="btn-text">微信咨询</text>
       </view>
     </view>
   </view>
@@ -93,10 +81,6 @@
       <view class="room-content">
         <view class="room-title-row">
           <text class="room-title">{{item.roomType}}</text>
-          <view class="room-status" wx:if="{{item.status === 'available'}}">
-            <view class="status-dot"></view>
-            <text class="status-text">在房</text>
-          </view>
         </view>
 
         <text class="room-desc text-clamp-2">{{item.description}}</text>
@@ -113,10 +97,6 @@
         </view>
 
         <view class="room-footer">
-          <view class="price-range">
-            <text class="price-label">参考价</text>
-            <text class="price-value tabular-nums">{{item.priceText}}</text>
-          </view>
           <view class="room-cta">
             <text>查看详情</text>
             <image class="cta-arrow" src="/images/icons/chevron-right-brand.svg" mode="aspectFit"></image>
@@ -126,10 +106,7 @@
     </view>
   </view>
 
-  <!-- 底部咨询按钮 -->
-  <view class="bottom-action">
-    <button class="btn-accent action-btn" bindtap="copyWechat">联系民宿主</button>
-  </view>
+  <!-- 底部咨询按钮已移除 -->
 </view>
 
 <!-- 加载状态 -->
