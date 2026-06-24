@@ -16,7 +16,7 @@
     </swiper>
     <view class="album-tint"></view>
     <view class="album-badge">
-      <image class="badge-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='16' rx='2'/%3E%3Ccircle cx='9' cy='10' r='1.6'/%3E%3Cpath d='M3 17 l 5 -5 4 4 4 -3 5 6'/%3E%3C/svg%3E" mode="aspectFit"></image>
+      <image class="badge-icon" src="/images/icons/image-white.svg" mode="aspectFit"></image>
       <text class="badge-text">{{hostel.albums.length}}</text>
     </view>
   </view>
@@ -31,24 +31,24 @@
     <view class="info-bento">
       <view class="info-cell info-cell-wide clickable" bindtap="navigate">
         <view class="cell-icon-wrap cell-icon-brand">
-          <image class="cell-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22 s -7 -7 -7 -13 a 7 7 0 0 1 14 0 c 0 6 -7 13 -7 13 z'/%3E%3Ccircle cx='12' cy='9' r='2.4'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          <image class="cell-icon" src="/images/icons/pin.svg" mode="aspectFit"></image>
         </view>
         <view class="cell-body">
           <view class="cell-label">地址</view>
           <view class="cell-value text-ellipsis">{{hostel.address}}</view>
         </view>
-        <image class="cell-arrow" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6 l 6 6 -6 6'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        <image class="cell-arrow" src="/images/icons/chevron-right.svg" mode="aspectFit"></image>
       </view>
     </view>
 
     <!-- 联系按钮 -->
     <view class="contact-actions">
       <view class="contact-btn contact-btn-primary clickable" bindtap="makeCall">
-        <image class="btn-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 4 h 4 l 2 5 -3 2 a 11 11 0 0 0 5 5 l 2 -3 5 2 v 4 a 2 2 0 0 1 -2 2 A 17 17 0 0 1 3 6 a 2 2 0 0 1 2 -2'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        <image class="btn-icon" src="/images/icons/phone-white.svg" mode="aspectFit"></image>
         <text class="btn-text">电话咨询</text>
       </view>
       <view class="contact-btn contact-btn-accent clickable" bindtap="copyWechat">
-        <image class="btn-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 11.5 a 8.38 8.38 0 0 1 -.9 3.8 8.5 8.5 0 0 1 -7.6 4.7 8.38 8.38 0 0 1 -3.8 -.9 L 3 21 l 1.9 -5.7 a 8.38 8.38 0 0 1 -.9 -3.8 8.5 8.5 0 0 1 4.7 -7.6 8.38 8.38 0 0 1 3.8 -.9 h .5 a 8.48 8.48 0 0 1 8 8 v .5 z'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        <image class="btn-icon" src="/images/icons/chat-white.svg" mode="aspectFit"></image>
         <text class="btn-text">微信咨询</text>
       </view>
     </view>
@@ -63,7 +63,7 @@
     <view class="facilities-grid">
       <view class="facility-item" wx:for="{{hostel.facilities}}" wx:key="*this">
         <view class="facility-tick">
-          <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 l 5 5 11 -11'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          <image src="/images/icons/check.svg" mode="aspectFit"></image>
         </view>
         <text class="facility-text">{{item}}</text>
       </view>
@@ -119,7 +119,7 @@
           </view>
           <view class="room-cta">
             <text>查看详情</text>
-            <image class="cta-arrow" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6 l 6 6 -6 6'/%3E%3C/svg%3E" mode="aspectFit"></image>
+            <image class="cta-arrow" src="/images/icons/chevron-right-brand.svg" mode="aspectFit"></image>
           </view>
         </view>
       </view>

@@ -179,7 +179,7 @@
 .home-cat {
   position: relative;
   width: calc((100% - var(--space-lg)) / 2);
-  min-height: 280rpx;
+  min-height: 290rpx;
   padding: var(--space-lg);
   display: flex;
   flex-direction: column;
@@ -188,51 +188,88 @@
   border-radius: var(--radius-xl);
   overflow: hidden;
   transition: transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
-  box-shadow: 0 4rpx 16rpx rgba(94, 72, 50, 0.04);
+  box-shadow: 0 4rpx 16rpx rgba(94, 72, 50, 0.05);
 }
 
 .home-cat:active {
-  transform: scale(0.97);
-  box-shadow: 0 2rpx 8rpx rgba(94, 72, 50, 0.06);
+  transform: scale(0.96);
+  box-shadow: 0 2rpx 8rpx rgba(94, 72, 50, 0.08);
 }
 
-/* 卡片右上 halo · 类目色光晕呼吸 */
-.cat-halo {
+/* 右上主题装饰 SVG · 缓慢漂浮+轻微旋转 */
+.cat-deco {
   position: absolute;
-  top: -50rpx;
-  right: -50rpx;
+  top: -20rpx;
+  right: -20rpx;
   width: 200rpx;
   height: 200rpx;
-  border-radius: 50%;
-  background: radial-gradient(circle, currentColor 0%, transparent 65%);
-  opacity: 0.18;
   pointer-events: none;
-  animation: halo-breathe 4s ease-in-out infinite;
+  animation: deco-float 9s ease-in-out infinite;
 }
 
-@keyframes halo-breathe {
-  0%, 100% { transform: scale(1); opacity: 0.18; }
-  50%      { transform: scale(1.15); opacity: 0.28; }
+@keyframes deco-float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33%      { transform: translate(-6rpx, 4rpx) rotate(-3deg); }
+  66%      { transform: translate(4rpx, -6rpx) rotate(3deg); }
 }
 
-/* 卡片左下角小光点 · 间歇闪烁 */
+/* 底部波浪光带 · 横向漂移 */
+.cat-wave {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: -10rpx;
+  height: 80rpx;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80rpx 40rpx at 20% 80%, currentColor 0%, transparent 70%),
+    radial-gradient(ellipse 120rpx 50rpx at 50% 85%, currentColor 0%, transparent 70%),
+    radial-gradient(ellipse 90rpx 40rpx at 80% 80%, currentColor 0%, transparent 70%);
+  opacity: 0.18;
+  animation: wave-slide 8s ease-in-out infinite;
+}
+
+@keyframes wave-slide {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(40rpx); }
+}
+
+/* 角落光斑 · 双点错位脉动 */
 .cat-spark {
   position: absolute;
-  left: 30rpx;
-  bottom: 90rpx;
-  width: 12rpx;
-  height: 12rpx;
   border-radius: 50%;
   background: currentColor;
-  opacity: 0.4;
   pointer-events: none;
-  animation: spark-twinkle 3.2s ease-in-out infinite;
+  filter: blur(1rpx);
 }
 
-@keyframes spark-twinkle {
-  0%, 100% { opacity: 0.2; transform: scale(0.8); }
-  20%      { opacity: 0.7; transform: scale(1.2); }
-  40%      { opacity: 0.3; transform: scale(0.9); }
+.spark-a {
+  left: 28rpx;
+  bottom: 110rpx;
+  width: 10rpx;
+  height: 10rpx;
+  opacity: 0.55;
+  animation: spark-pulse-a 3.2s ease-in-out infinite;
+}
+
+.spark-b {
+  right: 100rpx;
+  top: 40rpx;
+  width: 6rpx;
+  height: 6rpx;
+  opacity: 0.6;
+  animation: spark-pulse-b 4.5s ease-in-out infinite;
+}
+
+@keyframes spark-pulse-a {
+  0%, 100% { opacity: 0.2; transform: scale(0.7); }
+  35%      { opacity: 0.8; transform: scale(1.3); }
+  70%      { opacity: 0.4; transform: scale(0.9); }
+}
+
+@keyframes spark-pulse-b {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%      { opacity: 0.85; transform: scale(1.4); }
 }
 
 .home-cat-spot {
@@ -252,21 +289,34 @@
   color: var(--cat-info);
 }
 
-/* 错开每张卡的动画相位,让 4 张卡的光晕/光点不同步 */
-.home-cat:nth-child(1) .cat-halo  { animation-delay: 0s; }
-.home-cat:nth-child(2) .cat-halo  { animation-delay: -1s; }
-.home-cat:nth-child(3) .cat-halo  { animation-delay: -2s; }
-.home-cat:nth-child(4) .cat-halo  { animation-delay: -3s; }
-.home-cat:nth-child(1) .cat-spark { animation-delay: 0s; }
-.home-cat:nth-child(2) .cat-spark { animation-delay: -0.8s; }
-.home-cat:nth-child(3) .cat-spark { animation-delay: -1.6s; }
-.home-cat:nth-child(4) .cat-spark { animation-delay: -2.4s; }
+/* 错相位 · 让 4 张卡的动画各自独立呼吸 */
+.home-cat:nth-child(1) .cat-deco   { animation-delay: 0s; }
+.home-cat:nth-child(2) .cat-deco   { animation-delay: -2.2s; }
+.home-cat:nth-child(3) .cat-deco   { animation-delay: -4.5s; }
+.home-cat:nth-child(4) .cat-deco   { animation-delay: -6.7s; }
 
-/* 图标 · 直接显示,无方框 */
+.home-cat:nth-child(1) .cat-wave   { animation-delay: 0s; }
+.home-cat:nth-child(2) .cat-wave   { animation-delay: -2s; }
+.home-cat:nth-child(3) .cat-wave   { animation-delay: -4s; }
+.home-cat:nth-child(4) .cat-wave   { animation-delay: -6s; }
+
+.home-cat:nth-child(1) .spark-a    { animation-delay: 0s; }
+.home-cat:nth-child(2) .spark-a    { animation-delay: -0.8s; }
+.home-cat:nth-child(3) .spark-a    { animation-delay: -1.6s; }
+.home-cat:nth-child(4) .spark-a    { animation-delay: -2.4s; }
+
+.home-cat:nth-child(1) .spark-b    { animation-delay: -0.5s; }
+.home-cat:nth-child(2) .spark-b    { animation-delay: -1.3s; }
+.home-cat:nth-child(3) .spark-b    { animation-delay: -2.8s; }
+.home-cat:nth-child(4) .spark-b    { animation-delay: -3.6s; }
+
+/* 图标 · 浮动 */
 .cat-icon {
+  position: relative;
+  z-index: 2;
   width: 76rpx;
   height: 76rpx;
-  filter: drop-shadow(0 2rpx 6rpx rgba(0, 0, 0, 0.08));
+  filter: drop-shadow(0 3rpx 8rpx rgba(0, 0, 0, 0.12));
   animation: icon-float 5s ease-in-out infinite;
 }
 
@@ -275,8 +325,14 @@
 .home-cat:nth-child(4) .cat-icon { animation-delay: -3.6s; }
 
 @keyframes icon-float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6rpx); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-8rpx) rotate(-3deg); }
+}
+
+.cat-meta {
+  position: relative;
+  z-index: 2;
+  margin-top: var(--space-md);
 }
 
 .cat-meta {
@@ -303,6 +359,7 @@
   width: 36rpx;
   height: 36rpx;
   opacity: 0.85;
+  z-index: 2;
   animation: arrow-nudge 2.6s ease-in-out infinite;
 }
 

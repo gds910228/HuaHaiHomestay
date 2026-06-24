@@ -32,9 +32,15 @@
       bindtap="navigateToCategory"
       style="animation-delay: {{index * 60}}ms"
     >
+      <!-- 右上主题装饰 -->
+      <image class="cat-deco" src="/images/icons/deco-{{item.id}}.svg" mode="aspectFit"></image>
+      <!-- 底部波浪光带 -->
+      <view class="cat-wave"></view>
+      <!-- 角落光斑 -->
+      <view class="cat-spark spark-a"></view>
+      <view class="cat-spark spark-b"></view>
+
       <image class="cat-icon" src="{{item.iconSrc}}" mode="aspectFit"></image>
-      <view class="cat-spark"></view>
-      <view class="cat-halo"></view>
       <view class="cat-meta">
         <view class="cat-name">{{item.name}}</view>
         <view class="cat-desc">{{item.desc}}</view>
