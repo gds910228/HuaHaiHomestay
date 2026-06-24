@@ -29,13 +29,13 @@
         <image
           wx:if="{{isFavorite}}"
           class="fav-icon"
-          src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23E8916D' stroke='%23E8916D' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61 a 5.5 5.5 0 0 0 -7.78 0 L 12 5.67 l -1.06 -1.06 a 5.5 5.5 0 0 0 -7.78 7.78 l 1.06 1.06 L 12 21.23 l 7.78 -7.78 1.06 -1.06 a 5.5 5.5 0 0 0 0 -7.78 z'/%3E%3C/svg%3E"
+          src="/images/icons/heart-filled.svg"
           mode="aspectFit"
         ></image>
         <image
           wx:else
           class="fav-icon"
-          src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61 a 5.5 5.5 0 0 0 -7.78 0 L 12 5.67 l -1.06 -1.06 a 5.5 5.5 0 0 0 -7.78 7.78 l 1.06 1.06 L 12 21.23 l 7.78 -7.78 1.06 -1.06 a 5.5 5.5 0 0 0 0 -7.78 z'/%3E%3C/svg%3E"
+          src="/images/icons/heart.svg"
           mode="aspectFit"
         ></image>
       </view>
@@ -49,11 +49,11 @@
     <!-- 统计信息 -->
     <view class="detail-stats">
       <view class="stat-item">
-        <image class="stat-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 12 s 4 -8 11 -8 11 8 11 8 -4 8 -11 8 -11 -8 -11 -8 z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        <image class="stat-icon" src="/images/icons/eye.svg" mode="aspectFit"></image>
         <text class="stat-value tabular-nums">{{guide.views || 0}}</text>
       </view>
       <view class="stat-item" wx:if="{{guide.likes > 0}}">
-        <image class="stat-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E8916D' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61 a 5.5 5.5 0 0 0 -7.78 0 L 12 5.67 l -1.06 -1.06 a 5.5 5.5 0 0 0 -7.78 7.78 l 1.06 1.06 L 12 21.23 l 7.78 -7.78 1.06 -1.06 a 5.5 5.5 0 0 0 0 -7.78 z'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        <image class="stat-icon" src="/images/icons/heart-filled.svg" mode="aspectFit"></image>
         <text class="stat-value tabular-nums">{{guide.likes || 0}}</text>
       </view>
     </view>
@@ -80,11 +80,11 @@
   <!-- 底部操作栏 -->
   <view class="detail-footer">
     <button class="footer-btn footer-btn-secondary" open-type="share">
-      <image class="footer-btn-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 v 8 a 2 2 0 0 0 2 2 h 12 a 2 2 0 0 0 2 -2 v -8'/%3E%3Cpath d='M16 6 l -4 -4 -4 4 M 12 2 v 14'/%3E%3C/svg%3E" mode="aspectFit"></image>
+      <image class="footer-btn-icon" src="/images/icons/share.svg" mode="aspectFit"></image>
       <text>分享</text>
     </button>
     <button class="footer-btn footer-btn-primary" bindtap="navigate" wx:if="{{guide.location}}">
-      <image class="footer-btn-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22 s -7 -7 -7 -13 a 7 7 0 0 1 14 0 c 0 6 -7 13 -7 13 z'/%3E%3Ccircle cx='12' cy='9' r='2.4'/%3E%3C/svg%3E" mode="aspectFit"></image>
+      <image class="footer-btn-icon" src="/images/icons/pin-white.svg" mode="aspectFit"></image>
       <text>一键导航</text>
     </button>
   </view>

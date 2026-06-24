@@ -40,7 +40,7 @@
         <view class="cat-desc">{{item.desc}}</view>
       </view>
       <view class="cat-arrow">
-        <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12 h 14'/%3E%3Cpath d='M13 5 l 7 7 -7 7'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        <image src="/images/icons/arrow-right-{{item.id}}.svg" mode="aspectFit"></image>
       </view>
     </view>
   </view>

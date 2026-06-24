@@ -5,36 +5,71 @@
   padding-bottom: 80rpx;
 }
 
-/* === 用户头部 (暖米色 · 不再蓝色凹角) === */
+/* === 用户头部 (沉浸式渐变 sheet) === */
 .user-header {
   position: relative;
-  padding: 80rpx var(--space-xl) var(--space-2xl);
-  background: var(--bg-canvas);
+  padding: 56rpx var(--space-xl) var(--space-2xl);
+  background: linear-gradient(160deg, #FBF7F0 0%, #F4EFE6 100%);
+  overflow: hidden;
+  margin-bottom: var(--space-md);
 }
 
-.user-header::after {
-  /* 底部分隔细线 */
-  content: '';
+.header-bg {
   position: absolute;
-  left: var(--space-xl);
-  right: var(--space-xl);
-  bottom: 0;
-  height: 2rpx;
-  background: var(--divider-color);
+  inset: 0;
+  pointer-events: none;
+}
+
+.header-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40rpx);
+  opacity: 0.55;
+}
+
+.blob-1 {
+  top: -80rpx;
+  right: -40rpx;
+  width: 280rpx;
+  height: 280rpx;
+  background: radial-gradient(circle, rgba(232, 145, 109, 0.55) 0%, transparent 70%);
+  animation: blob-float-1 9s ease-in-out infinite;
+}
+
+.blob-2 {
+  bottom: -100rpx;
+  left: -60rpx;
+  width: 320rpx;
+  height: 320rpx;
+  background: radial-gradient(circle, rgba(30, 82, 102, 0.32) 0%, transparent 70%);
+  animation: blob-float-2 11s ease-in-out infinite;
+}
+
+@keyframes blob-float-1 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-30rpx, 24rpx); }
+}
+
+@keyframes blob-float-2 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(36rpx, -28rpx); }
 }
 
 .user-info {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
 }
 
 .user-avatar {
-  width: 128rpx;
-  height: 128rpx;
+  width: 132rpx;
+  height: 132rpx;
   border-radius: 50%;
   margin-right: var(--space-lg);
   background: var(--bg-surface);
-  box-shadow: var(--shadow-md);
+  border: 4rpx solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8rpx 20rpx rgba(30, 82, 102, 0.12);
 }
 
 .user-detail {
@@ -43,12 +78,20 @@
   flex-direction: column;
 }
 
+.user-eyebrow {
+  font-size: var(--font-xs);
+  letter-spacing: 4rpx;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-bottom: 4rpx;
+}
+
 .user-name {
   font-size: 40rpx;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.5rpx;
-  margin-bottom: 6rpx;
+  margin-bottom: 4rpx;
 }
 
 .user-desc {
@@ -58,7 +101,7 @@
 
 /* === 区块 === */
 .section-block {
-  margin-top: var(--space-2xl);
+  margin-top: var(--space-xl);
 }
 
 .section-head {
@@ -169,9 +212,15 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
-.favorite-remove image {
+.favorite-remove:active {
+  background: var(--color-danger-soft);
+  transform: scale(0.92);
+}
+
+.remove-icon {
   width: 28rpx;
   height: 28rpx;
 }
