@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "攻略详情",
-  "backgroundColor": "#F5F7FA"
+  "backgroundColor": "#FBF7F0",
+  "usingComponents": {
+    "loading-state": "/components/loading-state/index"
+  }
 }

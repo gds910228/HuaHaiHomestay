@@ -1,13 +1,13 @@
 /* pages/admin/hostel-edit/index.wxss */
 .hostel-edit-page {
   min-height: 100vh;
-  background-color: #F5F5F5;
+  background-color: var(--bg-muted);
   padding-bottom: 160rpx;
 }
 
 /* 通用section */
 .form-section {
-  background-color: #fff;
+  background-color: var(--bg-surface);
   margin: 20rpx;
   padding: 30rpx;
   border-radius: 16rpx;
@@ -16,13 +16,13 @@
 .section-title {
   font-size: 32rpx;
   font-weight: bold;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 24rpx;
 }
 
 .image-count {
   font-size: 24rpx;
-  color: #999;
+  color: var(--text-tertiary);
   font-weight: normal;
   margin-left: 8rpx;
 }
@@ -38,23 +38,23 @@
 
 .form-label {
   font-size: 28rpx;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 12rpx;
 }
 
 .form-label.required::before {
   content: '*';
-  color: #F44336;
+  color: var(--color-danger);
   margin-right: 4rpx;
 }
 
 .form-input {
   width: 100%;
   padding: 20rpx 24rpx;
-  background-color: #F5F7FA;
+  background-color: var(--bg-canvas);
   border-radius: 12rpx;
   font-size: 28rpx;
-  color: #333;
+  color: var(--text-primary);
   box-sizing: border-box;
 }
 
@@ -62,10 +62,10 @@
   width: 100%;
   min-height: 240rpx;
   padding: 20rpx 24rpx;
-  background-color: #F5F7FA;
+  background-color: var(--bg-canvas);
   border-radius: 12rpx;
   font-size: 28rpx;
-  color: #333;
+  color: var(--text-primary);
   box-sizing: border-box;
   line-height: 1.6;
 }
@@ -80,7 +80,7 @@
 .tag-input {
   flex: 1;
   padding: 16rpx 20rpx;
-  background-color: #F5F7FA;
+  background-color: var(--bg-canvas);
   border-radius: 12rpx;
   font-size: 28rpx;
 }
@@ -90,8 +90,8 @@
   height: 64rpx;
   line-height: 64rpx;
   padding: 0;
-  background-color: #2E7DFF;
-  color: #fff;
+  background-color: var(--brand-primary);
+  color: var(--bg-surface);
   font-size: 28rpx;
   border-radius: 12rpx;
 }
@@ -107,26 +107,26 @@
   display: flex;
   align-items: center;
   padding: 8rpx 20rpx;
-  background-color: #E3F2FD;
+  background-color: var(--brand-primary-soft);
   border-radius: 24rpx;
 }
 
 .tag-text {
   font-size: 26rpx;
-  color: #2E7DFF;
+  color: var(--brand-primary);
   margin-right: 8rpx;
 }
 
 .tag-delete {
   font-size: 32rpx;
-  color: #2E7DFF;
+  color: var(--brand-primary);
   font-weight: bold;
   line-height: 1;
 }
 
 .facility-title {
   font-size: 26rpx;
-  color: #666;
+  color: var(--text-secondary);
   margin-bottom: 16rpx;
 }
 
@@ -138,19 +138,19 @@
 
 .facility-preset {
   padding: 12rpx 20rpx;
-  background-color: #FAFAFA;
-  border: 2rpx solid #E0E0E0;
+  background-color: var(--bg-muted);
+  border: 2rpx solid var(--border-line);
   border-radius: 24rpx;
   font-size: 24rpx;
-  color: #666;
+  color: var(--text-secondary);
   transition: all 0.3s;
   position: relative;
 }
 
 .facility-preset.active {
-  background-color: #E8F5E9;
-  border-color: #4CAF50;
-  color: #2E7D32;
+  background-color: var(--color-success-soft);
+  border-color: var(--color-success);
+  color: var(--color-success);
   font-weight: 500;
 }
 
@@ -161,8 +161,8 @@
   right: -8rpx;
   width: 32rpx;
   height: 32rpx;
-  background-color: #4CAF50;
-  color: #fff;
+  background-color: var(--color-success);
+  color: var(--bg-surface);
   border-radius: 50%;
   font-size: 18rpx;
   line-height: 32rpx;
@@ -173,7 +173,7 @@
 .manual-add-image {
   margin-bottom: 24rpx;
   padding: 20rpx;
-  background-color: #FFF9E6;
+  background-color: var(--color-warning-soft);
   border-radius: 12rpx;
 }
 
@@ -186,8 +186,8 @@
 .url-input {
   flex: 1;
   padding: 16rpx 20rpx;
-  background-color: #fff;
-  border: 1rpx solid #DDD;
+  background-color: var(--bg-surface);
+  border: 1rpx solid var(--border-line);
   border-radius: 8rpx;
   font-size: 26rpx;
 }
@@ -197,21 +197,21 @@
   height: 64rpx;
   line-height: 64rpx;
   padding: 0;
-  background-color: #2E7DFF;
-  color: #fff;
+  background-color: var(--brand-primary);
+  color: var(--bg-surface);
   font-size: 26rpx;
   border-radius: 8rpx;
 }
 
 .tip-text {
   font-size: 22rpx;
-  color: #999;
+  color: var(--text-tertiary);
   line-height: 1.5;
 }
 
 .divider {
   height: 1rpx;
-  background-color: #EEE;
+  background-color: var(--divider-color);
   margin: 20rpx 0;
 }
 
@@ -245,7 +245,7 @@
   height: 44rpx;
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 50%;
-  color: #fff;
+  color: var(--bg-surface);
   font-size: 32rpx;
   display: flex;
   align-items: center;
@@ -257,8 +257,8 @@
   position: relative;
   width: 100%;
   padding-bottom: 100%;
-  background-color: #F5F7FA;
-  border: 2rpx dashed #DDD;
+  background-color: var(--bg-canvas);
+  border: 2rpx dashed var(--border-line);
   border-radius: 12rpx;
   display: flex;
   flex-direction: column;
@@ -272,7 +272,7 @@
   left: 50%;
   transform: translate(-50%, -60%);
   font-size: 64rpx;
-  color: #999;
+  color: var(--text-tertiary);
   line-height: 1;
 }
 
@@ -282,7 +282,7 @@
   left: 50%;
   transform: translate(-50%, 40%);
   font-size: 24rpx;
-  color: #999;
+  color: var(--text-tertiary);
 }
 
 /* 底部保存栏 */
@@ -291,7 +291,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #fff;
+  background-color: var(--bg-surface);
   box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
   z-index: 100;
   padding: 16rpx 30rpx;
@@ -301,8 +301,8 @@
 .save-btn {
   width: 100%;
   height: 88rpx;
-  background: linear-gradient(135deg, #2E7DFF 0%, #1976D2 100%);
-  color: #fff;
+  background: var(--brand-primary);
+  color: var(--bg-surface);
   font-size: 32rpx;
   font-weight: bold;
   border-radius: 44rpx;

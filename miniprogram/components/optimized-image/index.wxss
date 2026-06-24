@@ -2,7 +2,7 @@
 .optimized-image-container {
   position: relative;
   overflow: hidden;
-  background: var(--bg-gray);
+  background: var(--bg-muted);
   border-radius: var(--radius-md);
 }
 
@@ -36,11 +36,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    135deg,
-    var(--bg-gray) 0%,
-    var(--bg-gray-light) 100%
-  );
+  background: var(--bg-muted);
 }
 
 .placeholder-loading {
@@ -53,8 +49,8 @@
 .loading-spinner {
   width: 48rpx;
   height: 48rpx;
-  border: 4rpx solid var(--border-color);
-  border-top-color: var(--primary-blue);
+  border: 4rpx solid var(--border-line);
+  border-top-color: var(--brand-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -74,13 +70,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--bg-gray);
+  background: var(--bg-muted);
   gap: var(--space-sm);
 }
 
 .error-icon {
-  font-size: 64rpx;
-  opacity: 0.5;
+  width: 80rpx;
+  height: 80rpx;
+  opacity: 0.65;
 }
 
 .error-text {
@@ -93,15 +90,16 @@
   position: absolute;
   bottom: var(--space-md);
   right: var(--space-md);
-  padding: var(--space-xs) var(--space-md);
-  background: rgba(0, 0, 0, 0.6);
+  padding: 6rpx 16rpx;
+  background: rgba(30, 56, 72, 0.72);
   backdrop-filter: blur(10rpx);
-  border-radius: var(--radius-round);
+  border-radius: var(--radius-pill);
 }
 
 .badge-text {
   font-size: var(--font-xs);
   color: var(--text-white);
+  letter-spacing: 0.5rpx;
 }
 
 /* 不同模式 */
@@ -113,7 +111,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-gray);
+  background: var(--bg-muted);
 }
 
 .optimized-image-container.widthFix {

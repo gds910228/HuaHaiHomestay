@@ -1,98 +1,261 @@
 /* pages/home/index.wxss */
 .home-container {
   min-height: 100vh;
-  background: var(--bg-gray);
-  padding-bottom: 40rpx;
+  background: var(--bg-canvas);
+  padding-bottom: 80rpx;
 }
 
-/* 顶部欢迎区 */
-.header-banner {
+/* ============ Hero ============ */
+.home-hero {
   position: relative;
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
-  padding: 80rpx 32rpx 60rpx;
+  margin: var(--space-lg) var(--space-lg) var(--space-2xl);
+  height: 460rpx;
+  border-radius: var(--radius-2xl);
   overflow: hidden;
-}
-
-.banner-content {
-  position: relative;
-  z-index: 2;
-}
-
-.banner-title {
-  display: block;
-  font-size: 48rpx;
-  font-weight: bold;
-  color: var(--text-white);
-  margin-bottom: 12rpx;
-}
-
-.banner-subtitle {
-  display: block;
-  font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.banner-wave {
-  position: absolute;
-  bottom: -1rpx;
-  left: 0;
-  right: 0;
-  height: 60rpx;
-  background: var(--bg-gray);
-  border-radius: 50% 50% 0 0 / 100% 100% 0;
-}
-
-/* 分类卡片容器 */
-.categories-container {
-  padding: 24rpx;
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-}
-
-.category-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding: 48rpx 32rpx;
-  background: var(--bg-white);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
-  transition: transform var(--duration-normal) var(--ease-default);
-}
-
-.category-card:active {
-  transform: translateY(-4rpx);
   box-shadow: var(--shadow-lg);
 }
 
-.card-icon {
-  font-size: 64rpx;
-  margin-right: 24rpx;
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  /* SVG 海平面 + 落日剪影 (无外部图片资源依赖) */
+  background:
+    radial-gradient(ellipse 70% 100% at 75% 30%, rgba(232, 145, 109, 0.55) 0%, transparent 70%),
+    linear-gradient(180deg, #2C6378 0%, #1E5266 55%, #0F3848 100%);
 }
 
-.card-content {
-  flex: 1;
+.hero-photo::before {
+  /* 太阳 */
+  content: '';
+  position: absolute;
+  top: 80rpx;
+  right: 130rpx;
+  width: 110rpx;
+  height: 110rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, #F4C29B 0%, #E8916D 60%, #C76F4E 100%);
+  box-shadow: 0 0 80rpx rgba(232, 145, 109, 0.45);
+}
+
+.hero-photo::after {
+  /* 海平线波浪 */
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 180rpx;
+  background:
+    radial-gradient(ellipse 80% 60rpx at 30% 100%, rgba(255,255,255,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 100% 80rpx at 80% 100%, rgba(255,255,255,0.12) 0%, transparent 70%),
+    linear-gradient(180deg, transparent 0%, rgba(15, 56, 72, 0.55) 100%);
+}
+
+.hero-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(15, 56, 72, 0.55) 100%);
+}
+
+.hero-meta {
+  position: absolute;
+  left: var(--space-xl);
+  right: var(--space-xl);
+  bottom: var(--space-xl);
+  color: var(--text-white);
+  z-index: 2;
+}
+
+.hero-eyebrow-line {
+  font-size: var(--font-xs);
+  letter-spacing: 6rpx;
+  opacity: 0.85;
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+}
+
+.hero-headline {
+  font-size: 56rpx;
+  font-weight: 700;
+  letter-spacing: -1rpx;
+  line-height: 1.15;
+  margin-bottom: 10rpx;
+}
+
+.hero-sub {
+  font-size: var(--font-sm);
+  opacity: 0.85;
+  letter-spacing: 1rpx;
+}
+
+/* ============ Section Head ============ */
+.section-head {
+  padding: var(--space-lg) var(--space-xl) var(--space-md);
+}
+
+.section-eyebrow {
+  font-size: var(--font-xs);
+  letter-spacing: 4rpx;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-bottom: 6rpx;
+}
+
+.section-title {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5rpx;
+}
+
+/* ============ Bento 2×2 类目 ============ */
+.home-bento {
+  padding: 0 var(--space-lg);
+}
+
+.home-cat {
+  position: relative;
+  width: calc((100% - var(--space-lg)) / 2);
+  min-height: 280rpx;
+  padding: var(--space-lg);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
 }
 
-.card-title {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: var(--text-white);
-  margin-bottom: 8rpx;
+.home-cat-spot {
+  background: var(--cat-spot-soft);
+  color: var(--cat-spot);
+}
+.home-cat-food {
+  background: var(--cat-food-soft);
+  color: var(--cat-food);
+}
+.home-cat-route {
+  background: var(--cat-route-soft);
+  color: var(--cat-route);
+}
+.home-cat-info {
+  background: var(--cat-info-soft);
+  color: var(--cat-info);
 }
 
-.card-desc {
-  font-size: 26rpx;
-  color: rgba(255, 255, 255, 0.9);
+.cat-icon-wrap {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.card-arrow {
+.cat-icon {
+  width: 44rpx;
+  height: 44rpx;
+}
+
+.cat-meta {
+  margin-top: var(--space-md);
+}
+
+.cat-name {
+  font-size: 34rpx;
+  font-weight: 700;
+  letter-spacing: -0.5rpx;
+  margin-bottom: 4rpx;
+}
+
+.cat-desc {
+  font-size: var(--font-xs);
+  opacity: 0.78;
+  letter-spacing: 0.5rpx;
+}
+
+.cat-arrow {
   position: absolute;
-  right: 32rpx;
-  font-size: 48rpx;
-  color: rgba(255, 255, 255, 0.6);
-  font-weight: 300;
+  right: var(--space-lg);
+  bottom: var(--space-lg);
+  width: 36rpx;
+  height: 36rpx;
+  opacity: 0.85;
+}
+
+.cat-arrow image {
+  width: 100%;
+  height: 100%;
+}
+
+/* ============ 民宿入口大卡 ============ */
+.home-hostel-card {
+  position: relative;
+  margin: var(--space-2xl) var(--space-lg) 0;
+  height: 280rpx;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.hostel-card-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 100% at 80% 50%, rgba(232, 145, 109, 0.35) 0%, transparent 70%),
+    linear-gradient(135deg, #1E5266 0%, #0F3848 100%);
+}
+
+.hostel-card-content {
+  position: relative;
+  z-index: 2;
+  padding: var(--space-xl);
+  color: var(--text-white);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hostel-card-eyebrow {
+  font-size: var(--font-xs);
+  letter-spacing: 5rpx;
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+.hostel-card-title {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  letter-spacing: -0.5rpx;
+  margin-top: var(--space-xs);
+}
+
+.hostel-card-desc {
+  font-size: var(--font-sm);
+  opacity: 0.8;
+  margin-top: 4rpx;
+}
+
+.hostel-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: var(--font-base);
+  font-weight: 500;
+}
+
+.hostel-card-arrow {
+  width: 28rpx;
+  height: 28rpx;
+}
+
+/* ============ Footer Tag ============ */
+.home-footer-tag {
+  margin-top: var(--space-2xl);
+  text-align: center;
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  letter-spacing: 3rpx;
 }

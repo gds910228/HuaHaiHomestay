@@ -138,7 +138,7 @@ Page({
       title: '⚠️ 警告操作',
       content: '确定要清空所有房型数据吗？此操作不可恢复！',
       confirmText: '确定清空',
-      confirmColor: '#FF9800',
+      confirmColor: '#D6A23E',
       success: async (res) => {
         if (res.confirm) {
           await this.executeInit('clearRooms', '清空房型数据');
@@ -155,7 +155,7 @@ Page({
       title: '⚠️ 危险操作',
       content: '确定要清空所有数据吗？此操作不可恢复！',
       confirmText: '确定清空',
-      confirmColor: '#F44336',
+      confirmColor: '#C75B4E',
       success: async (res) => {
         if (res.confirm) {
           await this.executeInit('clearAll', '清空数据');

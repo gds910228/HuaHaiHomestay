@@ -1,370 +1,329 @@
 /* pages/room-detail/room-detail.wxss */
 .room-detail-page {
   min-height: 100vh;
-  background-color: #F5F5F5;
-  padding-bottom: 120rpx;
+  background: var(--bg-canvas);
+  padding-bottom: 180rpx;
 }
 
-/* 加载中 */
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.loading-text {
-  font-size: 32rpx;
-  color: #999;
-}
-
-/* 图片轮播 */
+/* === 图片 === */
 .image-swiper-container {
   position: relative;
   width: 100%;
-  height: 500rpx;
+  height: 600rpx;
+  background: var(--bg-muted);
 }
 
-.image-swiper {
-  width: 100%;
-  height: 100%;
-}
-
+.image-swiper,
 .room-image {
   width: 100%;
   height: 100%;
 }
 
+.image-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 65%, rgba(15, 56, 72, 0.4) 100%);
+}
+
 .image-counter {
   position: absolute;
-  bottom: 20rpx;
-  right: 20rpx;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  padding: 8rpx 20rpx;
-  border-radius: 20rpx;
-  font-size: 24rpx;
+  bottom: var(--space-lg);
+  right: var(--space-lg);
+  padding: 8rpx 18rpx;
+  background: rgba(30, 56, 72, 0.72);
+  backdrop-filter: blur(10rpx);
+  color: var(--text-white);
+  font-size: var(--font-xs);
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.5rpx;
 }
 
-/* 通用section样式 */
-.section-container {
-  background-color: #fff;
-  margin: 20rpx;
-  padding: 30rpx;
-  border-radius: 16rpx;
-}
-
-.section-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20rpx;
-}
-
-.section-title-with-toggle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20rpx;
-}
-
-.section-title-text {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.toggle-icon {
-  font-size: 24rpx;
-  color: #999;
-  padding: 10rpx;
-}
-
-/* 房型基本信息 */
-.info-section {
-  margin-top: -40rpx;
+/* === 信息 sheet === */
+.info-sheet {
+  margin: -48rpx var(--space-lg) var(--space-lg);
+  padding: var(--space-xl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md);
   position: relative;
-  z-index: 10;
-  border-radius: 20rpx 20rpx 16rpx 16rpx;
+  z-index: 2;
 }
 
-.room-header {
-  margin-bottom: 20rpx;
-}
+.room-header { margin-bottom: var(--space-lg); }
 
 .room-title-row {
   display: flex;
   align-items: center;
-  margin-bottom: 16rpx;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
 }
 
 .room-type {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #333;
-  margin-right: 16rpx;
+  font-size: 44rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5rpx;
 }
 
-.room-category {
-  background-color: #E3F2FD;
-  color: #2E7DFF;
-  font-size: 24rpx;
-  padding: 6rpx 16rpx;
-  border-radius: 8rpx;
+.room-category-pill {
+  padding: 4rpx 16rpx;
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
 }
 
-.room-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12rpx;
-}
+.room-tags { display: flex; flex-wrap: wrap; gap: 8rpx; margin-top: var(--space-sm); }
 
-.tag {
-  background-color: #FFF3E0;
-  color: #F57C00;
-  font-size: 24rpx;
-  padding: 6rpx 16rpx;
-  border-radius: 8rpx;
-}
-
-/* 价格行 */
+/* 价格 */
 .price-row {
   display: flex;
   align-items: baseline;
-  margin: 24rpx 0;
+  gap: 4rpx;
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md) 0;
+  border-bottom: 2rpx solid var(--divider-color);
 }
 
-.price-symbol {
-  font-size: 32rpx;
-  color: #FF5722;
-  font-weight: bold;
-}
+.price-symbol { font-size: var(--font-xl); color: var(--brand-accent-strong); font-weight: 600; }
+.price-value { font-size: 56rpx; font-weight: 700; color: var(--brand-accent-strong); letter-spacing: -1rpx; }
+.price-unit { font-size: var(--font-sm); color: var(--text-tertiary); margin-left: 4rpx; }
 
-.price-value {
-  font-size: 56rpx;
-  color: #FF5722;
-  font-weight: bold;
-  margin: 0 8rpx;
-}
-
-.price-unit {
-  font-size: 28rpx;
-  color: #999;
-}
-
-/* 房型基本信息 */
+/* 基础信息 */
 .room-basic-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20rpx;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
 }
 
-.info-item {
+.basic-info-item {
   display: flex;
   align-items: center;
-  font-size: 28rpx;
-  color: #666;
+  gap: 10rpx;
+  padding: var(--space-md);
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
 }
 
-.info-icon {
-  font-size: 32rpx;
-  margin-right: 8rpx;
+.basic-info-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; }
+.basic-info-text { font-size: var(--font-sm); color: var(--text-primary); font-weight: 500; }
+
+/* === 区块通用 === */
+.section-block {
+  margin: var(--space-lg);
+  padding: var(--space-xl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
 }
 
-.info-text {
-  color: #666;
+.section-eyebrow {
+  font-size: var(--font-xs);
+  letter-spacing: 4rpx;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-bottom: 4rpx;
 }
 
-/* 描述文本 */
-.description-text {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.8;
+.section-title {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5rpx;
 }
 
-/* 设施服务 */
+.section-head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--space-md);
+}
+
 .facility-count {
-  font-size: 24rpx;
-  color: #999;
-  font-weight: normal;
-  margin-left: 8rpx;
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
 }
 
+.description-text {
+  margin-top: var(--space-sm);
+  font-size: var(--font-base);
+  color: var(--text-primary);
+  line-height: 1.85;
+}
+
+/* === Facility 折叠组 === */
 .facility-category {
-  margin-bottom: 24rpx;
-  border-bottom: 1rpx solid #F5F5F5;
-  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid var(--divider-color);
+  padding: var(--space-md) 0;
 }
 
-.facility-category:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
+.facility-category:last-child { border-bottom: none; }
 
 .category-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16rpx 0;
 }
 
-.category-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #333;
-}
+.category-left { display: flex; align-items: center; gap: 12rpx; }
 
-.facility-list {
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 20rpx;
-}
-
-.facility-item {
+.category-icon {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: var(--radius-md);
+  background: var(--brand-primary-soft);
   display: flex;
   align-items: center;
-  width: 50%;
-  margin-bottom: 12rpx;
-  box-sizing: border-box;
-  padding-right: 20rpx;
+  justify-content: center;
 }
 
-.facility-icon {
-  color: #4CAF50;
-  font-size: 28rpx;
-  margin-right: 8rpx;
-  font-weight: bold;
+.category-icon image { width: 32rpx; height: 32rpx; }
+
+.category-title {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.3rpx;
 }
 
-.facility-name {
-  font-size: 28rpx;
-  color: #666;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.chevron {
+  width: 32rpx;
+  height: 32rpx;
+  transition: transform 200ms var(--ease-out);
 }
 
-/* 入住须知 */
-.check-in-rules {
-  background-color: #F9F9F9;
-  padding: 20rpx;
-  border-radius: 12rpx;
+.chevron.open { transform: rotate(180deg); }
+
+.facility-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm) var(--space-md);
+  padding: var(--space-md) 0 0 68rpx;
+}
+
+.facility-item { display: flex; align-items: center; gap: 10rpx; }
+
+.facility-tick {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  background: var(--brand-primary-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.facility-tick image { width: 20rpx; height: 20rpx; }
+.facility-name { font-size: var(--font-sm); color: var(--text-primary); }
+
+/* === Collapsible === */
+.collapsible-head { display: flex; justify-content: space-between; align-items: center; }
+
+.rules-list {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 2rpx solid var(--divider-color);
 }
 
 .rule-item {
   display: flex;
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14rpx 0;
 }
 
-.rule-item:last-child {
-  margin-bottom: 0;
+.rule-label { font-size: var(--font-sm); color: var(--text-tertiary); letter-spacing: 0.5rpx; }
+.rule-value { font-size: var(--font-sm); color: var(--text-primary); font-weight: 500; }
+
+/* === 接待要求 === */
+.requirements-grid {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 2rpx solid var(--divider-color);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
 }
 
-.rule-label {
-  color: #999;
-  min-width: 160rpx;
-}
-
-.rule-value {
-  flex: 1;
-  color: #333;
-}
-
-/* 接待要求 */
-.guest-requirements {
-  background-color: #F9F9F9;
-  padding: 20rpx;
-  border-radius: 12rpx;
-}
-
-.requirement-item {
+.req-item {
   display: flex;
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rpx 0;
 }
 
-.requirement-item:last-child {
-  margin-bottom: 0;
+.req-label { font-size: var(--font-sm); color: var(--text-secondary); }
+
+.req-pill {
+  padding: 4rpx 16rpx;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
 }
 
-.requirement-label {
-  color: #999;
-  min-width: 160rpx;
-}
+.req-pill.allowed { background: var(--color-success-soft); color: var(--color-success); }
+.req-pill.not-allowed { background: var(--color-danger-soft); color: var(--color-danger); }
 
-.requirement-value {
-  flex: 1;
-  font-weight: 500;
-}
+.bottom-placeholder { height: 120rpx; }
 
-.requirement-value.allowed {
-  color: #4CAF50;
-}
-
-.requirement-value.not-allowed {
-  color: #F44336;
-}
-
-/* 底部占位 */
-.bottom-placeholder {
-  height: 40rpx;
-}
-
-/* 底部操作栏 */
+/* === 底部操作栏 === */
 .bottom-action-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #fff;
-  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
-  z-index: 100;
-  padding: 16rpx 30rpx;
-  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: rgba(251, 247, 240, 0.94);
+  backdrop-filter: blur(20rpx);
+  box-shadow: 0 -4rpx 16rpx rgba(94, 72, 50, 0.06);
+  padding: var(--space-md) var(--space-lg);
+  padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+  z-index: 10;
 }
 
-.action-buttons {
-  display: flex;
-  gap: 20rpx;
-}
+.action-buttons { display: flex; gap: var(--space-sm); }
 
 .action-btn {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12rpx;
-  font-size: 24rpx;
-  transition: all 0.3s;
+  height: 96rpx;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-base);
+  font-weight: 600;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
-.secondary-btn {
-  width: 120rpx;
-  height: 88rpx;
-  background-color: #F5F5F5;
-  color: #666;
-}
+.action-btn:active { transform: scale(0.96); }
 
-.action-icon {
-  font-size: 36rpx;
-  margin-bottom: 4rpx;
-}
-
-.action-text {
-  font-size: 22rpx;
-}
-
-.primary-btn {
+.ghost-btn {
   flex: 1;
-  background: linear-gradient(135deg, #2E7DFF 0%, #1976D2 100%);
-  color: #fff;
-  font-size: 32rpx;
-  font-weight: bold;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 2rpx;
+  background: var(--bg-muted);
+  color: var(--text-primary);
+  font-size: var(--font-xs);
 }
 
-.btn-text {
-  font-size: 32rpx;
+.action-btn-icon { width: 36rpx; height: 36rpx; }
+.action-text { font-size: 22rpx; color: var(--text-secondary); letter-spacing: 0.5rpx; }
+
+.book-btn {
+  flex: 2.2;
+  background: var(--brand-primary);
+  color: var(--text-white);
+  box-shadow: var(--shadow-brand);
+}
+
+.btn-text { font-size: var(--font-lg); color: var(--text-white); letter-spacing: 1rpx; }
+
+.loading-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -1,7 +1,10 @@
 {
   "navigationBarTitleText": "房型详情",
-  "navigationBarBackgroundColor": "#2E7DFF",
-  "navigationBarTextStyle": "white",
+  "navigationBarBackgroundColor": "#FBF7F0",
+  "navigationBarTextStyle": "black",
   "enablePullDownRefresh": false,
-  "backgroundColor": "#F5F5F5"
+  "backgroundColor": "#FBF7F0",
+  "usingComponents": {
+    "loading-state": "/components/loading-state/index"
+  }
 }

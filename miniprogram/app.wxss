@@ -1,12 +1,20 @@
 /**
- * 画海民宿 - 设计系统
- * Design System for HuaHai Homestay
+ * 画海民宿 · 设计系统
+ * Design System: Island Warm Light · Sand Beach
+ * ----------------------------------------------------------------------------
+ * 真源: design-system/MASTER.md
+ * 基调: 暖米画布 + 深海青 + 落日珊瑚, 配以暖灰阴影与 Bento Grid 卡片
+ *
+ * Tokens 命名: --brand-* / --bg-* / --text-* / --color-* / --radius-* / --shadow-* / --space-* / --font-* / --duration-*
+ * 兼容别名: 旧 --primary-blue 体系仍可用, 内部映射到新 token, 用于过渡
+ * ============================================================================
  */
 page {
-  background: #F5F7FA;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  background: #FBF7F0;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", "Source Han Sans CN", sans-serif;
   font-size: 28rpx;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: #2A2520;
 }
 
 .container {
@@ -16,58 +24,75 @@ page {
   min-height: 100vh;
 }
 
-/* ============================================
+/* ============================================================================
    设计令牌 (Design Tokens)
-   ============================================ */
+   ============================================================================ */
 
 page {
-  /* === 主色系 === */
-  --primary-blue: #2E7DFF;
-  --primary-blue-light: #4FC3F7;
-  --primary-blue-dark: #1976D2;
+  /* === 品牌主色: 深海青 / 落日珊瑚 === */
+  --brand-primary: #1E5266;
+  --brand-primary-strong: #0F3848;
+  --brand-primary-soft: #DCE9EE;
+  --brand-accent: #E8916D;
+  --brand-accent-strong: #C76F4E;
+  --brand-accent-soft: #FBEBE0;
 
-  /* === 分类辅助色 === */
-  --accent-food: #FF8C42;
-  --accent-spot: #7E57C2;
-  --accent-route: #26A69A;
-  --accent-info: #FFA726;
+  /* === 类目色系 (沙岸家族) === */
+  --cat-spot: #1E5266;        /* 景点 · 深海青 */
+  --cat-spot-soft: #DCE9EE;
+  --cat-food: #C75B39;        /* 美食 · 朱砂 */
+  --cat-food-soft: #F8E2D5;
+  --cat-route: #3E7A6E;       /* 路线 · 海藻青 */
+  --cat-route-soft: #DDE9E5;
+  --cat-info: #8B6F3F;        /* 信息 · 沙金棕 */
+  --cat-info-soft: #EFE6D2;
 
   /* === 功能色 === */
-  --color-success: #4CAF50;
-  --color-warning: #FFA726;
-  --color-error: #F44336;
-  --color-info: #2E7DFF;
+  --color-success: #5B8C5A;
+  --color-success-soft: #E2EBE0;
+  --color-warning: #D6A23E;
+  --color-warning-soft: #F4EBD2;
+  --color-danger: #C75B4E;
+  --color-danger-soft: #F4D8D3;
+  --color-info: var(--brand-primary);
 
   /* === 文本色 === */
-  --text-primary: #333333;
-  --text-secondary: #666666;
-  --text-tertiary: #999999;
-  --text-placeholder: #CCCCCC;
+  --text-primary: #2A2520;     /* 墨黑 · 标题正文 */
+  --text-secondary: #6B6359;   /* 烟褐 · 副文本 */
+  --text-tertiary: #A39A8D;    /* 沙岩 · 提示 */
+  --text-placeholder: #C7BFB1;
   --text-white: #FFFFFF;
 
   /* === 背景色 === */
-  --bg-white: #FFFFFF;
-  --bg-gray: #F5F7FA;
-  --bg-gray-light: #FAFAFA;
-  --bg-blue-light: #E3F2FD;
+  --bg-canvas: #FBF7F0;        /* 暖米画布 */
+  --bg-surface: #FFFFFF;       /* 卡片底色 */
+  --bg-muted: #F4EFE6;         /* 输入框/区块 */
+  --bg-muted-strong: #ECE4D3;  /* 强调底色 */
+  --bg-overlay: rgba(30, 56, 72, 0.5);  /* Modal 遮罩 */
 
   /* === 边框色 === */
-  --border-color: #E0E0E0;
-  --border-color-light: #F0F0F0;
-  --divider-color: #EEEEEE;
+  --border-line: #EDE4D3;
+  --border-line-strong: #DDD2BC;
+  --divider-color: #F1EAD9;
 
-  /* === 阴影 === */
-  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
-  --shadow-xl: 0 12rpx 32rpx rgba(0, 0, 0, 0.10);
+  /* === 阴影 (暖灰投影) === */
+  --shadow-xs: 0 1rpx 4rpx rgba(94, 72, 50, 0.03);
+  --shadow-sm: 0 2rpx 8rpx rgba(94, 72, 50, 0.04);
+  --shadow-md: 0 4rpx 16rpx rgba(94, 72, 50, 0.06);
+  --shadow-lg: 0 12rpx 28rpx rgba(94, 72, 50, 0.08);
+  --shadow-xl: 0 20rpx 40rpx rgba(94, 72, 50, 0.10);
+  --shadow-brand: 0 8rpx 20rpx rgba(30, 82, 102, 0.18);
+  --shadow-accent: 0 8rpx 20rpx rgba(232, 145, 109, 0.22);
 
   /* === 圆角 === */
   --radius-sm: 8rpx;
   --radius-md: 12rpx;
-  --radius-lg: 16rpx;
-  --radius-xl: 20rpx;
+  --radius-lg: 20rpx;
+  --radius-xl: 24rpx;
+  --radius-2xl: 32rpx;
+  --radius-3xl: 40rpx;
   --radius-round: 50%;
+  --radius-pill: 9999rpx;
 
   /* === 间距 === */
   --space-xs: 8rpx;
@@ -76,6 +101,7 @@ page {
   --space-lg: 24rpx;
   --space-xl: 32rpx;
   --space-2xl: 48rpx;
+  --space-3xl: 64rpx;
 
   /* === 字体大小 === */
   --font-xs: 22rpx;
@@ -85,6 +111,7 @@ page {
   --font-xl: 36rpx;
   --font-2xl: 40rpx;
   --font-3xl: 48rpx;
+  --font-4xl: 56rpx;
 
   /* === 动画 === */
   --duration-fast: 150ms;
@@ -93,87 +120,168 @@ page {
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ====== 向后兼容别名 (旧代码无需立刻替换, 自动跟随新色) ====== */
+  --primary-blue: var(--brand-primary);
+  --primary-blue-light: #2E6E84;
+  --primary-blue-dark: var(--brand-primary-strong);
+  --accent-food: var(--cat-food);
+  --accent-spot: var(--cat-spot);
+  --accent-route: var(--cat-route);
+  --accent-info: var(--cat-info);
+  --color-error: var(--color-danger);
+  --bg-white: var(--bg-surface);
+  --bg-gray: var(--bg-canvas);
+  --bg-gray-light: var(--bg-muted);
+  --bg-blue-light: var(--brand-primary-soft);
+  --border-color: var(--border-line);
+  --border-color-light: var(--divider-color);
 }
 
-/* ============================================
-   通用组件样式
-   ============================================ */
+/* ============================================================================
+   通用按钮
+   ============================================================================ */
 
-/* === 按钮组件 === */
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
+  background: var(--brand-primary);
   color: var(--text-white);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-pill);
   padding: 24rpx var(--space-2xl);
   font-size: var(--font-lg);
-  font-weight: 500;
-  box-shadow: var(--shadow-md);
-  transition: all var(--duration-normal) var(--ease-default);
+  font-weight: 600;
+  box-shadow: var(--shadow-brand);
+  transition: all var(--duration-fast) var(--ease-out);
+  letter-spacing: 0.5rpx;
 }
 
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
+  background: var(--brand-primary-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-accent {
+  background: var(--brand-accent);
+  color: var(--text-white);
+  border-radius: var(--radius-pill);
+  padding: 24rpx var(--space-2xl);
+  font-size: var(--font-lg);
+  font-weight: 600;
+  box-shadow: var(--shadow-accent);
+  transition: all var(--duration-fast) var(--ease-out);
+  letter-spacing: 0.5rpx;
+}
+
+.btn-accent:active {
+  transform: scale(0.97);
+  background: var(--brand-accent-strong);
   box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary {
-  background: var(--bg-white);
-  color: var(--primary-blue);
-  border: 2rpx solid var(--primary-blue);
-  border-radius: var(--radius-xl);
-  padding: 24rpx var(--space-2xl);
+  background: var(--bg-surface);
+  color: var(--brand-primary);
+  border: 2rpx solid var(--brand-primary);
+  border-radius: var(--radius-pill);
+  padding: 22rpx var(--space-2xl);
   font-size: var(--font-lg);
-  transition: all var(--duration-normal) var(--ease-default);
+  font-weight: 500;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
 .btn-secondary:active {
-  background: var(--bg-blue-light);
+  background: var(--brand-primary-soft);
+  transform: scale(0.97);
+}
+
+.btn-ghost {
+  background: var(--bg-muted);
+  color: var(--text-primary);
+  border-radius: var(--radius-pill);
+  padding: 22rpx var(--space-2xl);
+  font-size: var(--font-lg);
+  font-weight: 500;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.btn-ghost:active {
+  background: var(--bg-muted-strong);
 }
 
 .btn-small {
   padding: 12rpx 24rpx;
   font-size: var(--font-sm);
-  border-radius: var(--radius-md);
 }
 
 .btn-large {
   padding: 32rpx 48rpx;
   font-size: var(--font-xl);
-  border-radius: var(--radius-xl);
 }
 
-/* === 卡片组件 === */
+/* ============================================================================
+   通用卡片 (Bento)
+   ============================================================================ */
+
 .card {
-  background: var(--bg-white);
-  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
   padding: var(--space-lg);
   margin: var(--space-lg);
   box-shadow: var(--shadow-md);
-  transition: all var(--duration-normal) var(--ease-default);
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
 .card:active {
+  transform: scale(0.99);
   box-shadow: var(--shadow-sm);
 }
 
-.card-no-margin {
-  margin: 0;
+.card-no-margin { margin: 0; }
+.card-no-padding { padding: 0; }
+.card-flat { box-shadow: none; border: 2rpx solid var(--border-line); }
+.card-muted { background: var(--bg-muted); box-shadow: none; }
+
+/* === Bento Grid 容器 === */
+.bento-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  padding: 0 var(--space-lg);
 }
 
-.card-no-padding {
-  padding: 0;
+.bento-item {
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-md);
+  box-sizing: border-box;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
-/* === 文本样式 === */
-.text-primary { color: var(--primary-blue); }
+.bento-item:active {
+  transform: scale(0.99);
+  box-shadow: var(--shadow-sm);
+}
+
+.bento-1 { width: calc((100% - var(--space-lg)) / 2); }
+.bento-2 { width: 100%; }
+.bento-3 { width: calc((100% - var(--space-lg) * 2) / 3); }
+
+/* ============================================================================
+   文本/字体工具类
+   ============================================================================ */
+.text-primary { color: var(--brand-primary); }
+.text-accent  { color: var(--brand-accent); }
+.text-ink     { color: var(--text-primary); }
 .text-secondary { color: var(--text-secondary); }
-.text-tertiary { color: var(--text-tertiary); }
+.text-tertiary  { color: var(--text-tertiary); }
 .text-success { color: var(--color-success); }
 .text-warning { color: var(--color-warning); }
-.text-error { color: var(--color-error); }
+.text-error   { color: var(--color-danger); }
+.text-danger  { color: var(--color-danger); }
+.text-white   { color: var(--text-white); }
 
-/* === 字体大小 === */
 .text-xs { font-size: var(--font-xs); }
 .text-sm { font-size: var(--font-sm); }
 .text-base { font-size: var(--font-base); }
@@ -181,67 +289,74 @@ page {
 .text-xl { font-size: var(--font-xl); }
 .text-2xl { font-size: var(--font-2xl); }
 .text-3xl { font-size: var(--font-3xl); }
+.text-4xl { font-size: var(--font-4xl); }
 
-/* === 字体粗细 === */
 .font-normal { font-weight: 400; }
 .font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
 .font-bold { font-weight: 700; }
 
-/* === 文本对齐 === */
 .text-left { text-align: left; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 
-/* === 间距工具类 === */
-.m-0 { margin: 0; }
-.mt-0 { margin-top: 0; }
-.mb-0 { margin-bottom: 0; }
-.ml-0 { margin-left: 0; }
-.mr-0 { margin-right: 0; }
+.text-tight { letter-spacing: -0.5rpx; }
+.text-wide  { letter-spacing: 1rpx; }
+.tabular-nums { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
 
-.mt-xs { margin-top: var(--space-xs); }
-.mt-sm { margin-top: var(--space-sm); }
-.mt-md { margin-top: var(--space-md); }
-.mt-lg { margin-top: var(--space-lg); }
+/* === 单行省略 === */
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.text-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ============================================================================
+   间距 / Flex 工具类
+   ============================================================================ */
+.m-0 { margin: 0; }
+.mt-0 { margin-top: 0; } .mb-0 { margin-bottom: 0; }
+.ml-0 { margin-left: 0; } .mr-0 { margin-right: 0; }
+
+.mt-xs { margin-top: var(--space-xs); } .mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); } .mt-lg { margin-top: var(--space-lg); }
 .mt-xl { margin-top: var(--space-xl); }
 
-.mb-xs { margin-bottom: var(--space-xs); }
-.mb-sm { margin-bottom: var(--space-sm); }
-.mb-md { margin-bottom: var(--space-md); }
-.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xs { margin-bottom: var(--space-xs); } .mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); } .mb-lg { margin-bottom: var(--space-lg); }
 .mb-xl { margin-bottom: var(--space-xl); }
 
-.ml-xs { margin-left: var(--space-xs); }
-.ml-sm { margin-left: var(--space-sm); }
-.ml-md { margin-left: var(--space-md); }
-.ml-lg { margin-left: var(--space-lg); }
+.ml-xs { margin-left: var(--space-xs); } .ml-sm { margin-left: var(--space-sm); }
+.ml-md { margin-left: var(--space-md); } .ml-lg { margin-left: var(--space-lg); }
 .ml-xl { margin-left: var(--space-xl); }
 
-.mr-xs { margin-right: var(--space-xs); }
-.mr-sm { margin-right: var(--space-sm); }
-.mr-md { margin-right: var(--space-md); }
-.mr-lg { margin-right: var(--space-lg); }
+.mr-xs { margin-right: var(--space-xs); } .mr-sm { margin-right: var(--space-sm); }
+.mr-md { margin-right: var(--space-md); } .mr-lg { margin-right: var(--space-lg); }
 .mr-xl { margin-right: var(--space-xl); }
 
 .p-0 { padding: 0; }
-.pt-0 { padding-top: 0; }
-.pb-0 { padding-bottom: 0; }
-.pl-0 { padding-left: 0; }
-.pr-0 { padding-right: 0; }
-
-.pt-xs { padding-top: var(--space-xs); }
-.pt-sm { padding-top: var(--space-sm); }
-.pt-md { padding-top: var(--space-md); }
-.pt-lg { padding-top: var(--space-lg); }
+.pt-xs { padding-top: var(--space-xs); } .pt-sm { padding-top: var(--space-sm); }
+.pt-md { padding-top: var(--space-md); } .pt-lg { padding-top: var(--space-lg); }
 .pt-xl { padding-top: var(--space-xl); }
 
-.pb-xs { padding-bottom: var(--space-xs); }
-.pb-sm { padding-bottom: var(--space-sm); }
-.pb-md { padding-bottom: var(--space-md); }
-.pb-lg { padding-bottom: var(--space-lg); }
+.pb-xs { padding-bottom: var(--space-xs); } .pb-sm { padding-bottom: var(--space-sm); }
+.pb-md { padding-bottom: var(--space-md); } .pb-lg { padding-bottom: var(--space-lg); }
 .pb-xl { padding-bottom: var(--space-xl); }
 
-/* === Flex布局工具类 === */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
 .items-center { align-items: center; }
@@ -250,22 +365,87 @@ page {
 .justify-center { justify-content: center; }
 .justify-between { justify-content: space-between; }
 .justify-around { justify-content: space-around; }
+.justify-end { justify-content: flex-end; }
 .flex-1 { flex: 1; }
 .flex-wrap { flex-wrap: wrap; }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
 
-/* === 其他工具类 === */
+/* ============================================================================
+   其他工具
+   ============================================================================ */
 .relative { position: relative; }
 .absolute { position: absolute; }
 .fixed { position: fixed; }
 .w-full { width: 100%; }
 .h-full { height: 100%; }
+.rounded-sm { border-radius: var(--radius-sm); }
 .rounded { border-radius: var(--radius-md); }
 .rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-2xl { border-radius: var(--radius-2xl); }
 .rounded-full { border-radius: var(--radius-round); }
+.rounded-pill { border-radius: var(--radius-pill); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
 .shadow { box-shadow: var(--shadow-md); }
 .shadow-lg { box-shadow: var(--shadow-lg); }
 
-/* === 按钮重置 === */
+/* === Tag / Pill / Badge === */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  font-size: var(--font-xs);
+  border-radius: var(--radius-pill);
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.tag-brand { background: var(--brand-primary-soft); color: var(--brand-primary); }
+.tag-accent { background: var(--brand-accent-soft); color: var(--brand-accent-strong); }
+.tag-success { background: var(--color-success-soft); color: var(--color-success); }
+.tag-warning { background: var(--color-warning-soft); color: var(--color-warning); }
+.tag-danger { background: var(--color-danger-soft); color: var(--color-danger); }
+.tag-spot { background: var(--cat-spot-soft); color: var(--cat-spot); }
+.tag-food { background: var(--cat-food-soft); color: var(--cat-food); }
+.tag-route { background: var(--cat-route-soft); color: var(--cat-route); }
+.tag-info { background: var(--cat-info-soft); color: var(--cat-info); }
+
+/* === 顶部 Hero / 类目标题色块 === */
+.hero-band {
+  padding: 48rpx var(--space-xl) var(--space-2xl);
+  background: var(--bg-surface);
+}
+
+.hero-band-spot { background: var(--cat-spot); color: var(--text-white); }
+.hero-band-food { background: var(--cat-food); color: var(--text-white); }
+.hero-band-route { background: var(--cat-route); color: var(--text-white); }
+.hero-band-info { background: var(--cat-info); color: var(--text-white); }
+
+.hero-eyebrow {
+  font-size: var(--font-xs);
+  letter-spacing: 4rpx;
+  opacity: 0.7;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.hero-title {
+  font-size: var(--font-3xl);
+  font-weight: 700;
+  letter-spacing: -0.5rpx;
+  margin-top: var(--space-sm);
+}
+
+.hero-subtitle {
+  font-size: var(--font-base);
+  opacity: 0.85;
+  margin-top: var(--space-xs);
+}
+
+/* === 按钮组件原生重置 === */
 button {
   background: initial;
   border: none;
@@ -273,205 +453,100 @@ button {
   margin: 0;
 }
 
-button:focus {
-  outline: none;
-}
+button:focus { outline: none; }
+button::after { border: none; }
 
-button::after {
-  border: none;
-}
+/* ============================================================================
+   动画
+   ============================================================================ */
 
-/* ============================================
-   动画效果
-   ============================================ */
-
-/* === 淡入动画 === */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
+.fade-in { animation: fadeIn var(--duration-normal) var(--ease-out); }
 
-.fade-in {
-  animation: fadeIn var(--duration-normal) var(--ease-out);
-}
-
-/* === 淡入上滑动画 === */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40rpx);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(40rpx); }
+  to { opacity: 1; transform: translateY(0); }
 }
+.fade-in-up { animation: fadeInUp var(--duration-normal) var(--ease-out); }
 
-.fade-in-up {
-  animation: fadeInUp var(--duration-normal) var(--ease-out);
-}
-
-/* === 淡入下滑动画 === */
 @keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-40rpx);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-40rpx); }
+  to { opacity: 1; transform: translateY(0); }
 }
+.fade-in-down { animation: fadeInDown var(--duration-normal) var(--ease-out); }
 
-.fade-in-down {
-  animation: fadeInDown var(--duration-normal) var(--ease-out);
-}
-
-/* === 缩放动画 === */
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
 }
+.scale-in { animation: scaleIn var(--duration-normal) var(--ease-out); }
 
-.scale-in {
-  animation: scaleIn var(--duration-normal) var(--ease-out);
-}
-
-/* === 滑入动画 === */
 @keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
 }
-
-.slide-in-right {
-  animation: slideInRight var(--duration-normal) var(--ease-out);
-}
+.slide-in-right { animation: slideInRight var(--duration-normal) var(--ease-out); }
 
 @keyframes slideInLeft {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
 }
+.slide-in-left { animation: slideInLeft var(--duration-normal) var(--ease-out); }
 
-.slide-in-left {
-  animation: slideInLeft var(--duration-normal) var(--ease-out);
-}
-
-/* === 弹跳动画 === */
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20rpx);
-  }
-}
-
-.bounce {
-  animation: bounce var(--duration-slow) var(--ease-bounce);
-}
-
-/* === 脉冲动画 === */
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
 }
+.pulse { animation: pulse 1.8s var(--ease-default) infinite; }
 
-.pulse {
-  animation: pulse 2s var(--ease-in-out) infinite;
-}
-
-/* === 旋转动画 === */
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spin { animation: spin 1s linear infinite; }
+
+@keyframes shimmer {
+  0% { background-position: -200rpx 0; }
+  100% { background-position: 200rpx 0; }
 }
 
-.spin {
-  animation: spin 1s linear infinite;
-}
-
-/* === 摇晃动画 === */
-@keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  10%, 30%, 50%, 70%, 90% {
-    transform: translateX(-10rpx);
-  }
-  20%, 40%, 60%, 80% {
-    transform: translateX(10rpx);
-  }
-}
-
-.shake {
-  animation: shake var(--duration-slow) var(--ease-in-out);
-}
-
-/* === 工具类 === */
+/* === 过渡 === */
 .transition-all {
-  transition: all var(--duration-normal) var(--ease-default);
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
 .transition-transform {
-  transition: transform var(--duration-normal) var(--ease-default);
-}
-
-.transition-opacity {
-  transition: opacity var(--duration-normal) var(--ease-default);
+  transition: transform var(--duration-fast) var(--ease-out);
 }
 
 .transition-colors {
-  transition: color var(--duration-normal) var(--ease-default),
-              background-color var(--duration-normal) var(--ease-default);
+  transition: color var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out);
 }
 
-/* === 悬停效果（仅在有hover的设备上） === */
-.hover-lift:active {
-  transform: translateY(-4rpx);
-  box-shadow: var(--shadow-lg);
-}
-
-.hover-scale:active {
-  transform: scale(1.02);
-}
-
-.hover-shrink:active {
-  transform: scale(0.98);
-}
-
-/* === 按钮点击反馈 === */
+/* === 按下反馈 === */
 .clickable {
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out);
 }
 
 .clickable:active {
-  transform: scale(0.95);
-  opacity: 0.8;
+  transform: scale(0.97);
+  opacity: 0.88;
 }
+
+.hover-lift:active {
+  transform: translateY(-2rpx);
+  box-shadow: var(--shadow-lg);
+}
+
+.hover-scale:active { transform: scale(1.02); }
+.hover-shrink:active { transform: scale(0.98); }
+
+/* === Reduced Motion === */
+/* 注: 微信小程序 wxss 不支持 *、::before、::after 通配选择器,
+   prefers-reduced-motion 的全局降级需要在各页面的 .fade-in / .scale-in
+   等具体动画类上单独覆盖。这里留空作为占位提醒。 */

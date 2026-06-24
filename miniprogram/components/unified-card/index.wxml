@@ -1,5 +1,8 @@
 <!--components/unified-card/index.wxml-->
-<view class="unified-card card-{{type}} {{shadowClass}} {{clickable ? 'clickable' : ''}}" bindtap="handleTap">
+<view
+  class="unified-card card-{{type}} {{shadowClass}} {{spanClass}} {{clickable ? 'clickable' : ''}}"
+  bindtap="handleTap"
+>
   <!-- 卡片头部 -->
   <view class="card-header" wx:if="{{title || subtitle}}">
     <view class="header-left">

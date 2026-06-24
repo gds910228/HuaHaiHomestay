@@ -5,9 +5,7 @@
   <view class="image-swiper-container">
     <swiper
       class="image-swiper"
-      indicator-dots="{{true}}"
-      indicator-color="rgba(255, 255, 255, 0.5)"
-      indicator-active-color="#fff"
+      indicator-dots="{{false}}"
       autoplay="{{false}}"
       bindchange="onImageChange">
       <swiper-item wx:for="{{room.images}}" wx:key="index">
@@ -20,174 +18,234 @@
           data-urls="{{room.images}}" />
       </swiper-item>
     </swiper>
-    <view class="image-counter">{{currentImageIndex + 1}} / {{room.images.length}}</view>
+    <view class="image-tint"></view>
+    <view class="image-counter tabular-nums">{{currentImageIndex + 1}} / {{room.images.length}}</view>
   </view>
 
   <!-- 房型基本信息 -->
-  <view class="section-container info-section">
+  <view class="info-sheet">
     <view class="room-header">
       <view class="room-title-row">
         <text class="room-type">{{room.roomType}}</text>
-        <text class="room-category" wx:if="{{room.roomCategory}}">{{room.roomCategory}}</text>
+        <view class="room-category-pill" wx:if="{{room.roomCategory}}">{{room.roomCategory}}</view>
       </view>
       <view class="room-tags" wx:if="{{room.tags && room.tags.length > 0}}">
-        <text class="tag" wx:for="{{room.tags}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
+        <view class="tag tag-brand" wx:for="{{room.tags}}" wx:key="index" wx:for-item="tag">{{tag}}</view>
       </view>
     </view>
 
     <view class="price-row">
       <text class="price-symbol">¥</text>
-      <text class="price-value">{{room.displayPrice}}</text>
+      <text class="price-value tabular-nums">{{room.displayPrice}}</text>
       <text class="price-unit">/晚</text>
     </view>
 
     <view class="room-basic-info">
-      <view class="info-item">
-        <text class="info-icon">📐</text>
-        <text class="info-text">{{room.area || '面积未知'}}</text>
+      <view class="basic-info-item">
+        <image class="basic-info-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5 v 14 M 21 5 v 14 M 5 5 h 14 M 5 19 h 14 M 8 9 l 4 -4 4 4 M 8 15 l 4 4 4 -4'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        <text class="basic-info-text">{{room.area || '面积未知'}}</text>
       </view>
-      <view class="info-item">
-        <text class="info-icon">🛏️</text>
-        <text class="info-text">{{room.bedType || '床型未知'}}</text>
+      <view class="basic-info-item">
+        <image class="basic-info-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 18 v -5 a 3 3 0 0 1 3 -3 h 14 a 3 3 0 0 1 3 3 v 5 M 2 18 h 20 M 2 18 v 3 M 22 18 v 3'/%3E%3Cpath d='M6 10 V 7 a 2 2 0 0 1 2 -2 h 8 a 2 2 0 0 1 2 2 v 3'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        <text class="basic-info-text">{{room.bedType || '床型未知'}}</text>
       </view>
-      <view class="info-item" wx:if="{{room.maxGuests}}">
-        <text class="info-icon">👥</text>
-        <text class="info-text">{{room.guestDisplay}}</text>
+      <view class="basic-info-item" wx:if="{{room.maxGuests}}">
+        <image class="basic-info-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='8' r='3'/%3E%3Cpath d='M3 21 v -2 a 4 4 0 0 1 4 -4 h 4 a 4 4 0 0 1 4 4 v 2'/%3E%3Cpath d='M17 11 a 3 3 0 0 0 0 -6'/%3E%3Cpath d='M22 21 v -2 a 4 4 0 0 0 -3 -3.87'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        <text class="basic-info-text">{{room.guestDisplay}}</text>
       </view>
-      <view class="info-item" wx:if="{{room.breakfast}}">
-        <text class="info-icon">🍳</text>
-        <text class="info-text">{{room.breakfast}}</text>
+      <view class="basic-info-item" wx:if="{{room.breakfast}}">
+        <image class="basic-info-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 13 h 12 a 6 6 0 0 1 -12 0 z'/%3E%3Cpath d='M18 8 c 0 -2 -2 -2 -2 -4 m -4 4 c 0 -2 -2 -2 -2 -4'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        <text class="basic-info-text">{{room.breakfast}}</text>
       </view>
     </view>
   </view>
 
   <!-- 房型描述 -->
-  <view class="section-container" wx:if="{{room.description}}">
-    <view class="section-title">房型介绍</view>
+  <view class="section-block" wx:if="{{room.description}}">
+    <view class="section-eyebrow">DESCRIPTION · 房型介绍</view>
     <view class="description-text">{{room.description}}</view>
   </view>
 
   <!-- 设施服务 -->
-  <view class="section-container facilities-section" wx:if="{{room.detailedFacilities}}">
-    <view class="section-title">
-      <text>设施服务</text>
-      <text class="facility-count">（共{{room.detailedFacilities.services.length +
+  <view class="section-block" wx:if="{{room.detailedFacilities}}">
+    <view class="section-head-row">
+      <view>
+        <view class="section-eyebrow">AMENITIES · 设施服务</view>
+        <view class="section-title">房间里都有什么</view>
+      </view>
+      <view class="facility-count">共 {{room.detailedFacilities.services.length +
         room.detailedFacilities.basic.length +
         room.detailedFacilities.bathroom.length +
         room.detailedFacilities.kitchen.length +
         room.detailedFacilities.surroundings.length +
         room.detailedFacilities.safety.length +
         room.detailedFacilities.entertainment.length +
-        room.detailedFacilities.leisure.length}}项）</text>
+        room.detailedFacilities.leisure.length}}项</view>
     </view>
 
-    <!-- 服务类 -->
+    <!-- 服务 -->
     <view class="facility-category" wx:if="{{room.detailedFacilities.services.length > 0}}">
       <view class="category-header" bindtap="toggleFacilityCategory" data-category="services">
-        <text class="category-title">🛎️ 服务</text>
-        <text class="toggle-icon">{{showServices ? '▼' : '▶'}}</text>
+        <view class="category-left">
+          <view class="category-icon">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2 a 8 8 0 0 0 -8 8 v 6 h 16 v -6 a 8 8 0 0 0 -8 -8 z'/%3E%3Cpath d='M10 20 a 2 2 0 0 0 4 0'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
+          <text class="category-title">服务</text>
+        </view>
+        <image class="chevron {{showServices ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-list" wx:if="{{showServices}}">
         <view class="facility-item" wx:for="{{room.detailedFacilities.services}}" wx:key="index">
-          <text class="facility-icon">✓</text>
+          <view class="facility-tick">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 l 5 5 11 -11'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
           <text class="facility-name">{{item}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 基础类 -->
+    <!-- 基础 -->
     <view class="facility-category" wx:if="{{room.detailedFacilities.basic.length > 0}}">
       <view class="category-header" bindtap="toggleFacilityCategory" data-category="basic">
-        <text class="category-title">🏠 基础</text>
-        <text class="toggle-icon">{{showBasic ? '▼' : '▶'}}</text>
+        <view class="category-left">
+          <view class="category-icon">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12 l 9 -9 9 9 v 9 a 1 1 0 0 1 -1 1 H 4 a 1 1 0 0 1 -1 -1 z'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
+          <text class="category-title">基础</text>
+        </view>
+        <image class="chevron {{showBasic ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-list" wx:if="{{showBasic}}">
         <view class="facility-item" wx:for="{{room.detailedFacilities.basic}}" wx:key="index">
-          <text class="facility-icon">✓</text>
+          <view class="facility-tick">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 l 5 5 11 -11'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
           <text class="facility-name">{{item}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 卫浴类 -->
+    <!-- 卫浴 -->
     <view class="facility-category" wx:if="{{room.detailedFacilities.bathroom.length > 0}}">
       <view class="category-header" bindtap="toggleFacilityCategory" data-category="bathroom">
-        <text class="category-title">🚿 卫浴</text>
-        <text class="toggle-icon">{{showBathroom ? '▼' : '▶'}}</text>
+        <view class="category-left">
+          <view class="category-icon">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 5 a 2 2 0 0 1 4 0 v 7 H 4 a 8 8 0 0 0 16 0 V 12'/%3E%3Cpath d='M4 17 v 3 M 20 17 v 3'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
+          <text class="category-title">卫浴</text>
+        </view>
+        <image class="chevron {{showBathroom ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-list" wx:if="{{showBathroom}}">
         <view class="facility-item" wx:for="{{room.detailedFacilities.bathroom}}" wx:key="index">
-          <text class="facility-icon">✓</text>
+          <view class="facility-tick">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 l 5 5 11 -11'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
           <text class="facility-name">{{item}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 厨房类 -->
+    <!-- 厨房 -->
     <view class="facility-category" wx:if="{{room.detailedFacilities.kitchen.length > 0}}">
       <view class="category-header" bindtap="toggleFacilityCategory" data-category="kitchen">
-        <text class="category-title">🍳 厨房</text>
-        <text class="toggle-icon">{{showKitchen ? '▼' : '▶'}}</text>
+        <view class="category-left">
+          <view class="category-icon">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 13 h 12 a 6 6 0 0 1 -12 0 z'/%3E%3Cpath d='M18 8 c 0 -2 -2 -2 -2 -4 m -4 4 c 0 -2 -2 -2 -2 -4'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
+          <text class="category-title">厨房</text>
+        </view>
+        <image class="chevron {{showKitchen ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-list" wx:if="{{showKitchen}}">
         <view class="facility-item" wx:for="{{room.detailedFacilities.kitchen}}" wx:key="index">
-          <text class="facility-icon">✓</text>
+          <view class="facility-tick">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 l 5 5 11 -11'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
           <text class="facility-name">{{item}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 周边配套 -->
+    <!-- 周边 -->
     <view class="facility-category" wx:if="{{room.detailedFacilities.surroundings.length > 0}}">
       <view class="category-header" bindtap="toggleFacilityCategory" data-category="surroundings">
-        <text class="category-title">🏪 周边配套</text>
-        <text class="toggle-icon">{{showSurroundings ? '▼' : '▶'}}</text>
+        <view class="category-left">
+          <view class="category-icon">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9 l 9 -7 9 7 v 11 a 2 2 0 0 1 -2 2 H 5 a 2 2 0 0 1 -2 -2 z'/%3E%3Cpath d='M9 22 V 12 h 6 v 10'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
+          <text class="category-title">周边</text>
+        </view>
+        <image class="chevron {{showSurroundings ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-list" wx:if="{{showSurroundings}}">
         <view class="facility-item" wx:for="{{room.detailedFacilities.surroundings}}" wx:key="index">
-          <text class="facility-icon">✓</text>
+          <view class="facility-tick">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 l 5 5 11 -11'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
           <text class="facility-name">{{item}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 安全设施 -->
+    <!-- 安全 -->
     <view class="facility-category" wx:if="{{room.detailedFacilities.safety.length > 0}}">
       <view class="category-header" bindtap="toggleFacilityCategory" data-category="safety">
-        <text class="category-title">🛡️ 安全</text>
-        <text class="toggle-icon">{{showSafety ? '▼' : '▶'}}</text>
+        <view class="category-left">
+          <view class="category-icon">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22 s 8 -4 8 -10 V 5 l -8 -3 -8 3 v 7 c 0 6 8 10 8 10 z'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
+          <text class="category-title">安全</text>
+        </view>
+        <image class="chevron {{showSafety ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-list" wx:if="{{showSafety}}">
         <view class="facility-item" wx:for="{{room.detailedFacilities.safety}}" wx:key="index">
-          <text class="facility-icon">✓</text>
+          <view class="facility-tick">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 l 5 5 11 -11'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
           <text class="facility-name">{{item}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 娱乐设施 -->
+    <!-- 娱乐 -->
     <view class="facility-category" wx:if="{{room.detailedFacilities.entertainment.length > 0}}">
       <view class="category-header" bindtap="toggleFacilityCategory" data-category="entertainment">
-        <text class="category-title">🎬 娱乐</text>
-        <text class="toggle-icon">{{showEntertainment ? '▼' : '▶'}}</text>
+        <view class="category-left">
+          <view class="category-icon">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2'/%3E%3Cpath d='M3 9 h 4 V 5 M 17 5 V 9 h 4'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
+          <text class="category-title">娱乐</text>
+        </view>
+        <image class="chevron {{showEntertainment ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-list" wx:if="{{showEntertainment}}">
         <view class="facility-item" wx:for="{{room.detailedFacilities.entertainment}}" wx:key="index">
-          <text class="facility-icon">✓</text>
+          <view class="facility-tick">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 l 5 5 11 -11'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
           <text class="facility-name">{{item}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 休闲设施 -->
+    <!-- 休闲 -->
     <view class="facility-category" wx:if="{{room.detailedFacilities.leisure.length > 0}}">
       <view class="category-header" bindtap="toggleFacilityCategory" data-category="leisure">
-        <text class="category-title">🌿 休闲</text>
-        <text class="toggle-icon">{{showLeisure ? '▼' : '▶'}}</text>
+        <view class="category-left">
+          <view class="category-icon">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 20 A 7 7 0 0 1 4 13 c 0 -4 7 -10 7 -10 s 7 6 7 10 a 7 7 0 0 1 -7 7 z'/%3E%3Cpath d='M11 6 v 14'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
+          <text class="category-title">休闲</text>
+        </view>
+        <image class="chevron {{showLeisure ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-list" wx:if="{{showLeisure}}">
         <view class="facility-item" wx:for="{{room.detailedFacilities.leisure}}" wx:key="index">
-          <text class="facility-icon">✓</text>
+          <view class="facility-tick">
+            <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 l 5 5 11 -11'/%3E%3C/svg%3E" mode="aspectFit"></image>
+          </view>
           <text class="facility-name">{{item}}</text>
         </view>
       </view>
@@ -195,111 +253,125 @@
   </view>
 
   <!-- 入住须知 -->
-  <view class="section-container" wx:if="{{room.checkInRules}}">
-    <view class="section-title-with-toggle" bindtap="toggleCheckInRules">
-      <text class="section-title-text">入住须知</text>
-      <text class="toggle-icon">{{showCheckInRules ? '▼' : '▶'}}</text>
+  <view class="section-block" wx:if="{{room.checkInRules}}">
+    <view class="collapsible-head" bindtap="toggleCheckInRules">
+      <view>
+        <view class="section-eyebrow">CHECK-IN · 入住须知</view>
+        <view class="section-title">订房前必读</view>
+      </view>
+      <image class="chevron {{showCheckInRules ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
     </view>
-
-    <view class="check-in-rules" wx:if="{{showCheckInRules}}">
+    <view class="rules-list" wx:if="{{showCheckInRules}}">
       <view class="rule-item" wx:if="{{room.checkInRules.checkInTime}}">
-        <text class="rule-label">入住时间：</text>
+        <text class="rule-label">入住时间</text>
         <text class="rule-value">{{room.checkInRules.checkInTime}}</text>
       </view>
       <view class="rule-item" wx:if="{{room.checkInRules.checkOutTime}}">
-        <text class="rule-label">退房时间：</text>
+        <text class="rule-label">退房时间</text>
         <text class="rule-value">{{room.checkInRules.checkOutTime}}</text>
       </view>
       <view class="rule-item" wx:if="{{room.checkInRules.cancelPolicy}}">
-        <text class="rule-label">取消政策：</text>
+        <text class="rule-label">取消政策</text>
         <text class="rule-value">{{room.checkInRules.cancelPolicy}}</text>
       </view>
       <view class="rule-item" wx:if="{{room.checkInRules.deposit}}">
-        <text class="rule-label">押金：</text>
-        <text class="rule-value">¥{{room.checkInRules.deposit}}（离店后退还）</text>
+        <text class="rule-label">押金</text>
+        <text class="rule-value tabular-nums">¥{{room.checkInRules.deposit}}(离店后退还)</text>
       </view>
       <view class="rule-item" wx:if="{{room.checkInRules.instantConfirm !== undefined}}">
-        <text class="rule-label">确认方式：</text>
-        <text class="rule-value">{{room.checkInRules.instantConfirm ? '立即确认（下单即有房）' : '需等待确认'}}</text>
+        <text class="rule-label">确认方式</text>
+        <text class="rule-value">{{room.checkInRules.instantConfirm ? '立即确认(下单即有房)' : '需等待确认'}}</text>
       </view>
     </view>
   </view>
 
   <!-- 接待要求 -->
-  <view class="section-container" wx:if="{{room.guestRequirements}}">
-    <view class="section-title-with-toggle" bindtap="toggleGuestRequirements">
-      <text class="section-title-text">接待要求</text>
-      <text class="toggle-icon">{{showGuestRequirements ? '▼' : '▶'}}</text>
+  <view class="section-block" wx:if="{{room.guestRequirements}}">
+    <view class="collapsible-head" bindtap="toggleGuestRequirements">
+      <view>
+        <view class="section-eyebrow">GUEST · 接待要求</view>
+        <view class="section-title">可以带谁来住</view>
+      </view>
+      <image class="chevron {{showGuestRequirements ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
     </view>
-
-    <view class="guest-requirements" wx:if="{{showGuestRequirements}}">
-      <view class="requirement-item">
-        <text class="requirement-label">接待婴儿：</text>
-        <text class="requirement-value {{room.guestRequirements.allowInfants ? 'allowed' : 'not-allowed'}}">
-          {{room.guestRequirements.allowInfants ? '✓ 允许' : '✗ 不允许'}}
-        </text>
+    <view class="requirements-grid" wx:if="{{showGuestRequirements}}">
+      <view class="req-item">
+        <text class="req-label">接待婴儿</text>
+        <view class="req-pill {{room.guestRequirements.allowInfants ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowInfants ? '允许' : '不允许'}}
+        </view>
       </view>
-      <view class="requirement-item">
-        <text class="requirement-label">接待儿童：</text>
-        <text class="requirement-value {{room.guestRequirements.allowChildren ? 'allowed' : 'not-allowed'}}">
-          {{room.guestRequirements.allowChildren ? '✓ 允许' : '✗ 不允许'}}
-        </text>
+      <view class="req-item">
+        <text class="req-label">接待儿童</text>
+        <view class="req-pill {{room.guestRequirements.allowChildren ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowChildren ? '允许' : '不允许'}}
+        </view>
       </view>
-      <view class="requirement-item">
-        <text class="requirement-label">接待老人：</text>
-        <text class="requirement-value {{room.guestRequirements.allowElderly ? 'allowed' : 'not-allowed'}}">
-          {{room.guestRequirements.allowElderly ? '✓ 允许' : '✗ 不允许'}}
-        </text>
+      <view class="req-item">
+        <text class="req-label">接待老人</text>
+        <view class="req-pill {{room.guestRequirements.allowElderly ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowElderly ? '允许' : '不允许'}}
+        </view>
       </view>
-      <view class="requirement-item">
-        <text class="requirement-label">携带宠物：</text>
-        <text class="requirement-value {{room.guestRequirements.allowPets ? 'allowed' : 'not-allowed'}}">
-          {{room.guestRequirements.allowPets ? '✓ 允许' : '✗ 不允许'}}
-        </text>
+      <view class="req-item">
+        <text class="req-label">携带宠物</text>
+        <view class="req-pill {{room.guestRequirements.allowPets ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowPets ? '允许' : '不允许'}}
+        </view>
       </view>
-      <view class="requirement-item">
-        <text class="requirement-label">允许吸烟：</text>
-        <text class="requirement-value {{room.guestRequirements.allowSmoking ? 'allowed' : 'not-allowed'}}">
-          {{room.guestRequirements.allowSmoking ? '✓ 允许' : '✗ 不允许'}}
-        </text>
+      <view class="req-item">
+        <text class="req-label">允许吸烟</text>
+        <view class="req-pill {{room.guestRequirements.allowSmoking ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowSmoking ? '允许' : '不允许'}}
+        </view>
       </view>
-      <view class="requirement-item">
-        <text class="requirement-label">允许做饭：</text>
-        <text class="requirement-value {{room.guestRequirements.allowCooking ? 'allowed' : 'not-allowed'}}">
-          {{room.guestRequirements.allowCooking ? '✓ 允许' : '✗ 不允许'}}
-        </text>
+      <view class="req-item">
+        <text class="req-label">允许做饭</text>
+        <view class="req-pill {{room.guestRequirements.allowCooking ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowCooking ? '允许' : '不允许'}}
+        </view>
       </view>
-      <view class="requirement-item">
-        <text class="requirement-label">允许聚会：</text>
-        <text class="requirement-value {{room.guestRequirements.allowParty ? 'allowed' : 'not-allowed'}}">
-          {{room.guestRequirements.allowParty ? '✓ 允许' : '✗ 不允许'}}
-        </text>
+      <view class="req-item">
+        <text class="req-label">允许聚会</text>
+        <view class="req-pill {{room.guestRequirements.allowParty ? 'allowed' : 'not-allowed'}}">
+          {{room.guestRequirements.allowParty ? '允许' : '不允许'}}
+        </view>
       </view>
     </view>
   </view>
 
-  <!-- 底部占位，防止内容被操作栏遮挡 -->
   <view class="bottom-placeholder"></view>
 
   <!-- 底部操作栏 -->
   <view class="bottom-action-bar">
     <view class="action-buttons">
-      <view class="action-btn secondary-btn" bindtap="handleFavorite">
-        <text class="action-icon">{{room.isFavorited ? '★' : '☆'}}</text>
+      <view class="action-btn ghost-btn" bindtap="handleFavorite">
+        <image
+          wx:if="{{room.isFavorited}}"
+          class="action-btn-icon"
+          src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23E8916D' stroke='%23E8916D' stroke-width='1.6'%3E%3Cpath d='M20.84 4.61 a 5.5 5.5 0 0 0 -7.78 0 L 12 5.67 l -1.06 -1.06 a 5.5 5.5 0 0 0 -7.78 7.78 l 1.06 1.06 L 12 21.23 l 7.78 -7.78 1.06 -1.06 a 5.5 5.5 0 0 0 0 -7.78 z'/%3E%3C/svg%3E"
+          mode="aspectFit"
+        ></image>
+        <image
+          wx:else
+          class="action-btn-icon"
+          src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2'%3E%3Cpath d='M20.84 4.61 a 5.5 5.5 0 0 0 -7.78 0 L 12 5.67 l -1.06 -1.06 a 5.5 5.5 0 0 0 -7.78 7.78 l 1.06 1.06 L 12 21.23 l 7.78 -7.78 1.06 -1.06 a 5.5 5.5 0 0 0 0 -7.78 z'/%3E%3C/svg%3E"
+          mode="aspectFit"
+        ></image>
         <text class="action-text">收藏</text>
       </view>
-      <view class="action-btn secondary-btn" bindtap="handleContact">
-        <text class="action-icon">📞</text>
+      <view class="action-btn ghost-btn" bindtap="handleContact">
+        <image class="action-btn-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 4 h 4 l 2 5 -3 2 a 11 11 0 0 0 5 5 l 2 -3 5 2 v 4 a 2 2 0 0 1 -2 2 A 17 17 0 0 1 3 6 a 2 2 0 0 1 2 -2'/%3E%3C/svg%3E" mode="aspectFit"></image>
         <text class="action-text">客服</text>
       </view>
-      <view class="action-btn primary-btn" bindtap="handleBooking">
+      <view class="action-btn book-btn" bindtap="handleBooking">
         <text class="btn-text">立即预订</text>
       </view>
     </view>
   </view>
 </view>
 
-<!-- 加载中 -->
+<!-- 加载 -->
 <view class="loading-container" wx:if="{{loading}}">
-  <text class="loading-text">加载中...</text>
+  <loading-state text="正在加载房型信息..."></loading-state>
 </view>

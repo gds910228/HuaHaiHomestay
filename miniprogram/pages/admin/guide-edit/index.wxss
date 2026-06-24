@@ -1,7 +1,7 @@
 /* pages/admin/guide-edit/index.wxss */
 .edit-container {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--bg-muted);
   padding-bottom: 120rpx;
 }
 
@@ -10,7 +10,7 @@
 }
 
 .form-item {
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 16rpx;
   padding: 30rpx;
   margin-bottom: 24rpx;
@@ -19,7 +19,7 @@
 .form-label {
   display: block;
   font-size: 28rpx;
-  color: #333;
+  color: var(--text-primary);
   font-weight: 500;
   margin-bottom: 20rpx;
 }
@@ -28,7 +28,7 @@
   width: 100%;
   height: 80rpx;
   padding: 0 20rpx;
-  background: #f5f5f5;
+  background: var(--bg-muted);
   border-radius: 8rpx;
   font-size: 28rpx;
   box-sizing: border-box;
@@ -37,7 +37,7 @@
 .form-picker {
   width: 100%;
   height: 80rpx;
-  background: #f5f5f5;
+  background: var(--bg-muted);
   border-radius: 8rpx;
   display: flex;
   align-items: center;
@@ -47,14 +47,14 @@
 
 .picker-value {
   font-size: 28rpx;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .form-textarea {
   width: 100%;
   min-height: 200rpx;
   padding: 20rpx;
-  background: #f5f5f5;
+  background: var(--bg-muted);
   border-radius: 8rpx;
   font-size: 28rpx;
   line-height: 1.6;
@@ -74,28 +74,28 @@
   align-items: center;
   padding: 8rpx 20rpx;
   border-radius: 28rpx;
-  background: #f0f4ff;
+  background: var(--brand-primary-soft);
   font-size: 24rpx;
-  color: #2E7DFF;
+  color: var(--brand-primary);
   line-height: 1.4;
   border: 2rpx solid transparent;
 }
 
 .tag-chip.selected {
-  background: #2E7DFF;
-  color: #fff;
+  background: var(--brand-primary);
+  color: var(--bg-surface);
 }
 
 .tag-chip.cloud {
-  background: #f5f5f5;
-  color: #666;
-  border: 2rpx solid #eee;
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+  border: 2rpx solid var(--divider-color);
 }
 
 .tag-chip.cloud.selected {
-  background: #2E7DFF;
-  color: #fff;
-  border-color: #2E7DFF;
+  background: var(--brand-primary);
+  color: var(--bg-surface);
+  border-color: var(--brand-primary);
 }
 
 .tag-chip-text {
@@ -129,8 +129,8 @@
   padding: 0 28rpx;
   height: 80rpx;
   line-height: 80rpx;
-  background: #2E7DFF;
-  color: #fff;
+  background: var(--brand-primary);
+  color: var(--bg-surface);
   border-radius: 8rpx;
   font-size: 26rpx;
 }
@@ -140,7 +140,7 @@
   margin-top: 24rpx;
   margin-bottom: 16rpx;
   font-size: 24rpx;
-  color: #999;
+  color: var(--text-tertiary);
 }
 
 .tag-cloud {
@@ -185,32 +185,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--bg-surface);
   font-size: 24rpx;
 }
 
 .upload-btn {
   width: 200rpx;
   height: 200rpx;
-  border: 2rpx dashed #ddd;
+  border: 2rpx dashed var(--border-line);
   border-radius: 12rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #fafafa;
+  background: var(--bg-muted);
 }
 
 .upload-icon {
   font-size: 60rpx;
-  color: #999;
+  color: var(--text-tertiary);
   line-height: 1;
   margin-bottom: 10rpx;
 }
 
 .upload-text {
   font-size: 24rpx;
-  color: #999;
+  color: var(--text-tertiary);
 }
 
 /* ============ 富文本编辑器 ============ */
@@ -220,7 +220,7 @@
   gap: 12rpx;
   margin-bottom: 16rpx;
   padding: 12rpx;
-  background: #fafafa;
+  background: var(--bg-muted);
   border-radius: 8rpx;
 }
 
@@ -230,28 +230,28 @@
   padding: 0 14rpx;
   line-height: 56rpx;
   text-align: center;
-  background: #fff;
-  border: 2rpx solid #eaeaea;
+  background: var(--bg-surface);
+  border: 2rpx solid var(--divider-color);
   border-radius: 8rpx;
   font-size: 26rpx;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .tb-btn.active {
-  background: #2E7DFF;
-  color: #fff;
-  border-color: #2E7DFF;
+  background: var(--brand-primary);
+  color: var(--bg-surface);
+  border-color: var(--brand-primary);
 }
 
 .tb-btn.primary {
-  background: #2E7DFF;
-  color: #fff;
-  border-color: #2E7DFF;
+  background: var(--brand-primary);
+  color: var(--bg-surface);
+  border-color: var(--brand-primary);
 }
 
 .tb-btn.danger {
-  color: #e64340;
-  border-color: #fbd5d4;
+  color: var(--color-danger);
+  border-color: var(--color-danger-soft);
 }
 
 .tb-bold { font-weight: bold; }
@@ -262,8 +262,8 @@
   width: 100%;
   min-height: 460rpx;
   padding: 20rpx;
-  background: #fff;
-  border: 2rpx solid #eaeaea;
+  background: var(--bg-surface);
+  border: 2rpx solid var(--divider-color);
   border-radius: 8rpx;
   font-size: 28rpx;
   line-height: 1.7;
@@ -277,7 +277,7 @@
   left: 0;
   right: 0;
   padding: 20rpx 30rpx;
-  background: #fff;
+  background: var(--bg-surface);
   box-shadow: 0 -2rpx 20rpx rgba(0, 0, 0, 0.05);
 }
 
@@ -293,6 +293,6 @@
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #2E7DFF 0%, #1E5FD4 100%);
-  color: #fff;
+  background: var(--brand-primary);
+  color: var(--bg-surface);
 }

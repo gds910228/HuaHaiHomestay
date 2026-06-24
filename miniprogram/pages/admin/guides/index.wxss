@@ -1,7 +1,7 @@
 /* pages/admin/guides/index.wxss */
 .guides-container {
   min-height: 100vh;
-  background: #F5F7FA;
+  background: var(--bg-canvas);
   padding-bottom: 120rpx;
 }
 
@@ -10,14 +10,14 @@
   display: flex;
   gap: 16rpx;
   padding: 24rpx;
-  background: #FFFFFF;
+  background: var(--bg-surface);
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
 }
 
 .filter-picker {
   flex: 1;
   height: 64rpx;
-  background: #F5F7FA;
+  background: var(--bg-canvas);
   border-radius: 12rpx;
   display: flex;
   align-items: center;
@@ -29,12 +29,12 @@
   align-items: center;
   gap: 8rpx;
   font-size: 26rpx;
-  color: #333333;
+  color: var(--text-primary);
 }
 
 .picker-arrow {
-  font-size: 20rpx;
-  color: #999999;
+  width: 24rpx;
+  height: 24rpx;
 }
 
 /* 攻略列表 */
@@ -58,7 +58,7 @@
   flex: 1;
   font-size: 32rpx;
   font-weight: bold;
-  color: #333333;
+  color: var(--text-primary);
   margin-right: 16rpx;
 }
 
@@ -69,13 +69,13 @@
 }
 
 .item-status.published {
-  background: #E8F5E9;
-  color: #4CAF50;
+  background: var(--color-success-soft);
+  color: var(--color-success);
 }
 
 .item-status.draft {
-  background: #FFF3E0;
-  color: #FF9800;
+  background: var(--brand-accent-soft);
+  color: var(--color-warning);
 }
 
 .item-info {
@@ -86,22 +86,22 @@
 
 .info-tag {
   padding: 6rpx 16rpx;
-  background: #F0F7FF;
+  background: var(--brand-primary-soft);
   border-radius: 8rpx;
   font-size: 22rpx;
-  color: #2E7DFF;
+  color: var(--brand-primary);
 }
 
 .info-text {
   font-size: 24rpx;
-  color: #999999;
+  color: var(--text-tertiary);
 }
 
 .item-actions {
   display: flex;
   gap: 12rpx;
   padding-top: 16rpx;
-  border-top: 1rpx solid #F0F0F0;
+  border-top: 1rpx solid var(--divider-color);
 }
 
 .action-btn {
@@ -116,18 +116,18 @@
 }
 
 .action-btn.edit {
-  background: #F0F7FF;
-  color: #2E7DFF;
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
 }
 
 .action-btn.toggle {
-  background: #FFF3E0;
-  color: #FF9800;
+  background: var(--brand-accent-soft);
+  color: var(--color-warning);
 }
 
 .action-btn.delete {
-  background: #FFEBEE;
-  color: #F44336;
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
 }
 
 /* 空状态 */
@@ -146,7 +146,7 @@
 
 .empty-text {
   font-size: 28rpx;
-  color: #999999;
+  color: var(--text-tertiary);
 }
 
 /* 添加按钮 */
@@ -156,9 +156,9 @@
   bottom: 100rpx;
   width: 112rpx;
   height: 112rpx;
-  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+  background: var(--brand-primary);
   border-radius: 56rpx;
-  box-shadow: 0 8rpx 24rpx rgba(46, 125, 255, 0.4);
+  box-shadow: 0 8rpx 24rpx rgba(30, 82, 102, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,6 +167,6 @@
 
 .add-icon {
   font-size: 64rpx;
-  color: #FFFFFF;
+  color: var(--bg-surface);
   font-weight: 300;
 }

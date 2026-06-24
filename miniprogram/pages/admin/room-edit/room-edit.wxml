@@ -191,7 +191,7 @@
     <view class="facility-group">
       <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="services">
         <text class="group-title">🛎️ 服务</text>
-        <text class="toggle-icon">{{showFacilities.services ? '▼' : '▶'}}</text>
+        <image class="toggle-icon {{showFacilities.services ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23A39A8D%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M6 9 l 6 6 6 -6%27/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-options" wx:if="{{showFacilities.services}}">
         <view
@@ -211,7 +211,7 @@
     <view class="facility-group">
       <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="basic">
         <text class="group-title">🏠 基础</text>
-        <text class="toggle-icon">{{showFacilities.basic ? '▼' : '▶'}}</text>
+        <image class="toggle-icon {{showFacilities.basic ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23A39A8D%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M6 9 l 6 6 6 -6%27/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-options" wx:if="{{showFacilities.basic}}">
         <view
@@ -231,7 +231,7 @@
     <view class="facility-group">
       <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="bathroom">
         <text class="group-title">🚿 卫浴</text>
-        <text class="toggle-icon">{{showFacilities.bathroom ? '▼' : '▶'}}</text>
+        <image class="toggle-icon {{showFacilities.bathroom ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23A39A8D%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M6 9 l 6 6 6 -6%27/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-options" wx:if="{{showFacilities.bathroom}}">
         <view
@@ -251,7 +251,7 @@
     <view class="facility-group">
       <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="kitchen">
         <text class="group-title">🍳 厨房</text>
-        <text class="toggle-icon">{{showFacilities.kitchen ? '▼' : '▶'}}</text>
+        <image class="toggle-icon {{showFacilities.kitchen ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23A39A8D%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M6 9 l 6 6 6 -6%27/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-options" wx:if="{{showFacilities.kitchen}}">
         <view
@@ -271,7 +271,7 @@
     <view class="facility-group">
       <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="surroundings">
         <text class="group-title">🏪 周边配套</text>
-        <text class="toggle-icon">{{showFacilities.surroundings ? '▼' : '▶'}}</text>
+        <image class="toggle-icon {{showFacilities.surroundings ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23A39A8D%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M6 9 l 6 6 6 -6%27/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-options" wx:if="{{showFacilities.surroundings}}">
         <view
@@ -291,7 +291,7 @@
     <view class="facility-group">
       <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="safety">
         <text class="group-title">🛡️ 安全</text>
-        <text class="toggle-icon">{{showFacilities.safety ? '▼' : '▶'}}</text>
+        <image class="toggle-icon {{showFacilities.safety ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23A39A8D%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M6 9 l 6 6 6 -6%27/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-options" wx:if="{{showFacilities.safety}}">
         <view
@@ -311,7 +311,7 @@
     <view class="facility-group">
       <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="entertainment">
         <text class="group-title">🎬 娱乐</text>
-        <text class="toggle-icon">{{showFacilities.entertainment ? '▼' : '▶'}}</text>
+        <image class="toggle-icon {{showFacilities.entertainment ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23A39A8D%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M6 9 l 6 6 6 -6%27/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-options" wx:if="{{showFacilities.entertainment}}">
         <view
@@ -331,7 +331,7 @@
     <view class="facility-group">
       <view class="facility-group-header" bindtap="toggleFacilityCategory" data-category="leisure">
         <text class="group-title">🌿 休闲</text>
-        <text class="toggle-icon">{{showFacilities.leisure ? '▼' : '▶'}}</text>
+        <image class="toggle-icon {{showFacilities.leisure ? 'open' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23A39A8D%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M6 9 l 6 6 6 -6%27/%3E%3C/svg%3E" mode="aspectFit"></image>
       </view>
       <view class="facility-options" wx:if="{{showFacilities.leisure}}">
         <view

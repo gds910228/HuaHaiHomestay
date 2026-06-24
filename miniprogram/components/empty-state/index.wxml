@@ -1,9 +1,13 @@
 <!--components/empty-state/index.wxml-->
-<view class="empty-state">
+<view class="empty-state type-{{type}}">
   <!-- 图标或图片 -->
   <view class="empty-icon">
     <image wx:if="{{image}}" class="empty-image" src="{{image}}" mode="aspectFit"></image>
-    <text wx:else class="empty-emoji">{{icon || '📭'}}</text>
+    <text wx:elif="{{icon}}" class="empty-emoji-fallback">{{icon}}</text>
+    <view wx:else class="empty-svg-wrap">
+      <!-- 默认插画: 海岛 · 灯塔 + 海平线 -->
+      <image class="empty-svg" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%23A39A8D' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 160 Q 100 130, 180 160' opacity='0.5'/%3E%3Cpath d='M10 178 Q 100 148, 190 178' opacity='0.3'/%3E%3Ccircle cx='100' cy='82' r='34' stroke='%231E5266'/%3E%3Cpath d='M82 82 L 92 92 L 120 64' stroke='%23E8916D' stroke-width='4'/%3E%3Cpath d='M55 112 l 8 12 M 145 112 l -8 12' opacity='0.4'/%3E%3Cpath d='M100 24 v -10 M 130 36 l 6 -8 M 70 36 l -6 -8' opacity='0.4'/%3E%3C/svg%3E" mode="aspectFit"></image>
+    </view>
   </view>
 
   <!-- 标题 -->

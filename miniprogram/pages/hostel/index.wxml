@@ -2,7 +2,7 @@
 <view class="hostel-container" wx:if="{{!loading && hostel}}">
   <!-- 相册轮播 -->
   <view class="album-section">
-    <swiper class="album-swiper" indicator-dots="{{hostel.albums.length > 1}}" autoplay circular>
+    <swiper class="album-swiper" indicator-dots="{{hostel.albums.length > 1}}" indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#FFFFFF" autoplay circular>
       <swiper-item wx:for="{{hostel.albums}}" wx:key="*this">
         <image
           class="album-image"
@@ -14,41 +14,57 @@
         ></image>
       </swiper-item>
     </swiper>
+    <view class="album-tint"></view>
     <view class="album-badge">
-      <text class="badge-text">{{hostel.albums.length}}张照片</text>
+      <image class="badge-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='16' rx='2'/%3E%3Ccircle cx='9' cy='10' r='1.6'/%3E%3Cpath d='M3 17 l 5 -5 4 4 4 -3 5 6'/%3E%3C/svg%3E" mode="aspectFit"></image>
+      <text class="badge-text">{{hostel.albums.length}}</text>
     </view>
   </view>
 
   <!-- 民宿信息 -->
-  <view class="hostel-info card">
+  <view class="hostel-info">
+    <view class="info-eyebrow">STAY · 南澳 · 画海</view>
     <text class="info-title">{{hostel.name}}</text>
     <text class="info-desc">{{hostel.description}}</text>
 
-    <view class="info-location" bindtap="navigate">
-      <text class="location-icon">📍</text>
-      <text class="location-text">{{hostel.address}}</text>
-      <text class="location-arrow">›</text>
+    <!-- Bento 信息条 -->
+    <view class="info-bento">
+      <view class="info-cell info-cell-wide clickable" bindtap="navigate">
+        <view class="cell-icon-wrap cell-icon-brand">
+          <image class="cell-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22 s -7 -7 -7 -13 a 7 7 0 0 1 14 0 c 0 6 -7 13 -7 13 z'/%3E%3Ccircle cx='12' cy='9' r='2.4'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        </view>
+        <view class="cell-body">
+          <view class="cell-label">地址</view>
+          <view class="cell-value text-ellipsis">{{hostel.address}}</view>
+        </view>
+        <image class="cell-arrow" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6 l 6 6 -6 6'/%3E%3C/svg%3E" mode="aspectFit"></image>
+      </view>
     </view>
 
-    <!-- 联系方式 -->
+    <!-- 联系按钮 -->
     <view class="contact-actions">
-      <button class="contact-btn" bindtap="makeCall">
-        <text class="btn-icon">📞</text>
+      <view class="contact-btn contact-btn-primary clickable" bindtap="makeCall">
+        <image class="btn-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 4 h 4 l 2 5 -3 2 a 11 11 0 0 0 5 5 l 2 -3 5 2 v 4 a 2 2 0 0 1 -2 2 A 17 17 0 0 1 3 6 a 2 2 0 0 1 2 -2'/%3E%3C/svg%3E" mode="aspectFit"></image>
         <text class="btn-text">电话咨询</text>
-      </button>
-      <button class="contact-btn" bindtap="copyWechat">
-        <text class="btn-icon">💬</text>
+      </view>
+      <view class="contact-btn contact-btn-accent clickable" bindtap="copyWechat">
+        <image class="btn-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 11.5 a 8.38 8.38 0 0 1 -.9 3.8 8.5 8.5 0 0 1 -7.6 4.7 8.38 8.38 0 0 1 -3.8 -.9 L 3 21 l 1.9 -5.7 a 8.38 8.38 0 0 1 -.9 -3.8 8.5 8.5 0 0 1 4.7 -7.6 8.38 8.38 0 0 1 3.8 -.9 h .5 a 8.48 8.48 0 0 1 8 8 v .5 z'/%3E%3C/svg%3E" mode="aspectFit"></image>
         <text class="btn-text">微信咨询</text>
-      </button>
+      </view>
     </view>
   </view>
 
   <!-- 设施服务 -->
-  <view class="facilities-section card" wx:if="{{hostel.facilities && hostel.facilities.length > 0}}">
-    <text class="section-title">设施服务</text>
-    <view class="facilities-list">
+  <view class="facilities-section" wx:if="{{hostel.facilities && hostel.facilities.length > 0}}">
+    <view class="section-head">
+      <view class="section-eyebrow">AMENITIES · 设施服务</view>
+      <view class="section-title">家的温度,贴心备好</view>
+    </view>
+    <view class="facilities-grid">
       <view class="facility-item" wx:for="{{hostel.facilities}}" wx:key="*this">
-        <text class="facility-icon">✓</text>
+        <view class="facility-tick">
+          <image src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 l 5 5 11 -11'/%3E%3C/svg%3E" mode="aspectFit"></image>
+        </view>
         <text class="facility-text">{{item}}</text>
       </view>
     </view>
@@ -56,47 +72,54 @@
 
   <!-- 房型列表 -->
   <view class="rooms-section">
-    <text class="section-title">房型介绍</text>
+    <view class="section-head">
+      <view class="section-eyebrow">ROOMS · 房型介绍</view>
+      <view class="section-title">挑一间窗景</view>
+    </view>
 
-    <view class="room-card" wx:for="{{rooms}}" wx:key="_id" data-room="{{item}}" bindtap="viewRoom">
+    <view class="room-card clickable" wx:for="{{rooms}}" wx:key="_id" data-room="{{item}}" bindtap="viewRoom">
       <view class="room-images">
-        <swiper class="room-swiper" indicator-dots="{{item.images.length > 1}}">
+        <swiper class="room-swiper" indicator-dots="{{item.images.length > 1}}" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#FFFFFF">
           <swiper-item wx:for="{{item.images}}" wx:key="*this" wx:for-item="img">
             <image class="room-image" src="{{img}}" mode="aspectFill"></image>
           </swiper-item>
         </swiper>
-        <view class="view-detail-hint">
-          <text class="hint-text">查看详情 ›</text>
+        <view class="room-img-tint"></view>
+        <view class="room-category" wx:if="{{item.roomCategory}}">
+          <text>{{item.roomCategory}}</text>
         </view>
       </view>
 
       <view class="room-content">
         <view class="room-title-row">
           <text class="room-title">{{item.roomType}}</text>
-          <text class="room-category" wx:if="{{item.roomCategory}}">{{item.roomCategory}}</text>
+          <view class="room-status" wx:if="{{item.status === 'available'}}">
+            <view class="status-dot"></view>
+            <text class="status-text">可预订</text>
+          </view>
         </view>
 
-        <text class="room-desc">{{item.description}}</text>
+        <text class="room-desc text-clamp-2">{{item.description}}</text>
 
         <view class="room-info">
-          <text class="info-tag">{{item.area}}</text>
-          <text class="info-tag">{{item.bedType}}</text>
-          <text class="info-tag" wx:if="{{item.guestDisplay}}">👥 {{item.guestDisplay}}</text>
-          <text class="info-tag" wx:if="{{item.breakfast}}">🍳 {{item.breakfast}}</text>
+          <view class="info-tag">{{item.area}}</view>
+          <view class="info-tag">{{item.bedType}}</view>
+          <view class="info-tag" wx:if="{{item.guestDisplay}}">{{item.guestDisplay}}</view>
+          <view class="info-tag" wx:if="{{item.breakfast}}">{{item.breakfast}}</view>
         </view>
 
         <view class="room-tags" wx:if="{{item.tags && item.tags.length > 0}}">
-          <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+          <view class="tag tag-brand" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</view>
         </view>
 
         <view class="room-footer">
           <view class="price-range">
             <text class="price-label">参考价</text>
-            <text class="price-value">{{item.priceText}}</text>
+            <text class="price-value tabular-nums">{{item.priceText}}</text>
           </view>
-          <view class="room-status" wx:if="{{item.status === 'available'}}">
-            <text class="status-dot available"></text>
-            <text class="status-text">可预订</text>
+          <view class="room-cta">
+            <text>查看详情</text>
+            <image class="cta-arrow" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5266' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6 l 6 6 -6 6'/%3E%3C/svg%3E" mode="aspectFit"></image>
           </view>
         </view>
       </view>
@@ -105,13 +128,11 @@
 
   <!-- 底部咨询按钮 -->
   <view class="bottom-action">
-    <button class="action-btn btn-primary" bindtap="copyWechat">
-      <text>💬 立即咨询预订</text>
-    </button>
+    <button class="btn-accent action-btn" bindtap="copyWechat">立即咨询预订</button>
   </view>
 </view>
 
 <!-- 加载状态 -->
 <view class="loading-container" wx:if="{{loading}}">
-  <text class="loading-text">加载中...</text>
+  <loading-state text="正在为您准备民宿信息..."></loading-state>
 </view>

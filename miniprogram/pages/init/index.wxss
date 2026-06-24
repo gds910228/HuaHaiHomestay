@@ -3,24 +3,24 @@
   min-height: 100vh;
   padding: 24rpx;
   padding-bottom: 120rpx;
-  background-color: #F5F7FA;
+  background-color: var(--bg-canvas);
 }
 
 /* 标题卡片 */
 .header-card {
   padding: 40rpx 32rpx;
   margin-bottom: 24rpx;
-  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
+  background: var(--brand-primary);
   border-radius: 20rpx;
   text-align: center;
-  box-shadow: 0 8rpx 24rpx rgba(46, 125, 255, 0.25);
+  box-shadow: 0 8rpx 24rpx rgba(30, 82, 102, 0.2);
 }
 
 .app-logo {
   display: block;
   font-size: 48rpx;
   font-weight: bold;
-  color: #FFFFFF;
+  color: var(--bg-surface);
   margin-bottom: 8rpx;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .action-group {
-  background: #FFFFFF;
+  background: var(--bg-surface);
   padding: 24rpx;
   border-radius: 16rpx;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
@@ -48,17 +48,17 @@
   display: block;
   font-size: 28rpx;
   font-weight: bold;
-  color: #333333;
+  color: var(--text-primary);
   margin-bottom: 20rpx;
 }
 
 .danger-group {
-  background: #FFF8F8;
-  border: 2rpx solid #FFCDD2;
+  background: var(--color-danger-soft);
+  border: 2rpx solid var(--color-danger-soft);
 }
 
 .danger-group .group-title {
-  color: #D32F2F;
+  color: var(--color-danger);
 }
 
 /* 按钮样式 */
@@ -72,9 +72,9 @@
   font-size: 28rpx;
   margin-bottom: 16rpx;
   padding: 0;
-  background: #FFFFFF;
-  border: 2rpx solid #E0E0E0;
-  color: #666666;
+  background: var(--bg-surface);
+  border: 2rpx solid var(--border-line);
+  color: var(--text-secondary);
 }
 
 .action-btn:last-child, .full-btn:last-child {
@@ -82,16 +82,16 @@
 }
 
 .action-btn.primary, .full-btn.primary {
-  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
-  color: #FFFFFF;
+  background: var(--brand-primary);
+  color: var(--bg-surface);
   border: none;
-  box-shadow: 0 8rpx 16rpx rgba(46, 125, 255, 0.25);
+  box-shadow: 0 8rpx 16rpx rgba(30, 82, 102, 0.2);
 }
 
 .action-btn.secondary, .full-btn.secondary {
-  background: #F5F7FA;
-  color: #2E7DFF;
-  border-color: #2E7DFF;
+  background: var(--bg-canvas);
+  color: var(--brand-primary);
+  border-color: var(--brand-primary);
 }
 
 /* 网格按钮（房型卡片） */
@@ -109,18 +109,18 @@
   align-items: center;
   justify-content: center;
   padding: 16rpx;
-  background: #F5F7FA;
-  border: 2rpx solid #E0E0E0;
+  background: var(--bg-canvas);
+  border: 2rpx solid var(--border-line);
   border-radius: 16rpx;
   font-size: 24rpx;
-  color: #666666;
+  color: var(--text-secondary);
   margin-bottom: 0;
 }
 
 .grid-btn.secondary {
-  background: #E8F5E9;
-  border-color: #4CAF50;
-  color: #2E7D32;
+  background: var(--color-success-soft);
+  border-color: var(--color-success);
+  color: var(--color-success);
 }
 
 .btn-emoji {
@@ -154,32 +154,32 @@
   border-radius: 12rpx;
   font-size: 26rpx;
   padding: 0;
-  background: #F5F7FA;
-  border: 2rpx solid #E0E0E0;
-  color: #666666;
+  background: var(--bg-canvas);
+  border: 2rpx solid var(--border-line);
+  color: var(--text-secondary);
 }
 
 .half-btn.secondary {
-  background: #F5F7FA;
-  color: #2E7DFF;
-  border-color: #2E7DFF;
+  background: var(--bg-canvas);
+  color: var(--brand-primary);
+  border-color: var(--brand-primary);
 }
 
 .half-btn.warning {
-  background: #FFF3E0;
-  color: #F57C00;
-  border-color: #FF9800;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent-strong);
+  border-color: var(--color-warning);
 }
 
 .half-btn:last-child {
-  background: #FFEBEE;
-  color: #F44336;
-  border-color: #F44336;
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
 }
 
 /* 执行日志 */
 .logs-section {
-  background: #FFFFFF;
+  background: var(--bg-surface);
   padding: 24rpx;
   border-radius: 16rpx;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
@@ -195,7 +195,7 @@
 .logs-title {
   font-size: 28rpx;
   font-weight: bold;
-  color: #333333;
+  color: var(--text-primary);
 }
 
 .logs-actions {
@@ -206,20 +206,20 @@
 
 .logs-count {
   font-size: 24rpx;
-  color: #999999;
+  color: var(--text-tertiary);
 }
 
 .clear-logs {
   font-size: 24rpx;
-  color: #2E7DFF;
+  color: var(--brand-primary);
   padding: 8rpx 16rpx;
   border-radius: 8rpx;
-  background: #E8F5E9;
+  background: var(--color-success-soft);
 }
 
 .logs-content {
   max-height: 400rpx;
-  background: #F5F7FA;
+  background: var(--bg-canvas);
   border-radius: 12rpx;
   padding: 16rpx;
 }
@@ -227,7 +227,7 @@
 .log-item {
   display: block;
   font-size: 22rpx;
-  color: #666666;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 8rpx;
   font-family: 'Courier New', monospace;
@@ -237,7 +237,7 @@
   display: block;
   text-align: center;
   font-size: 24rpx;
-  color: #999999;
+  color: var(--text-tertiary);
   padding: 40rpx 0;
 }
 
@@ -247,7 +247,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: #FFFFFF;
+  background: var(--bg-surface);
   box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
   padding: 16rpx 24rpx;
   padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
@@ -257,8 +257,8 @@
 .home-btn {
   width: 100%;
   height: 88rpx;
-  background: linear-gradient(135deg, #2E7DFF 0%, #4FC3F7 100%);
-  color: #FFFFFF;
+  background: var(--brand-primary);
+  color: var(--bg-surface);
   border-radius: 44rpx;
   border: none;
   font-size: 28rpx;
@@ -270,7 +270,7 @@
 
 .divider {
   height: 1rpx;
-  background: #E0E0E0;
+  background: var(--border-line);
   margin: 24rpx 0;
 }
 
@@ -289,12 +289,12 @@
 .logs-title {
   font-size: 28rpx;
   font-weight: bold;
-  color: #333333;
+  color: var(--text-primary);
 }
 
 .logs-count {
   font-size: 24rpx;
-  color: #999999;
+  color: var(--text-tertiary);
 }
 
 .logs-content {
@@ -320,7 +320,7 @@
   justify-content: center;
   height: 100%;
   font-size: 24rpx;
-  color: #666666;
+  color: var(--text-secondary);
 }
 
 /* 底部操作 */
@@ -330,7 +330,7 @@
   left: 0;
   right: 0;
   padding: 16rpx 24rpx;
-  background: #FFFFFF;
+  background: var(--bg-surface);
   box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.06);
 }
 

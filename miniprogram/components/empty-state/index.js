@@ -4,7 +4,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    // 图标emoji
+    // 图标 (留空使用默认 SVG;传 emoji 也兼容)
     icon: {
       type: String,
       value: ''

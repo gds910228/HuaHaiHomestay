@@ -19,17 +19,17 @@
     "pages/debug-guide/debug"
   ],
   "window": {
-    "backgroundColor": "#F5F7FA",
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#2E7DFF",
+    "backgroundColor": "#FBF7F0",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#FBF7F0",
     "navigationBarTitleText": "画海民宿",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#666666",
-    "selectedColor": "#2E7DFF",
+    "color": "#A39A8D",
+    "selectedColor": "#1E5266",
     "backgroundColor": "#FFFFFF",
-    "borderStyle": "black",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/home/index",

@@ -12,24 +12,32 @@
   margin-bottom: var(--space-lg);
 }
 
-.empty-emoji {
-  font-size: 120rpx;
+.empty-emoji-fallback {
+  font-size: 96rpx;
   display: block;
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
-.empty-image {
+.empty-image,
+.empty-svg {
   width: 200rpx;
   height: 200rpx;
   display: block;
 }
 
+.empty-svg-wrap {
+  width: 200rpx;
+  height: 200rpx;
+  opacity: 0.94;
+}
+
 .empty-title {
   font-size: var(--font-xl);
-  font-weight: bold;
+  font-weight: 600;
   color: var(--text-primary);
   margin-bottom: var(--space-sm);
   text-align: center;
+  letter-spacing: -0.5rpx;
 }
 
 .empty-desc {
@@ -49,14 +57,20 @@
   min-width: 240rpx;
 }
 
-/* 不同类型 */
+/* 简洁型 */
 .empty-state.type-simple {
   padding: var(--space-xl);
   min-height: auto;
 }
 
-.empty-state.type-simple .empty-emoji {
-  font-size: 80rpx;
+.empty-state.type-simple .empty-svg-wrap,
+.empty-state.type-simple .empty-image {
+  width: 140rpx;
+  height: 140rpx;
+}
+
+.empty-state.type-simple .empty-emoji-fallback {
+  font-size: 64rpx;
 }
 
 .empty-state.type-simple .empty-title {

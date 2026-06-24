@@ -1,16 +1,16 @@
 /* pages/hostel/index.wxss */
 .hostel-container {
   min-height: 100vh;
-  background: var(--bg-gray);
-  padding-bottom: 120rpx;
+  background: var(--bg-canvas);
+  padding-bottom: 180rpx;
 }
 
-/* 相册轮播 */
+/* ============ 相册 ============ */
 .album-section {
   position: relative;
   width: 100%;
-  height: 500rpx;
-  background: #000;
+  height: 540rpx;
+  background: var(--bg-muted);
 }
 
 .album-swiper {
@@ -23,335 +23,424 @@
   height: 100%;
 }
 
+.album-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 60%, rgba(15, 56, 72, 0.35) 100%);
+}
+
 .album-badge {
   position: absolute;
-  bottom: 24rpx;
-  right: 24rpx;
-  padding: 12rpx 24rpx;
-  background: rgba(0, 0, 0, 0.6);
+  bottom: var(--space-lg);
+  right: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 18rpx;
+  background: rgba(30, 56, 72, 0.72);
   backdrop-filter: blur(10rpx);
-  border-radius: 24rpx;
+  border-radius: var(--radius-pill);
+}
+
+.badge-icon {
+  width: 24rpx;
+  height: 24rpx;
 }
 
 .badge-text {
-  font-size: 22rpx;
-  color: #FFFFFF;
+  font-size: var(--font-xs);
+  color: var(--text-white);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5rpx;
 }
 
-/* 民宿信息 */
+/* ============ 民宿信息 ============ */
 .hostel-info {
-  margin: 24rpx;
-  padding: 32rpx;
+  margin: var(--space-lg);
+  padding: var(--space-xl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md);
+  margin-top: -60rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.info-eyebrow {
+  font-size: var(--font-xs);
+  letter-spacing: 4rpx;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
 }
 
 .info-title {
   display: block;
-  font-size: 40rpx;
-  font-weight: bold;
+  font-size: 44rpx;
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 16rpx;
+  letter-spacing: -0.5rpx;
+  margin-bottom: var(--space-sm);
 }
 
 .info-desc {
   display: block;
-  font-size: 28rpx;
+  font-size: var(--font-base);
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 24rpx;
+  line-height: 1.7;
+  margin-bottom: var(--space-lg);
 }
 
-.info-location {
+/* Bento 信息 cell */
+.info-bento {
+  margin-bottom: var(--space-lg);
+}
+
+.info-cell {
   display: flex;
   align-items: center;
-  padding: 20rpx;
-  background: var(--bg-gray);
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-md);
+  background: var(--bg-muted);
+  border-radius: var(--radius-lg);
+}
+
+.cell-icon-wrap {
+  width: 56rpx;
+  height: 56rpx;
   border-radius: var(--radius-md);
-  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.location-icon {
-  font-size: 32rpx;
-  margin-right: 12rpx;
+.cell-icon-brand { background: var(--brand-primary-soft); }
+
+.cell-icon {
+  width: 32rpx;
+  height: 32rpx;
 }
 
-.location-text {
+.cell-body {
   flex: 1;
-  font-size: 26rpx;
-  color: var(--text-secondary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  min-width: 0;
 }
 
-.location-arrow {
-  font-size: 36rpx;
+.cell-label {
+  font-size: var(--font-xs);
   color: var(--text-tertiary);
-  font-weight: 300;
+  letter-spacing: 2rpx;
+  margin-bottom: 2rpx;
 }
 
+.cell-value {
+  font-size: var(--font-base);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.cell-arrow {
+  width: 24rpx;
+  height: 24rpx;
+  flex-shrink: 0;
+}
+
+/* 联系按钮 */
 .contact-actions {
   display: flex;
-  gap: 16rpx;
+  gap: var(--space-md);
 }
 
 .contact-btn {
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 120rpx;
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
-  border-radius: var(--radius-lg);
-  padding: 0;
+  gap: 10rpx;
+  height: 96rpx;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-base);
+  font-weight: 600;
+  letter-spacing: 0.5rpx;
+}
+
+.contact-btn-primary {
+  background: var(--brand-primary);
+  color: var(--text-white);
+  box-shadow: var(--shadow-brand);
+}
+
+.contact-btn-accent {
+  background: var(--brand-accent);
+  color: var(--text-white);
+  box-shadow: var(--shadow-accent);
 }
 
 .btn-icon {
-  font-size: 36rpx;
-  margin-bottom: 8rpx;
+  width: 32rpx;
+  height: 32rpx;
 }
 
 .btn-text {
-  font-size: 24rpx;
+  font-size: var(--font-base);
   color: var(--text-white);
 }
 
-/* 设施服务 */
-.facilities-section {
-  margin: 0 24rpx 24rpx;
-  padding: 32rpx;
+/* ============ 通用区块头 ============ */
+.section-head {
+  padding: 0 0 var(--space-md);
+}
+
+.section-eyebrow {
+  font-size: var(--font-xs);
+  letter-spacing: 4rpx;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-bottom: 4rpx;
 }
 
 .section-title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: bold;
+  font-size: var(--font-2xl);
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 24rpx;
+  letter-spacing: -0.5rpx;
 }
 
-.facilities-list {
+/* ============ 设施 ============ */
+.facilities-section {
+  margin: 0 var(--space-lg) var(--space-lg);
+  padding: var(--space-xl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.facilities-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16rpx;
+  gap: var(--space-sm) var(--space-md);
 }
 
 .facility-item {
   display: flex;
   align-items: center;
-  padding: 16rpx;
-  background: var(--bg-blue-light);
-  border-radius: var(--radius-sm);
+  gap: 12rpx;
+  padding: 14rpx 0;
 }
 
-.facility-icon {
-  width: 32rpx;
-  height: 32rpx;
+.facility-tick {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: var(--brand-primary-soft);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary-blue);
-  border-radius: 50%;
-  font-size: 20rpx;
-  color: var(--text-white);
-  margin-right: 12rpx;
-  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.facility-tick image {
+  width: 24rpx;
+  height: 24rpx;
 }
 
 .facility-text {
-  font-size: 26rpx;
+  font-size: var(--font-base);
   color: var(--text-primary);
 }
 
-/* 房型列表 */
+/* ============ 房型 ============ */
 .rooms-section {
-  padding: 0 24rpx;
+  padding: 0 var(--space-lg);
+}
+
+.rooms-section .section-head {
+  padding-top: var(--space-md);
 }
 
 .room-card {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  margin-bottom: 24rpx;
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  margin-bottom: var(--space-lg);
   overflow: hidden;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-md);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.room-card:active {
+  transform: scale(0.99);
+  box-shadow: var(--shadow-sm);
 }
 
 .room-images {
   position: relative;
   width: 100%;
-  height: 320rpx;
+  height: 360rpx;
 }
 
-.room-swiper {
+.room-swiper, .room-image {
   width: 100%;
   height: 100%;
 }
 
-.room-image {
-  width: 100%;
-  height: 100%;
-}
-
-/* 查看详情提示 */
-.view-detail-hint {
+.room-img-tint {
   position: absolute;
-  bottom: 20rpx;
-  right: 20rpx;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 8rpx 20rpx;
-  border-radius: 20rpx;
-  backdrop-filter: blur(10rpx);
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(15, 56, 72, 0.35) 100%);
+  pointer-events: none;
 }
 
-.hint-text {
-  font-size: 22rpx;
-  color: #fff;
+.room-category {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-md);
+  padding: 6rpx 16rpx;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--brand-primary);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.5rpx;
 }
 
 .room-content {
-  padding: 24rpx;
+  padding: var(--space-lg);
 }
 
-/* 房型标题行 */
 .room-title-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 8rpx;
 }
 
 .room-title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333333;
-  margin-right: 12rpx;
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5rpx;
 }
 
-/* 房间类型标签 */
-.room-category {
-  background-color: #E3F2FD;
-  color: #2E7DFF;
-  font-size: 20rpx;
-  padding: 4rpx 12rpx;
-  border-radius: 6rpx;
-  white-space: nowrap;
+.room-status {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.status-dot {
+  width: 12rpx;
+  height: 12rpx;
+  background: var(--color-success);
+  border-radius: 50%;
+}
+
+.status-text {
+  font-size: var(--font-xs);
+  color: var(--color-success);
+  font-weight: 500;
 }
 
 .room-desc {
   display: block;
-  font-size: 26rpx;
-  color: #999999;
-  line-height: 1.5;
-  margin-bottom: 16rpx;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-md);
 }
 
 .room-info {
   display: flex;
-  gap: 12rpx;
-  margin-bottom: 12rpx;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-bottom: var(--space-sm);
 }
 
 .info-tag {
   padding: 6rpx 16rpx;
-  background: #F5F7FA;
-  border-radius: 8rpx;
-  font-size: 22rpx;
-  color: #666666;
+  background: var(--bg-muted);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
 }
 
 .room-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8rpx;
-  margin-bottom: 16rpx;
-}
-
-.tag {
-  padding: 6rpx 16rpx;
-  background: #F0F7FF;
-  border-radius: 8rpx;
-  font-size: 22rpx;
-  color: #2E7DFF;
+  margin-bottom: var(--space-md);
 }
 
 .room-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 16rpx;
-  border-top: 1rpx solid #F0F0F0;
+  padding-top: var(--space-md);
+  border-top: 2rpx solid var(--divider-color);
 }
 
 .price-range {
   display: flex;
   flex-direction: column;
+  gap: 2rpx;
 }
 
 .price-label {
-  font-size: 22rpx;
-  color: #999999;
-  margin-bottom: 4rpx;
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  letter-spacing: 1rpx;
 }
 
 .price-value {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #FF6B35;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--brand-accent-strong);
+  letter-spacing: -0.5rpx;
 }
 
-.room-status {
+.room-cta {
   display: flex;
   align-items: center;
-  gap: 8rpx;
+  gap: 6rpx;
+  color: var(--brand-primary);
+  font-size: var(--font-sm);
+  font-weight: 500;
 }
 
-.status-dot {
-  width: 12rpx;
-  height: 12rpx;
-  background: #4CAF50;
-  border-radius: 50%;
+.cta-arrow {
+  width: 24rpx;
+  height: 24rpx;
 }
 
-.status-dot.available {
-  background: #4CAF50;
-}
-
-.status-text {
-  font-size: 24rpx;
-  color: #4CAF50;
-}
-
-/* 底部操作栏 */
+/* ============ 底部 CTA ============ */
 .bottom-action {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 16rpx 24rpx;
-  background: #FFFFFF;
-  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.06);
+  padding: var(--space-md) var(--space-lg);
+  padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+  background: rgba(251, 247, 240, 0.92);
+  backdrop-filter: blur(20rpx);
+  box-shadow: 0 -4rpx 16rpx rgba(94, 72, 50, 0.06);
   z-index: 10;
 }
 
 .action-btn {
   width: 100%;
-  height: 88rpx;
+  height: 96rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 44rpx;
-  font-size: 28rpx;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-lg);
 }
 
-/* 加载状态 */
+/* 加载 */
 .loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-}
-
-.loading-text {
-  font-size: 28rpx;
-  color: #999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
