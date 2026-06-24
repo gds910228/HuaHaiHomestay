@@ -12,6 +12,7 @@ Page({
       summary: '',
       content: '',
       address: '',
+      area: '',
       info: []
     },
     categories: [
@@ -20,6 +21,9 @@ Page({
       { value: 'spot', label: '景点打卡' },
       { value: 'info', label: '实用信息' }
     ],
+    // 美食专属：区域选项（与首页 food tab 对齐）
+    areaOptions: ['', '后宅镇', '青澳湾', '云澳镇'],
+    areaIndex: 0,
     uploading: false,
     categoryLabel: '美食推荐',
 
@@ -72,8 +76,10 @@ Page({
             summary: guide.summary || '',
             content: guide.content || '',
             address: guide.address || '',
+            area: guide.area || '',
             info: guide.info || []
           },
+          areaIndex: Math.max(0, this.data.areaOptions.indexOf(guide.area || '')),
           categoryLabel
         });
 
@@ -122,9 +128,25 @@ Page({
   onCategoryChange(e) {
     const index = e.detail.value;
     const selected = this.data.categories[index];
-    this.setData({
+    const next = {
       'form.category': selected.value,
       categoryLabel: selected.label
+    };
+    // 切换到非美食时，清掉 area，避免脏数据干扰其它分类
+    if (selected.value !== 'food') {
+      next['form.area'] = '';
+      next.areaIndex = 0;
+    }
+    this.setData(next);
+  },
+
+  // 美食专属：选择所属区域
+  onAreaChange(e) {
+    const index = Number(e.detail.value) || 0;
+    const area = this.data.areaOptions[index] || '';
+    this.setData({
+      areaIndex: index,
+      'form.area': area
     });
   },
 

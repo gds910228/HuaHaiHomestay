@@ -1,10 +1,40 @@
 // pages/admin/guides/index.js
+// 筛选选项：index 与实际取值/展示文案的映射
+const STATUS_OPTIONS = [
+  { value: '', label: '全部' },
+  { value: 'published', label: '已发布' },
+  { value: 'draft', label: '草稿' }
+];
+
+const CATEGORY_OPTIONS = [
+  { value: '', label: '全部' },
+  { value: 'food', label: '美食推荐' },
+  { value: 'route', label: '游玩路线' },
+  { value: 'info', label: '实用信息' },
+  { value: 'spot', label: '景点打卡' }
+];
+
+// category 值 → 中文（兼容老数据：库里如果直接存中文也能显示）
+const CATEGORY_LABEL_MAP = {
+  food: '美食推荐',
+  route: '游玩路线',
+  info: '实用信息',
+  spot: '景点打卡'
+};
+
 Page({
   data: {
     guides: [],
     loading: true,
     filterStatus: '',
-    filterCategory: ''
+    filterCategory: '',
+    // 提供给 picker 用的 range（只取 label）
+    statusOptions: STATUS_OPTIONS.map(o => o.label),
+    categoryOptions: CATEGORY_OPTIONS.map(o => o.label),
+    statusIndex: 0,
+    categoryIndex: 0,
+    statusLabel: '状态筛选',
+    categoryLabel: '分类筛选'
   },
 
   onLoad() {
@@ -30,7 +60,31 @@ Page({
       });
 
       if (res.result.success) {
-        this.setData({ guides: res.result.data });
+        let rawData = res.result.data || [];
+        console.log('[攻略管理] 云函数返回', rawData.length, '条，筛选条件:',
+          { status: this.data.filterStatus, category: this.data.filterCategory });
+
+        // ===== 前端兜底过滤（云函数未部署/旧版本时仍能筛选）=====
+        if (this.data.filterStatus) {
+          const before = rawData.length;
+          rawData = rawData.filter(g => g.status === this.data.filterStatus);
+          if (rawData.length !== before) {
+            console.log('[攻略管理] 兜底按状态过滤:', before, '→', rawData.length);
+          }
+        }
+        if (this.data.filterCategory) {
+          const before = rawData.length;
+          rawData = rawData.filter(g => g.category === this.data.filterCategory);
+          if (rawData.length !== before) {
+            console.log('[攻略管理] 兜底按分类过滤:', before, '→', rawData.length);
+          }
+        }
+
+        const data = rawData.map(g => ({
+          ...g,
+          categoryLabel: CATEGORY_LABEL_MAP[g.category] || g.category || '未分类'
+        }));
+        this.setData({ guides: data });
       }
     } catch (err) {
       console.error('加载失败', err);
@@ -139,12 +193,22 @@ Page({
   // 筛选
   onFilterChange(e) {
     const { field } = e.currentTarget.dataset;
-    const value = e.detail.value;
+    const index = Number(e.detail.value) || 0;
 
     if (field === 'status') {
-      this.setData({ filterStatus: value });
+      const opt = STATUS_OPTIONS[index] || STATUS_OPTIONS[0];
+      this.setData({
+        filterStatus: opt.value,
+        statusIndex: index,
+        statusLabel: index === 0 ? '状态筛选' : opt.label
+      });
     } else if (field === 'category') {
-      this.setData({ filterCategory: value });
+      const opt = CATEGORY_OPTIONS[index] || CATEGORY_OPTIONS[0];
+      this.setData({
+        filterCategory: opt.value,
+        categoryIndex: index,
+        categoryLabel: index === 0 ? '分类筛选' : opt.label
+      });
     }
 
     this.loadGuides();

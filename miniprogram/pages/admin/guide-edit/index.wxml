@@ -27,6 +27,19 @@
       </picker>
     </view>
 
+    <!-- 美食分类专属：所属区域 -->
+    <view class="form-item" wx:if="{{form.category === 'food'}}">
+      <text class="form-label">所属区域</text>
+      <picker
+        class="form-picker"
+        range="{{areaOptions}}"
+        value="{{areaIndex}}"
+        bindchange="onAreaChange"
+      >
+        <view class="picker-value">{{form.area || '请选择区域（影响首页 Tab 分组）'}}</view>
+      </picker>
+    </view>
+
     <!-- 标签管理 -->
     <view class="form-item">
       <text class="form-label">标签</text>

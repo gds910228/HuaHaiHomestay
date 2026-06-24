@@ -208,26 +208,33 @@ Page({
     guides.forEach((guide, index) => {
       console.log(`[分组] 第${index}条数据:`, {
         title: guide.title,
+        area: guide.area,
         address: guide.address
       });
 
-      const address = guide.address || '';
-      let area = '后宅镇'; // 默认后宅镇
+      // 优先用后台显式设置的 area；没有再按地址关键字猜
+      let area = '';
+      if (guide.area && groups[guide.area]) {
+        area = guide.area;
+      } else {
+        const address = guide.address || '';
+        area = '后宅镇'; // 默认后宅镇
 
-      // 优先匹配青澳湾
-      for (const keyword of areaKeywords['青澳湾']) {
-        if (address.includes(keyword)) {
-          area = '青澳湾';
-          break;
-        }
-      }
-
-      // 如果不是青澳湾，检查是否为云澳镇
-      if (area === '后宅镇') {
-        for (const keyword of areaKeywords['云澳镇']) {
+        // 优先匹配青澳湾
+        for (const keyword of areaKeywords['青澳湾']) {
           if (address.includes(keyword)) {
-            area = '云澳镇';
+            area = '青澳湾';
             break;
+          }
+        }
+
+        // 如果不是青澳湾，检查是否为云澳镇
+        if (area === '后宅镇') {
+          for (const keyword of areaKeywords['云澳镇']) {
+            if (address.includes(keyword)) {
+              area = '云澳镇';
+              break;
+            }
           }
         }
       }

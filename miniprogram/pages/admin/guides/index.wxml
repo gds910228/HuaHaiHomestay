@@ -5,12 +5,13 @@
     <picker
       class="filter-picker"
       mode="selector"
-      range="{{['全部', '已发布', '草稿']}}"
+      range="{{statusOptions}}"
+      value="{{statusIndex}}"
       bindchange="onFilterChange"
       data-field="status"
     >
       <view class="picker-value">
-        <text>状态筛选</text>
+        <text>{{statusLabel}}</text>
         <text class="picker-arrow">▼</text>
       </view>
     </picker>
@@ -18,12 +19,13 @@
     <picker
       class="filter-picker"
       mode="selector"
-      range="{{['全部', '美食推荐', '游玩路线', '实用信息', '景点打卡']}}"
+      range="{{categoryOptions}}"
+      value="{{categoryIndex}}"
       bindchange="onFilterChange"
       data-field="category"
     >
       <view class="picker-value">
-        <text>分类筛选</text>
+        <text>{{categoryLabel}}</text>
         <text class="picker-arrow">▼</text>
       </view>
     </picker>
@@ -49,7 +51,7 @@
       </view>
 
       <view class="item-info">
-        <text class="info-tag">{{item.category}}</text>
+        <text class="info-tag">{{item.categoryLabel}}</text>
         <text class="info-text">浏览 {{item.views || 0}}</text>
         <text class="info-text">收藏 {{item.likes || 0}}</text>
       </view>
