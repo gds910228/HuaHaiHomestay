@@ -1,20 +1,103 @@
 <!--pages/info/index.wxml-->
-<view class="coming-soon-container">
-  <view class="coming-soon-card">
-    <view class="icon-large">{{category.icon}}</view>
-    <view class="content">
-      <text class="title">{{category.name}}</text>
-      <text class="desc">{{category.desc}}</text>
-      <text class="status">即将上线</text>
+<view class="list-container">
+  <view class="page-header header-info">
+    <text class="page-title">{{category.emoji}} {{category.name}}</text>
+    <text class="page-subtitle">{{category.subtitle}}</text>
+  </view>
+
+  <view class="tag-filter-bar" wx:if="{{tagOptions.length > 0}}">
+    <view class="tag-filter-wrap {{tagsExpanded ? 'expanded' : 'collapsed'}}">
+      <view class="tag-filter-item {{activeTag === '' ? 'active' : ''}}" data-tag="" bindtap="selectTag">全部</view>
+      <view
+        class="tag-filter-item {{activeTag === item.name ? 'active' : ''}}"
+        wx:for="{{tagOptions}}"
+        wx:key="name"
+        data-tag="{{item.name}}"
+        bindtap="selectTag"
+      >{{item.name}}</view>
+    </view>
+    <view class="tag-filter-toggle" bindtap="toggleTagsExpanded" wx:if="{{tagOptions.length > 8}}">
+      <text wx:if="{{!tagsExpanded}}">展开 ▾</text>
+      <text wx:else>收起 ▴</text>
     </view>
   </view>
 
-  <view class="tips-card">
-    <view class="tips-title">💡 小贴士</view>
-    <view class="tips-list">
-      <text class="tip-item">• 建议提前查看潮汐表</text>
-      <text class="tip-item">• 注意防晒防蚊虫</text>
-      <text class="tip-item">• 关注天气变化</text>
+  <loading-state wx:if="{{loading && !isFirstLoad}}" text="正在加载..."></loading-state>
+
+  <view class="skeleton-wrapper" wx:if="{{loading && isFirstLoad}}">
+    <skeleton-card wx:for="{{[1,2,3]}}" wx:key="*this"></skeleton-card>
+  </view>
+
+  <empty-state
+    wx:if="{{!loading && guides.length === 0}}"
+    icon="{{category.emoji}}"
+    title="暂无{{category.name}}"
+    description="管理员正在努力添加中..."
+    actionText="返回首页"
+    bind:action="goHome"
+  ></empty-state>
+
+  <view class="list-area" wx:if="{{!loading && guides.length > 0}}">
+    <view class="list-grid">
+      <view class="list-item fade-in-up"
+            wx:for="{{guides}}"
+            wx:key="_id"
+            wx:for-item="guide"
+            style="animation-delay: {{index * 80}}ms">
+        <view class="guide-card {{guide.hasRealImage ? 'has-image' : 'no-image'}} clickable hover-lift"
+              data-id="{{guide._id}}"
+              bindtap="viewGuide">
+
+          <optimized-image
+            wx:if="{{guide.hasRealImage}}"
+            class="guide-image"
+            src="{{guide.images[0]}}"
+            width="100%"
+            height="320rpx"
+            mode="aspectFill"
+            badge="{{guide.images.length}}张照片"
+            catchtap="previewImage"
+            data-url="{{guide.images[0]}}"
+            data-images="{{guide.images}}"
+          ></optimized-image>
+
+          <view wx:if="{{!guide.hasRealImage}}" class="guide-no-image header-info-bg">
+            <text class="no-image-icon">{{category.emoji}}</text>
+            <text class="no-image-text">暂无图片</text>
+          </view>
+
+          <view class="guide-info">
+            <text class="guide-title">{{guide.title}}</text>
+            <text class="guide-address" wx:if="{{guide.address}}">📍 {{guide.address}}</text>
+
+            <view class="guide-tags" wx:if="{{guide.tags && guide.tags.length > 0}}">
+              <text class="guide-tag" wx:for="{{guide.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+            </view>
+
+            <text class="guide-desc" wx:if="{{guide.summary}}">{{guide.summary}}</text>
+
+            <view class="guide-actions">
+              <button
+                  class="nav-btn clickable"
+                  data-latitude="{{guide.location && guide.location.latitude}}"
+                  data-longitude="{{guide.location && guide.location.longitude}}"
+                  data-title="{{guide.title}}"
+                  data-address="{{guide.address}}"
+                  catchtap="navigate"
+                >
+                <text>🧭 导航</text>
+              </button>
+              <button
+                  class="favorite-btn clickable {{guide.isFavorited ? 'favorited' : ''}}"
+                  data-id="{{guide._id}}"
+                  catchtap="toggleFavorite"
+                >
+                <text>{{guide.isFavorited ? '★ 已收藏' : '☆ 收藏'}}</text>
+              </button>
+            </view>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 </view>

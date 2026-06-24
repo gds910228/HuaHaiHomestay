@@ -77,8 +77,15 @@ Page({
           categoryLabel
         });
 
-        // 等 editor ready 之后把内容塞进去（onEditorReady 中处理）
-        this._pendingContent = guide.content || '';
+        // 把内容塞进编辑器：
+        // - editor 已 ready：直接 setContents
+        // - 还没 ready：放到 _pendingContent，等 onEditorReady 来消费
+        const html = guide.content || '';
+        if (this.editorCtx) {
+          this.editorCtx.setContents({ html });
+        } else {
+          this._pendingContent = html;
+        }
       }
     } catch (err) {
       wx.hideLoading();

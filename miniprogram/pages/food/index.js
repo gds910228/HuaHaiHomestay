@@ -85,12 +85,26 @@ Page({
         console.log('[美食页面] 云函数返回:', guides.length, '条，activeTag=', this.data.activeTag);
 
         // ===== 前端兜底过滤 =====
-        // 云函数若未及时部署/筛选未生效，这里再按 tags 数组做一次过滤，保证体验一致
+        // 0) 严格按分类过滤（云函数若未重新部署、category 参数未生效时兜底）
+        const beforeCat = guides.length;
+        guides = guides.filter(g => g.category === 'food');
+        if (guides.length !== beforeCat) {
+          console.log('[美食页面] 兜底按分类过滤:', beforeCat, '→', guides.length);
+        }
+
+        // 1) 只展示已发布的
+        const beforeStatus = guides.length;
+        guides = guides.filter(g => !g.status || g.status === 'published');
+        if (guides.length !== beforeStatus) {
+          console.log('[美食页面] 兜底按发布状态过滤:', beforeStatus, '→', guides.length);
+        }
+
+        // 2) 按标签过滤（云函数若未部署/筛选未生效时兜底）
         if (this.data.activeTag) {
           const t = this.data.activeTag;
           const before = guides.length;
           guides = guides.filter(g => Array.isArray(g.tags) && g.tags.indexOf(t) > -1);
-          console.log('[美食页面] 前端兜底按标签过滤:', t, before, '→', guides.length);
+          console.log('[美食页面] 兜底按标签过滤:', t, before, '→', guides.length);
         }
 
         // 预处理：判断每个店铺是否有真实图片（非占位图）
