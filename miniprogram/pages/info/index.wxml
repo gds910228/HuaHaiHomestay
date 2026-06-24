@@ -1,9 +1,19 @@
 <!--pages/info/index.wxml-->
 <view class="cat-page cat-info">
   <view class="cat-hero">
-    <view class="hero-eyebrow">GUIDE · 实用信息</view>
-    <view class="hero-title">出行须知</view>
-    <view class="hero-sub">来南澳之前先看看</view>
+    <image class="hero-deco" src="/images/icons/deco-info-white.svg" mode="aspectFit"></image>
+    <view class="hero-bubble bubble-1"></view>
+    <view class="hero-bubble bubble-2"></view>
+    <view class="hero-bubble bubble-3"></view>
+    <view class="hero-spark spark-1"></view>
+    <view class="hero-spark spark-2"></view>
+    <view class="hero-spark spark-3"></view>
+    <view class="hero-glow"></view>
+    <view class="hero-meta">
+      <view class="hero-eyebrow">GUIDE · 实用信息</view>
+      <view class="hero-title">出行须知</view>
+      <view class="hero-sub">来南澳之前先看看</view>
+    </view>
   </view>
 
   <view class="tag-filter-bar" wx:if="{{tagOptions.length > 0}}">

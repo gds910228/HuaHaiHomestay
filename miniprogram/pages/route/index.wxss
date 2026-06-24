@@ -10,6 +10,143 @@
   background: var(--cat-route);
   color: var(--text-white);
 }
+/* Hero · 多层装饰 (主题图 + 气泡 + 星光 + 底光) */
+.cat-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-meta {
+  position: relative;
+  z-index: 3;
+}
+
+/* 1. 主题装饰图 · 右上漂浮 + 旋转 */
+.hero-deco {
+  position: absolute;
+  top: -20rpx;
+  right: -30rpx;
+  width: 320rpx;
+  height: 320rpx;
+  pointer-events: none;
+  animation: hero-deco-float 11s ease-in-out infinite;
+}
+
+@keyframes hero-deco-float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33%      { transform: translate(-10rpx, 8rpx) rotate(-4deg); }
+  66%      { transform: translate(8rpx, -8rpx) rotate(4deg); }
+}
+
+/* 2. 浮动气泡 · 3 个大圆,白色描边,缓慢上升 */
+.hero-bubble {
+  position: absolute;
+  border-radius: 50%;
+  border: 2rpx solid rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+}
+
+.bubble-1 {
+  bottom: -40rpx;
+  left: 60rpx;
+  width: 80rpx;
+  height: 80rpx;
+  background: rgba(255, 255, 255, 0.06);
+  animation: bubble-rise 12s ease-in-out infinite;
+}
+
+.bubble-2 {
+  bottom: -30rpx;
+  left: 280rpx;
+  width: 50rpx;
+  height: 50rpx;
+  background: rgba(255, 255, 255, 0.08);
+  animation: bubble-rise 14s ease-in-out infinite;
+  animation-delay: -4s;
+}
+
+.bubble-3 {
+  bottom: -50rpx;
+  right: 60rpx;
+  width: 110rpx;
+  height: 110rpx;
+  background: rgba(255, 255, 255, 0.04);
+  animation: bubble-rise 16s ease-in-out infinite;
+  animation-delay: -8s;
+}
+
+@keyframes bubble-rise {
+  0%   { transform: translateY(0) scale(1); opacity: 0.5; }
+  50%  { transform: translateY(-30rpx) scale(1.05); opacity: 0.75; }
+  100% { transform: translateY(0) scale(1); opacity: 0.5; }
+}
+
+/* 3. 星光 · 三颗错相位脉动 */
+.hero-spark {
+  position: absolute;
+  border-radius: 50%;
+  background: #FFFFFF;
+  pointer-events: none;
+  filter: blur(0.5rpx);
+  z-index: 2;
+}
+
+.spark-1 {
+  top: 50rpx;
+  right: 140rpx;
+  width: 10rpx;
+  height: 10rpx;
+  opacity: 0.85;
+  box-shadow: 0 0 16rpx rgba(255, 255, 255, 0.8);
+  animation: hero-twinkle 2.6s ease-in-out infinite;
+}
+
+.spark-2 {
+  top: 130rpx;
+  right: 250rpx;
+  width: 6rpx;
+  height: 6rpx;
+  opacity: 0.7;
+  box-shadow: 0 0 10rpx rgba(255, 255, 255, 0.6);
+  animation: hero-twinkle 3.8s ease-in-out infinite;
+  animation-delay: -1.5s;
+}
+
+.spark-3 {
+  top: 90rpx;
+  right: 80rpx;
+  width: 4rpx;
+  height: 4rpx;
+  opacity: 0.6;
+  box-shadow: 0 0 8rpx rgba(255, 255, 255, 0.55);
+  animation: hero-twinkle 4.5s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+@keyframes hero-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.7); }
+  50%      { opacity: 1; transform: scale(1.4); }
+}
+
+/* 4. 底部光带 · 横向漂移 */
+.hero-glow {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -10rpx;
+  height: 80rpx;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90rpx 35rpx at 25% 80%, rgba(255, 255, 255, 0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 140rpx 40rpx at 60% 85%, rgba(255, 255, 255, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 100rpx 35rpx at 90% 80%, rgba(255, 255, 255, 0.26) 0%, transparent 70%);
+  animation: hero-glow-drift 9s ease-in-out infinite;
+}
+
+@keyframes hero-glow-drift {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(40rpx); }
+}
 
 .hero-eyebrow {
   font-size: var(--font-xs);

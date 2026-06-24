@@ -2,9 +2,19 @@
 <view class="cat-page cat-food">
   <!-- Hero · 类目头部 -->
   <view class="cat-hero">
-    <view class="hero-eyebrow">TASTE · 美食推荐</view>
-    <view class="hero-title">南澳味道</view>
-    <view class="hero-sub">海岛人家的一桌一椅</view>
+    <image class="hero-deco" src="/images/icons/deco-food-white.svg" mode="aspectFit"></image>
+    <view class="hero-bubble bubble-1"></view>
+    <view class="hero-bubble bubble-2"></view>
+    <view class="hero-bubble bubble-3"></view>
+    <view class="hero-spark spark-1"></view>
+    <view class="hero-spark spark-2"></view>
+    <view class="hero-spark spark-3"></view>
+    <view class="hero-glow"></view>
+    <view class="hero-meta">
+      <view class="hero-eyebrow">TASTE · 美食推荐</view>
+      <view class="hero-title">南澳味道</view>
+      <view class="hero-sub">海岛人家的一桌一椅</view>
+    </view>
   </view>
 
   <!-- 标签筛选 -->

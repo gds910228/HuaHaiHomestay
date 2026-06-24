@@ -54,6 +54,15 @@
   <!-- 民宿入口卡 -->
   <view class="home-hostel-card clickable" bindtap="navigateToHostel">
     <view class="hostel-card-bg"></view>
+    <!-- 右侧主题装饰: 海平线 + 月亮 + 灯塔 -->
+    <image class="hostel-deco" src="/images/icons/deco-hostel.svg" mode="aspectFit"></image>
+    <!-- 漂浮星光 -->
+    <view class="hostel-star star-1"></view>
+    <view class="hostel-star star-2"></view>
+    <view class="hostel-star star-3"></view>
+    <!-- 底部光带 -->
+    <view class="hostel-glow"></view>
+
     <view class="hostel-card-content">
       <view class="hostel-card-eyebrow">STAY · 入住画海</view>
       <view class="hostel-card-title">海景房 · 落日窗</view>

@@ -1,9 +1,19 @@
 <!--pages/spot/index.wxml-->
 <view class="cat-page cat-spot">
   <view class="cat-hero">
-    <view class="hero-eyebrow">SPOT · 景点打卡</view>
-    <view class="hero-title">必去之地</view>
-    <view class="hero-sub">在南澳岛拍下你的封面</view>
+    <image class="hero-deco" src="/images/icons/deco-spot-white.svg" mode="aspectFit"></image>
+    <view class="hero-bubble bubble-1"></view>
+    <view class="hero-bubble bubble-2"></view>
+    <view class="hero-bubble bubble-3"></view>
+    <view class="hero-spark spark-1"></view>
+    <view class="hero-spark spark-2"></view>
+    <view class="hero-spark spark-3"></view>
+    <view class="hero-glow"></view>
+    <view class="hero-meta">
+      <view class="hero-eyebrow">SPOT · 景点打卡</view>
+      <view class="hero-title">必去之地</view>
+      <view class="hero-sub">在南澳岛拍下你的封面</view>
+    </view>
   </view>
 
   <view class="tag-filter-bar" wx:if="{{tagOptions.length > 0}}">

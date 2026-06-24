@@ -1,9 +1,19 @@
 <!--pages/route/index.wxml-->
 <view class="cat-page cat-route">
   <view class="cat-hero">
-    <view class="hero-eyebrow">TRAIL · 游玩路线</view>
-    <view class="hero-title">环岛慢行</view>
-    <view class="hero-sub">从日出礁石到落日海堤</view>
+    <image class="hero-deco" src="/images/icons/deco-route-white.svg" mode="aspectFit"></image>
+    <view class="hero-bubble bubble-1"></view>
+    <view class="hero-bubble bubble-2"></view>
+    <view class="hero-bubble bubble-3"></view>
+    <view class="hero-spark spark-1"></view>
+    <view class="hero-spark spark-2"></view>
+    <view class="hero-spark spark-3"></view>
+    <view class="hero-glow"></view>
+    <view class="hero-meta">
+      <view class="hero-eyebrow">TRAIL · 游玩路线</view>
+      <view class="hero-title">环岛慢行</view>
+      <view class="hero-sub">从日出礁石到落日海堤</view>
+    </view>
   </view>
 
   <!-- 标签筛选 -->
