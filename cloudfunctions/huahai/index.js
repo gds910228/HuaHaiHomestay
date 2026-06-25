@@ -37,6 +37,8 @@ exports.main = async (event, context) => {
         return await incrementViews(event);
       case 'getAllTags':
         return await getAllTags(event);
+      case 'getNearbySpots':
+        return await getNearbySpots(event);
 
       // ==================== 收藏相关 ====================
       case 'addFavorite':
@@ -794,4 +796,85 @@ function formatTime(date) {
   const day = String(d.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
+}
+
+// ==================== 景点(地理位置)相关 ====================
+
+/**
+ * 按用户当前位置返回最近的 N 个景点
+ *
+ * @param {Object} event
+ * @param {number} event.latitude   WGS84 纬度
+ * @param {number} event.longitude  WGS84 经度
+ * @param {number} [event.radius=50000]  最大半径,米
+ * @param {number} [event.limit=30]  返回条数上限
+ *
+ * 依赖:guides 集合的 geoLocation 字段为 db.Geo.Point(lng, lat),
+ *      并在控制台建立地理位置索引(参考 docs/spot-sync-usage.md)。
+ * 注意:db.Geo.Point 的参数顺序是 (longitude, latitude)。
+ */
+async function getNearbySpots(event) {
+  const { latitude, longitude, radius = 50000, limit = 30 } = event || {};
+
+  if (typeof latitude !== 'number' || typeof longitude !== 'number') {
+    return { success: false, errMsg: 'latitude/longitude 必填且为数字' };
+  }
+
+  const res = await db.collection('guides')
+    .where({
+      category: 'spot',
+      status: 'published',
+      geoLocation: _.geoNear({
+        geometry: db.Geo.Point(longitude, latitude),
+        maxDistance: radius
+      })
+    })
+    .limit(limit)
+    .get();
+
+  const data = (res.data || []).map(item => {
+    // 数据库返回时 geoLocation 是 { type:'Point', coordinates:[lng,lat] }
+    // 客户端用的是 location.{latitude,longitude},这里同时保留并附加 distance
+    const itemLat = (item.location && item.location.latitude) ||
+      (item.geoLocation && item.geoLocation.coordinates && item.geoLocation.coordinates[1]);
+    const itemLng = (item.location && item.location.longitude) ||
+      (item.geoLocation && item.geoLocation.coordinates && item.geoLocation.coordinates[0]);
+
+    let distance = null;
+    if (typeof itemLat === 'number' && typeof itemLng === 'number') {
+      distance = haversineKm(latitude, longitude, itemLat, itemLng);
+    }
+
+    // 兜底 cover/images,与 getGuides 行为一致
+    if (!item.images || item.images.length === 0) {
+      item.images = item.cover ? [item.cover] : [];
+    }
+    let finalCover = item.cover;
+    if (!finalCover || finalCover.includes('placeholder')) {
+      finalCover = item.images && item.images.length > 0 ? item.images[0] : '';
+    }
+
+    return {
+      ...item,
+      cover: finalCover,
+      categoryName: categoryMap[item.category] || item.category,
+      distance // km, 保留 3 位小数;前端按需四舍五入
+    };
+  });
+
+  return { success: true, data };
+}
+
+/**
+ * Haversine 球面距离,返回 km(保留 3 位小数)
+ */
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371; // 地球平均半径 km
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return Math.round(R * c * 1000) / 1000;
 }

@@ -320,3 +320,210 @@
 }
 
 .action-icon { width: 26rpx; height: 26rpx; }
+
+/* === 定位授权条 === */
+.location-banner {
+  margin: -16rpx var(--space-lg) var(--space-md);
+  padding: var(--space-md) var(--space-md);
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  z-index: 2;
+}
+
+.location-banner.on {
+  background: var(--cat-spot-soft);
+}
+
+.loc-call, .loc-on {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.loc-icon {
+  width: 32rpx;
+  height: 32rpx;
+  flex-shrink: 0;
+}
+
+.loc-text {
+  flex: 1;
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  letter-spacing: 0.5rpx;
+}
+
+.loc-btn {
+  flex-shrink: 0;
+  padding: 8rpx 24rpx;
+  background: var(--cat-spot);
+  color: var(--text-white);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  letter-spacing: 1rpx;
+}
+
+.loc-btn:active { transform: scale(0.95); opacity: 0.9; }
+
+.loc-refresh {
+  flex-shrink: 0;
+  padding: 6rpx 18rpx;
+  font-size: var(--font-xs);
+  color: var(--cat-spot);
+  border: 2rpx solid var(--cat-spot);
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+}
+
+.loc-refresh:active { transform: scale(0.95); opacity: 0.8; }
+
+/* === 天气筛选条 === */
+.weather-filter-bar {
+  margin: 0 var(--space-lg) var(--space-sm);
+  display: flex;
+  gap: 12rpx;
+}
+
+.wf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 10rpx 22rpx;
+  background: var(--bg-surface);
+  border-radius: var(--radius-pill);
+  border: 2rpx solid var(--border-line);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.wf-chip.active {
+  background: var(--cat-spot-soft);
+  border-color: var(--cat-spot);
+  color: var(--cat-spot);
+  font-weight: 600;
+}
+
+.wf-chip:active { transform: scale(0.97); }
+
+.wf-emoji { font-size: 28rpx; }
+.wf-text { letter-spacing: 0.5rpx; }
+.wf-count {
+  margin-left: 4rpx;
+  padding: 2rpx 10rpx;
+  background: var(--text-tertiary);
+  color: var(--text-white);
+  font-size: var(--font-xs);
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  font-variant-numeric: tabular-nums;
+}
+
+.wf-chip.active .wf-count {
+  background: var(--cat-spot);
+}
+
+/* === 天气徽章(卡片右上角) === */
+.guide-card { position: relative; }
+
+.weather-badge {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4rpx;
+  padding: 6rpx 14rpx;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10rpx);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2rpx 8rpx rgba(94, 72, 50, 0.12);
+  font-variant-numeric: tabular-nums;
+}
+
+.wb-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.wb-temp {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--cat-spot);
+  letter-spacing: -0.5rpx;
+}
+
+/* === 距离行 === */
+.distance-row {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  margin-bottom: var(--space-sm);
+  padding: 8rpx 14rpx;
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+  align-self: flex-start;
+}
+
+.dist-icon {
+  width: 22rpx;
+  height: 22rpx;
+  opacity: 0.7;
+}
+
+.dist-text {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  letter-spacing: 0.3rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+/* === playable 高亮 === */
+.guide-card.playable {
+  box-shadow: 0 0 0 3rpx var(--color-success), var(--shadow-md);
+}
+
+/* === 错误态 === */
+.error-block {
+  margin: var(--space-2xl) var(--space-lg);
+  padding: var(--space-xl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.error-icon { width: 80rpx; height: 80rpx; opacity: 0.7; }
+.error-text {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.6;
+}
+.error-btn {
+  padding: 14rpx 40rpx;
+  background: var(--cat-spot);
+  color: var(--text-white);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  letter-spacing: 1rpx;
+}
+.error-btn:active { transform: scale(0.96); opacity: 0.9; }
+
+/* === filter 空态 === */
+.empty-soft {
+  margin: var(--space-xl) var(--space-lg);
+  padding: var(--space-lg);
+  text-align: center;
+  font-size: var(--font-sm);
+  color: var(--text-tertiary);
+  letter-spacing: 0.5rpx;
+}

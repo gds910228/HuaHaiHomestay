@@ -77,6 +77,10 @@ exports.main = async (event, context) => {
         console.log('执行 updateRoomFacilities');
         result = await updateRoomFacilities();
         break;
+      case 'seedSpots':
+        console.log('执行 seedSpots(委托 spot-sync 云函数)');
+        result = await seedSpots();
+        break;
       default:
         console.log('未知的操作类型');
         return {
@@ -1304,6 +1308,37 @@ async function updateRoomFacilities() {
     return {
       success: false,
       errMsg: err.message
+    };
+  }
+}
+
+/**
+ * 9.0 初始化景点数据
+ * 委托 spot-sync 云函数的 syncSeedOnly,把 18 条真实南澳岛景点写入 guides 集合
+ * 前置:spot-sync 云函数已部署 (右键 cloudfunctions/spot-sync 上传并部署)
+ */
+async function seedSpots() {
+  try {
+    const res = await cloud.callFunction({
+      name: 'spot-sync',
+      data: { type: 'syncSeedOnly' }
+    });
+    if (res.result && res.result.success) {
+      return {
+        success: true,
+        message: '景点种子数据已写入',
+        detail: res.result.data
+      };
+    }
+    return {
+      success: false,
+      errMsg: (res.result && res.result.errMsg) || '调用 spot-sync 失败,请确认已部署该云函数'
+    };
+  } catch (err) {
+    console.error('seedSpots 失败:', err);
+    return {
+      success: false,
+      errMsg: err.message + ' (提示:请先部署 spot-sync 云函数)'
     };
   }
 }

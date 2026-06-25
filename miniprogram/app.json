@@ -47,5 +47,11 @@
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于按距离推荐附近景点"
+    }
+  },
+  "requiredPrivateInfos": ["getLocation"]
 }

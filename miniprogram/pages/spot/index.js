@@ -2,22 +2,105 @@
 Page({
   data: {
     category: { id: 'spot', name: '景点打卡', emoji: '📍', subtitle: '热门景点 / 摄影机位 / 海岛风光' },
-    guides: [],
+    guides: [],          // 原始数据(已附加 distance/walkingMin/weatherBrief/playable)
+    filteredGuides: [],  // 应用 weatherFilter 后的展示数据
     loading: false,
     isFirstLoad: true,
+    errorMsg: '',
 
     tagOptions: [],
     activeTag: '',
-    tagsExpanded: false
+    tagsExpanded: false,
+
+    // 定位
+    userLocation: null,        // {latitude, longitude} or null
+    hasLocation: false,        // 是否已获得用户位置
+    locationDenied: false,     // 是否被拒绝(用于显示去设置引导)
+
+    // 天气筛选
+    weatherFilter: false,      // 是否只看"现在适合玩"
+    playableCount: 0           // 适合玩的景点数
   },
 
   onLoad() {
     this.loadTagOptions();
+    this.checkLocationSetting();
     this.loadGuides();
   },
 
   onShow() {
-    this.loadGuides();
+    // 用户从设置返回时刷新授权状态
+    this.checkLocationSetting();
+  },
+
+  /** 静默读授权状态,不主动弹权限框 */
+  checkLocationSetting() {
+    wx.getSetting({
+      success: (res) => {
+        if (res.authSetting['scope.userLocation']) {
+          this.fetchUserLocation();
+        } else if (res.authSetting['scope.userLocation'] === false) {
+          this.setData({ locationDenied: true });
+        }
+      }
+    });
+  },
+
+  /** 用户点"开启定位"按钮 */
+  requestLocation() {
+    wx.getLocation({
+      type: 'gcj02',
+      success: (res) => {
+        this.setData({
+          userLocation: { latitude: res.latitude, longitude: res.longitude },
+          hasLocation: true,
+          locationDenied: false
+        });
+        this.loadGuides();
+      },
+      fail: (err) => {
+        console.warn('[景点] getLocation 失败', err);
+        if (err.errMsg && err.errMsg.indexOf('auth') > -1) {
+          this.setData({ locationDenied: true });
+          wx.showModal({
+            title: '需要定位权限',
+            content: '开启后可按距离排序附近景点',
+            confirmText: '去设置',
+            success: (r) => {
+              if (r.confirm) {
+                wx.openSetting({
+                  success: (s) => {
+                    if (s.authSetting['scope.userLocation']) {
+                      this.fetchUserLocation();
+                    }
+                  }
+                });
+              }
+            }
+          });
+        } else {
+          wx.showToast({ title: '定位失败,请重试', icon: 'none' });
+        }
+      }
+    });
+  },
+
+  /** 已授权后静默拉位置 */
+  fetchUserLocation() {
+    wx.getLocation({
+      type: 'gcj02',
+      success: (res) => {
+        this.setData({
+          userLocation: { latitude: res.latitude, longitude: res.longitude },
+          hasLocation: true,
+          locationDenied: false
+        });
+        this.loadGuides();
+      },
+      fail: (err) => {
+        console.warn('[景点] fetchUserLocation 失败', err);
+      }
+    });
   },
 
   async loadTagOptions() {
@@ -44,52 +127,144 @@ Page({
     this.setData({ tagsExpanded: !this.data.tagsExpanded });
   },
 
+  toggleWeatherFilter() {
+    const next = !this.data.weatherFilter;
+    this.setData({ weatherFilter: next });
+    this.applyFilter();
+  },
+
   async loadGuides() {
     if (this.data.loading) return;
-    this.setData({ loading: true });
+    this.setData({ loading: true, errorMsg: '' });
 
     try {
-      const callData = {
-        type: 'getGuides',
-        category: this.data.category.id,
-        pageSize: 100
-      };
-      if (this.data.activeTag) callData.tag = this.data.activeTag;
+      let guides;
 
-      const res = await wx.cloud.callFunction({
-        name: 'huahai',
-        data: callData
+      if (this.data.hasLocation && this.data.userLocation) {
+        // 有定位:走 getNearbySpots,按距离排序
+        const { latitude, longitude } = this.data.userLocation;
+        const res = await wx.cloud.callFunction({
+          name: 'huahai',
+          data: {
+            type: 'getNearbySpots',
+            latitude,
+            longitude,
+            radius: 50000,
+            limit: 50
+          }
+        });
+        if (!res.result || !res.result.success) throw new Error(res.result?.errMsg || '加载失败');
+        guides = res.result.data || [];
+      } else {
+        // 无定位:走原有 getGuides
+        const callData = {
+          type: 'getGuides',
+          category: this.data.category.id,
+          pageSize: 100,
+          withWeather: true
+        };
+        if (this.data.activeTag) callData.tag = this.data.activeTag;
+
+        const res = await wx.cloud.callFunction({ name: 'huahai', data: callData });
+        if (!res.result || !res.result.success) throw new Error(res.result?.errMsg || '加载失败');
+        guides = res.result.data || [];
+      }
+
+      // 客户端兜底过滤
+      guides = guides.filter(g => g.category === this.data.category.id);
+      guides = guides.filter(g => !g.status || g.status === 'published');
+      if (this.data.activeTag) {
+        const t = this.data.activeTag;
+        guides = guides.filter(g => Array.isArray(g.tags) && g.tags.indexOf(t) > -1);
+      }
+
+      // 派生显示字段
+      guides.forEach((guide) => {
+        const hasImages = guide.images && guide.images.length > 0;
+        const firstImage = hasImages ? guide.images[0] : '';
+        const isPlaceholder = firstImage && firstImage.includes('placeholder');
+        guide.hasRealImage = hasImages && !isPlaceholder;
+
+        // 距离/步行(优先用户位置 → 服务端预算 → 无)
+        guide.distanceDisplay = this.computeDistanceDisplay(guide);
+
+        // 天气摘要
+        guide.weatherBrief = this.extractWeatherBrief(guide.weather);
+
+        // 是否适合玩
+        guide.playable = this.isPlayable(guide.weather);
       });
 
-      if (res.result && res.result.success) {
-        let guides = res.result.data || [];
+      await this.checkFavoritesStatus(guides);
 
-        guides = guides.filter(g => g.category === this.data.category.id);
-        guides = guides.filter(g => !g.status || g.status === 'published');
-        if (this.data.activeTag) {
-          const t = this.data.activeTag;
-          guides = guides.filter(g => Array.isArray(g.tags) && g.tags.indexOf(t) > -1);
-        }
+      const playableCount = guides.filter(g => g.playable).length;
 
-        guides.forEach((guide) => {
-          const hasImages = guide.images && guide.images.length > 0;
-          const firstImage = hasImages ? guide.images[0] : '';
-          const isPlaceholder = firstImage && firstImage.includes('placeholder');
-          guide.hasRealImage = hasImages && !isPlaceholder;
-        });
-
-        await this.checkFavoritesStatus(guides);
-
-        this.setData({ guides, loading: false, isFirstLoad: false });
-      } else {
-        wx.showToast({ title: res.result?.errMsg || '加载失败', icon: 'none' });
-        this.setData({ loading: false });
-      }
+      this.setData({
+        guides,
+        playableCount,
+        loading: false,
+        isFirstLoad: false
+      });
+      this.applyFilter();
     } catch (err) {
       console.error('[景点] 加载失败', err);
-      wx.showToast({ title: '加载失败', icon: 'none' });
-      this.setData({ loading: false });
+      this.setData({
+        loading: false,
+        isFirstLoad: false,
+        errorMsg: err.message || '加载失败,请下拉重试'
+      });
     }
+  },
+
+  /** 根据 weatherFilter 派生 filteredGuides */
+  applyFilter() {
+    const { guides, weatherFilter } = this.data;
+    const filteredGuides = weatherFilter ? guides.filter(g => g.playable) : guides;
+    this.setData({ filteredGuides });
+  },
+
+  /** 派生"1.2km · 步行 15 分钟"显示字符串 */
+  computeDistanceDisplay(guide) {
+    // 优先:服务端 getNearbySpots 算出的 distance (km)
+    if (typeof guide.distance === 'number') {
+      const km = guide.distance;
+      const walkingMin = Math.max(1, Math.round(km * 1000 / 80));
+      return {
+        text: `${km.toFixed(km < 1 ? 2 : 1)}km · 步行 ${walkingMin} 分钟`,
+        fromUser: true
+      };
+    }
+    // 其次:同步时预算的"从画海出发"步行
+    if (guide.walkingFromHostel && guide.walkingFromHostel.distance) {
+      const km = guide.walkingFromHostel.distance / 1000;
+      const min = Math.max(1, Math.round(guide.walkingFromHostel.duration / 60));
+      return {
+        text: `从画海 ${km.toFixed(km < 1 ? 2 : 1)}km · 步行 ${min} 分钟`,
+        fromUser: false
+      };
+    }
+    return null;
+  },
+
+  /** 提取天气摘要给卡片右上角徽章 */
+  extractWeatherBrief(weather) {
+    if (!weather || !weather.now) return null;
+    const { temp, text, iconUrl } = weather.now;
+    return {
+      temp: temp != null ? `${temp}°` : '',
+      text: text || '',
+      iconUrl: iconUrl || ''
+    };
+  },
+
+  /** 是否"现在适合玩":无雨/雷/雪 且 风力 <6 */
+  isPlayable(weather) {
+    if (!weather || !weather.now) return false;
+    const text = String(weather.now.text || '');
+    if (/雨|雷|雪|沙尘|霾/.test(text)) return false;
+    const ws = Number(weather.now.windScale);
+    if (isFinite(ws) && ws >= 6) return false;
+    return true;
   },
 
   viewGuide(e) {
@@ -113,6 +288,10 @@ Page({
   },
 
   goHome() { wx.switchTab({ url: '/pages/home/index' }); },
+
+  retry() {
+    this.loadGuides();
+  },
 
   async checkFavoritesStatus(guides) {
     try {
@@ -149,6 +328,7 @@ Page({
           g._id === id ? { ...g, isFavorited } : g
         );
         this.setData({ guides });
+        this.applyFilter();
         wx.showToast({ title: isFavorited ? '已收藏' : '已取消收藏', icon: 'success' });
       }
     } catch (err) {
@@ -159,7 +339,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: `南澳岛${this.data.category.name} - 画海民宿`,
+      title: `南澳岛${this.data.category.name} - 画海`,
       path: `/pages/${this.data.category.id}/index`,
       imageUrl: '/images/logo.jpg'
     };
@@ -167,7 +347,7 @@ Page({
 
   onShareTimeline() {
     return {
-      title: `南澳岛${this.data.category.name} - 画海民宿`,
+      title: `南澳岛${this.data.category.name} - 画海`,
       query: '',
       imageUrl: '/images/logo.jpg'
     };

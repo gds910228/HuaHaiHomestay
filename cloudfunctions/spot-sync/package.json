@@ -1,0 +1,10 @@
+{
+  "name": "spot-sync",
+  "version": "1.0.0",
+  "description": "南澳岛景点数据同步:高德 POI/walking + 和风天气,upsert 到 guides 集合",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "axios": "^1.6.7"
+  }
+}
