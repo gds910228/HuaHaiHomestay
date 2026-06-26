@@ -2,7 +2,7 @@
  * 同步器:把 seed + amap + qweather 数据合并 upsert 到 guides 集合
  * - 唯一键:amapId
  * - 写入字段保留 guides schema (title/summary/images/tags/location/views/likes/status/...)
- * - 新增字段:weather, walkingFromHostel, geoLocation, source, syncedAt
+ * - 新增字段:weather, walkingFromHostel, geoLocation, source, syncedAt, content (HTML 富文本)
  */
 const cloud = require('wx-server-sdk');
 
@@ -23,6 +23,11 @@ async function upsertSpot(spot, source = 'seed') {
   const now = new Date();
   const { latitude, longitude } = spot.location;
 
+  // 详情页用的富文本 content:优先用 spot.content,否则由结构化字段生成
+  const content = spot.content && spot.content.trim()
+    ? spot.content
+    : buildContent(spot);
+
   // 公共写入字段
   const data = {
     title: spot.title,
@@ -37,7 +42,8 @@ async function upsertSpot(spot, source = 'seed') {
     amapId: spot.amapId,
     source,
     syncedAt: now,
-    updateTime: now
+    updateTime: now,
+    content
   };
 
   // 可选字段:有则带,无则不覆盖
@@ -46,6 +52,7 @@ async function upsertSpot(spot, source = 'seed') {
   if (spot.weather) data.weather = spot.weather;
   if (spot.walkingFromHostel) data.walkingFromHostel = spot.walkingFromHostel;
   if (spot.amapMeta) data.amapMeta = spot.amapMeta;
+  if (Array.isArray(spot.info) && spot.info.length) data.info = spot.info;
 
   // 按 amapId 查是否已存在
   const existRes = await db.collection('guides').where({ amapId: spot.amapId }).limit(1).get();
@@ -57,8 +64,7 @@ async function upsertSpot(spot, source = 'seed') {
     // 新增:补齐默认字段
     const createData = {
       ...data,
-      content: '',
-      info: [],
+      info: data.info || buildInfo(spot),
       status: 'published',
       views: 0,
       likes: 0,
@@ -68,6 +74,71 @@ async function upsertSpot(spot, source = 'seed') {
     const addRes = await db.collection('guides').add({ data: createData });
     return { _id: addRes._id, op: 'insert' };
   }
+}
+
+/**
+ * 根据 spot 的结构化字段生成富文本 HTML
+ * 字段:summary, highlights[], bestTime, duration, tips[], address, tags[]
+ */
+function buildContent(spot) {
+  const parts = [];
+
+  if (spot.summary) {
+    parts.push(`<p>${escapeHtml(spot.summary)}</p>`);
+  }
+
+  if (Array.isArray(spot.highlights) && spot.highlights.length) {
+    parts.push('<h3>✨ 亮点</h3>');
+    parts.push('<ul>' + spot.highlights.map(h => `<li>${escapeHtml(h)}</li>`).join('') + '</ul>');
+  }
+
+  if (spot.bestTime) {
+    parts.push('<h3>📅 推荐时段</h3>');
+    parts.push(`<p>${escapeHtml(spot.bestTime)}</p>`);
+  }
+
+  if (spot.duration) {
+    parts.push('<h3>⏱ 建议时长</h3>');
+    parts.push(`<p>${escapeHtml(spot.duration)}</p>`);
+  }
+
+  if (Array.isArray(spot.tips) && spot.tips.length) {
+    parts.push('<h3>💡 小贴士</h3>');
+    parts.push('<ul>' + spot.tips.map(t => `<li>${escapeHtml(t)}</li>`).join('') + '</ul>');
+  }
+
+  if (spot.address) {
+    parts.push('<h3>📍 地址</h3>');
+    parts.push(`<p>${escapeHtml(spot.address)}</p>`);
+  }
+
+  // 即使所有字段为空,也至少有 summary;若连 summary 都没有,给一个占位
+  if (parts.length === 0) {
+    return `<p>${escapeHtml(spot.title || '景点详情')}</p>`;
+  }
+
+  return parts.join('');
+}
+
+/**
+ * 生成 info 字段(实用信息列表),供详情页"INFO · 实用信息"区使用
+ */
+function buildInfo(spot) {
+  const info = [];
+  if (spot.bestTime) info.push({ label: '推荐时段', value: spot.bestTime });
+  if (spot.duration) info.push({ label: '建议时长', value: spot.duration });
+  if (spot.address) info.push({ label: '地址', value: spot.address });
+  return info;
+}
+
+/** 简易 HTML 转义,防止 summary/tip 里有特殊字符破坏 rich-text */
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 /**
@@ -125,4 +196,11 @@ function normalizeAmapPOI(poi) {
   };
 }
 
-module.exports = { upsertSpot, mergeWeather, mergeWalking, normalizeAmapPOI };
+module.exports = {
+  upsertSpot,
+  mergeWeather,
+  mergeWalking,
+  normalizeAmapPOI,
+  buildContent,
+  buildInfo
+};

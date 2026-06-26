@@ -7,7 +7,8 @@
 const axios = require('axios');
 
 const BASE = 'https://restapi.amap.com';
-const QPS_INTERVAL = 50; // ms
+// 高德个人版免费 KEY 限 3 QPS,留 25% 余量取 400ms 间隔 = 2.5 QPS
+const QPS_INTERVAL = 400; // ms
 let lastCallAt = 0;
 
 function getKey() {

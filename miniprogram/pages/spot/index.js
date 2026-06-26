@@ -246,23 +246,47 @@ Page({
     return null;
   },
 
-  /** 提取天气摘要给卡片右上角徽章 */
+  /**
+   * 提取天气摘要给卡片右上角徽章
+   * 优先用 weather.now;若 now 为空,fallback 到 forecast3d[0](当日预报)
+   * 这样即便 QWeather 实时接口失败,只要 7d 接口能拿到一天数据也能出徽章
+   */
   extractWeatherBrief(weather) {
-    if (!weather || !weather.now) return null;
-    const { temp, text, iconUrl } = weather.now;
-    return {
-      temp: temp != null ? `${temp}°` : '',
-      text: text || '',
-      iconUrl: iconUrl || ''
-    };
+    if (!weather) return null;
+    if (weather.now) {
+      const { temp, text, iconUrl } = weather.now;
+      return {
+        temp: temp != null ? `${temp}°` : '',
+        text: text || '',
+        iconUrl: iconUrl || '',
+        fromForecast: false
+      };
+    }
+    const today = weather.forecast3d && weather.forecast3d[0];
+    if (today) {
+      const tMax = today.tempMax;
+      const tMin = today.tempMin;
+      let tempStr = '';
+      if (tMax != null && tMin != null) tempStr = `${tMin}~${tMax}°`;
+      else if (tMax != null) tempStr = `${tMax}°`;
+      return {
+        temp: tempStr,
+        text: today.textDay || '',
+        iconUrl: today.iconDayUrl || '',
+        fromForecast: true
+      };
+    }
+    return null;
   },
 
-  /** 是否"现在适合玩":无雨/雷/雪 且 风力 <6 */
+  /** 是否"现在适合玩":无雨/雷/雪 且 风力 <6 (now 缺失则看 forecast 当日) */
   isPlayable(weather) {
-    if (!weather || !weather.now) return false;
-    const text = String(weather.now.text || '');
+    if (!weather) return false;
+    const src = weather.now || (weather.forecast3d && weather.forecast3d[0]) || null;
+    if (!src) return false;
+    const text = String(src.text || src.textDay || '');
     if (/雨|雷|雪|沙尘|霾/.test(text)) return false;
-    const ws = Number(weather.now.windScale);
+    const ws = Number(src.windScale || src.windScaleDay);
     if (isFinite(ws) && ws >= 6) return false;
     return true;
   },
