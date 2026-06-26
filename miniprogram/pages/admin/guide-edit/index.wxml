@@ -97,18 +97,20 @@
 
     <!-- 封面图 -->
     <view class="form-item">
-      <text class="form-label">封面图片</text>
+      <text class="form-label">封面图片（用于列表卡片缩略图）</text>
       <view class="image-upload">
         <view class="uploaded-images" wx:if="{{form.cover}}">
-          <image
-            class="upload-image"
-            src="{{form.cover}}"
-            mode="aspectFill"
-            data-url="{{form.cover}}"
-            data-type="cover"
-            bindtap="previewImage"
-          />
-          <view class="delete-btn" catchtap="deleteCover">✕</view>
+          <view class="image-item">
+            <image
+              class="upload-image"
+              src="{{form.cover}}"
+              mode="aspectFill"
+              data-url="{{form.cover}}"
+              data-type="cover"
+              bindtap="previewImage"
+            />
+            <view class="delete-btn" catchtap="deleteCover">✕</view>
+          </view>
         </view>
         <view class="upload-btn" wx:if="{{!form.cover}}" bindtap="chooseCover">
           <text class="upload-icon">+</text>
@@ -119,7 +121,7 @@
 
     <!-- 图片列表 -->
     <view class="form-item">
-      <text class="form-label">图片列表（最多9张）</text>
+      <text class="form-label">图片列表（最多9张 · 用 ← → 调整顺序）</text>
       <view class="image-upload">
         <view class="uploaded-images">
           <view class="image-item" wx:for="{{form.images}}" wx:key="*this">
@@ -133,6 +135,19 @@
               bindtap="previewImage"
             />
             <view class="delete-btn" catchtap="deleteImage" data-index="{{index}}">✕</view>
+            <view class="reorder-bar">
+              <view
+                class="reorder-btn {{index === 0 ? 'disabled' : ''}}"
+                catchtap="moveImageLeft"
+                data-index="{{index}}"
+              >‹</view>
+              <text class="reorder-pos">{{index + 1}}</text>
+              <view
+                class="reorder-btn {{index === form.images.length - 1 ? 'disabled' : ''}}"
+                catchtap="moveImageRight"
+                data-index="{{index}}"
+              >›</view>
+            </view>
           </view>
         </view>
         <view class="upload-btn" wx:if="{{form.images.length < 9}}" bindtap="chooseImages">

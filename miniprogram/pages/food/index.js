@@ -111,14 +111,17 @@ Page({
         guides.forEach((guide) => {
           const hasImages = guide.images && guide.images.length > 0;
           const firstImage = hasImages ? guide.images[0] : '';
-          const isPlaceholder = firstImage && firstImage.includes('placeholder');
+          // 卡片缩略图:优先用 cover 字段,回退到 images[0]
+          const coverImage = guide.cover || firstImage || '';
+          const isPlaceholder = coverImage && coverImage.includes('placeholder');
 
-          // 添加一个新字段用于判断是否有真实图片
-          guide.hasRealImage = hasImages && !isPlaceholder;
+          guide.coverImage = coverImage;
+          guide.hasRealImage = !!coverImage && !isPlaceholder;
 
           console.log(`[调试] ${guide.title}:`);
           console.log(`  images.length: ${guide.images ? guide.images.length : 0}`);
-          console.log(`  第一张图包含placeholder: ${isPlaceholder ? '是' : '否'}`);
+          console.log(`  cover 字段: ${guide.cover ? '有' : '无'}`);
+          console.log(`  最终缩略图: ${coverImage ? coverImage.substring(0, 60) : '无'}`);
           console.log(`  有真实图片: ${guide.hasRealImage ? '是' : '否'}`);
         });
 

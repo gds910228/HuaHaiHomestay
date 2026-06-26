@@ -189,6 +189,49 @@
   font-size: 24rpx;
 }
 
+/* 图片排序条 */
+.reorder-bar {
+  position: absolute;
+  bottom: 6rpx;
+  left: 6rpx;
+  right: 6rpx;
+  height: 44rpx;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8rpx;
+  box-sizing: border-box;
+}
+
+.reorder-btn {
+  width: 40rpx;
+  height: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg-surface);
+  font-size: 36rpx;
+  line-height: 1;
+  border-radius: 6rpx;
+}
+
+.reorder-btn:active {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.reorder-btn.disabled {
+  opacity: 0.3;
+}
+
+.reorder-pos {
+  color: var(--bg-surface);
+  font-size: 22rpx;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5rpx;
+}
+
 .upload-btn {
   width: 200rpx;
   height: 200rpx;

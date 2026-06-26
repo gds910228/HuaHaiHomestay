@@ -306,6 +306,24 @@ Page({
     this.setData({ 'form.images': images });
   },
 
+  // 把指定图片往前挪一位（左/上）
+  moveImageLeft(e) {
+    const index = Number(e.currentTarget.dataset.index);
+    if (!Number.isInteger(index) || index <= 0) return;
+    const images = [...this.data.form.images];
+    [images[index - 1], images[index]] = [images[index], images[index - 1]];
+    this.setData({ 'form.images': images });
+  },
+
+  // 把指定图片往后挪一位（右/下）
+  moveImageRight(e) {
+    const index = Number(e.currentTarget.dataset.index);
+    const images = [...this.data.form.images];
+    if (!Number.isInteger(index) || index < 0 || index >= images.length - 1) return;
+    [images[index], images[index + 1]] = [images[index + 1], images[index]];
+    this.setData({ 'form.images': images });
+  },
+
   deleteCover() {
     this.setData({ 'form.cover': '' });
   },

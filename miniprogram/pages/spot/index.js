@@ -182,8 +182,11 @@ Page({
       guides.forEach((guide) => {
         const hasImages = guide.images && guide.images.length > 0;
         const firstImage = hasImages ? guide.images[0] : '';
-        const isPlaceholder = firstImage && firstImage.includes('placeholder');
-        guide.hasRealImage = hasImages && !isPlaceholder;
+        // 卡片缩略图:优先用 cover 字段(编辑时单独上传的封面),回退到 images[0]
+        const coverImage = guide.cover || firstImage || '';
+        const isPlaceholder = coverImage && coverImage.includes('placeholder');
+        guide.coverImage = coverImage;
+        guide.hasRealImage = !!coverImage && !isPlaceholder;
 
         // 距离/步行(优先用户位置 → 服务端预算 → 无)
         guide.distanceDisplay = this.computeDistanceDisplay(guide);
