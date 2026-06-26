@@ -250,15 +250,18 @@ Page({
    * 提取天气摘要给卡片右上角徽章
    * 优先用 weather.now;若 now 为空,fallback 到 forecast3d[0](当日预报)
    * 这样即便 QWeather 实时接口失败,只要 7d 接口能拿到一天数据也能出徽章
+   *
+   * 注意:不使用 weather.now.iconUrl(和风 CDN a.hecdn.net 在小程序环境不可达,实测 ERR_CONNECTION_REFUSED)
+   *      改用 emoji 表达天气状态,无外网依赖
    */
   extractWeatherBrief(weather) {
     if (!weather) return null;
     if (weather.now) {
-      const { temp, text, iconUrl } = weather.now;
+      const { temp, text, icon } = weather.now;
       return {
         temp: temp != null ? `${temp}°` : '',
         text: text || '',
-        iconUrl: iconUrl || '',
+        emoji: weatherCodeToEmoji(icon, text),
         fromForecast: false
       };
     }
@@ -272,7 +275,7 @@ Page({
       return {
         temp: tempStr,
         text: today.textDay || '',
-        iconUrl: today.iconDayUrl || '',
+        emoji: weatherCodeToEmoji(today.iconDay, today.textDay),
         fromForecast: true
       };
     }
@@ -377,3 +380,51 @@ Page({
     };
   }
 });
+
+/**
+ * 和风天气 icon code → emoji
+ * 文档:https://dev.qweather.com/docs/resource/icons/
+ * code 分段:
+ *   100-199 晴/多云/阴       2xx 风/沙
+ *   300-318 雨               400-499 雪
+ *   500-515 雾/霾            900+ 冷热
+ * fallback 用 text 文本兜底,处理 code 缺失或非标情况
+ */
+function weatherCodeToEmoji(code, text) {
+  const c = String(code || '').trim();
+  if (c) {
+    // 晴
+    if (c === '100') return '☀️';
+    if (c === '150') return '🌙';
+    // 多云 / 少云 / 晴间多云
+    if (c === '101' || c === '102' || c === '103') return '⛅';
+    if (c === '151' || c === '152' || c === '153') return '☁️';
+    // 阴
+    if (c === '104' || c === '154') return '☁️';
+    // 阵雨 / 雷阵雨
+    if (c.startsWith('30') && c < '305') return '⛈️';
+    // 小雨 / 中雨 / 大雨 / 暴雨
+    if (c.startsWith('3')) return '🌧️';
+    // 雪 / 雨夹雪
+    if (c.startsWith('4')) return '❄️';
+    // 雾 / 霾 / 沙尘
+    if (c.startsWith('5')) return '🌫️';
+    // 风沙
+    if (c.startsWith('2')) return '💨';
+    // 冷热
+    if (c === '900') return '🥵';
+    if (c === '901') return '🥶';
+  }
+  // 文字兜底:从 text 推断
+  const t = String(text || '');
+  if (/雷/.test(t)) return '⛈️';
+  if (/雨/.test(t)) return '🌧️';
+  if (/雪/.test(t)) return '❄️';
+  if (/雾|霾/.test(t)) return '🌫️';
+  if (/沙|尘/.test(t)) return '💨';
+  if (/阴/.test(t)) return '☁️';
+  if (/多云|云/.test(t)) return '⛅';
+  if (/晴/.test(t)) return '☀️';
+  return '🌤️'; // 缺省
+}
+

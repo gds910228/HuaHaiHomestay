@@ -445,9 +445,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-.wb-icon {
-  width: 32rpx;
-  height: 32rpx;
+.wb-emoji {
+  font-size: 28rpx;
+  line-height: 1;
 }
 
 .wb-temp {

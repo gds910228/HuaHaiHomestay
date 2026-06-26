@@ -90,7 +90,7 @@
       >
         <!-- 天气徽章 -->
         <view class="weather-badge" wx:if="{{guide.weatherBrief}}">
-          <image wx:if="{{guide.weatherBrief.iconUrl}}" class="wb-icon" src="{{guide.weatherBrief.iconUrl}}" mode="aspectFit"></image>
+          <text class="wb-emoji" wx:if="{{guide.weatherBrief.emoji}}">{{guide.weatherBrief.emoji}}</text>
           <text class="wb-temp">{{guide.weatherBrief.temp}}</text>
         </view>
 
