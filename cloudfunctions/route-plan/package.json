@@ -1,0 +1,10 @@
+{
+  "name": "route-plan",
+  "version": "1.0.0",
+  "description": "南澳岛游玩路线规划:把 waypoints 串成 polyline,回写 totalDistance / totalDuration",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "axios": "^1.6.7"
+  }
+}

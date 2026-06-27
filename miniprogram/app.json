@@ -4,6 +4,7 @@
     "pages/guide-detail/index",
     "pages/food/index",
     "pages/route/index",
+    "pages/route-detail/index",
     "pages/info/index",
     "pages/spot/index",
     "pages/hostel/index",
@@ -48,8 +49,8 @@
   "lazyCodeLoading": "requiredComponents",
   "permission": {
     "scope.userLocation": {
-      "desc": "用于按距离推荐附近景点"
+      "desc": "用于按距离推荐附近景点 / 路线导航"
     }
   },
-  "requiredPrivateInfos": ["getLocation"]
+  "requiredPrivateInfos": ["getLocation", "chooseLocation"]
 }

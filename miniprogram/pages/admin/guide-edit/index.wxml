@@ -209,6 +209,192 @@
         bindinput="onInput"
       />
     </view>
+
+    <!-- ============ 路线规划专属面板(category=route) ============ -->
+    <block wx:if="{{form.category === 'route'}}">
+      <view class="route-panel">
+        <view class="route-panel-head" bindtap="toggleRoutePanel">
+          <text class="rp-title">路线规划</text>
+          <text class="rp-hint" wx:if="{{form.waypoints.length > 0}}">{{form.waypoints.length}} 个点位</text>
+          <text class="rp-toggle">{{routePanelExpanded ? '▾' : '▸'}}</text>
+        </view>
+
+        <view class="route-panel-body" wx:if="{{routePanelExpanded}}">
+          <!-- days / transport -->
+          <view class="rp-row">
+            <view class="rp-col">
+              <text class="rp-label">天数</text>
+              <picker
+                class="rp-picker"
+                range="{{daysOptions}}"
+                value="{{daysIndex}}"
+                bindchange="onDaysChange"
+              >
+                <view class="rp-picker-value">{{form.days}} 日游</view>
+              </picker>
+            </view>
+            <view class="rp-col">
+              <text class="rp-label">交通方式</text>
+              <picker
+                class="rp-picker"
+                range="{{transportOptions}}"
+                range-key="label"
+                value="{{transportIndex}}"
+                bindchange="onTransportChange"
+              >
+                <view class="rp-picker-value">{{transportOptions[transportIndex].label}}</view>
+              </picker>
+            </view>
+          </view>
+
+          <!-- mixed 模式:每天的交通方式 -->
+          <view class="rp-day-transport" wx:if="{{form.transport === 'mixed'}}">
+            <text class="rp-sub-label">各日交通方式</text>
+            <view class="rp-dt-list">
+              <view
+                class="rp-dt-item"
+                wx:for="{{dayArray}}"
+                wx:key="*this"
+                wx:for-item="dayNum"
+                wx:for-index="dIdx"
+                data-day="{{dayNum}}"
+                bindtap="onDayTransportToggle"
+              >
+                <text class="rp-dt-day">D{{dayNum}}</text>
+                <text class="rp-dt-mode">{{dayTransportLabels[dIdx]}}</text>
+              </view>
+            </view>
+            <text class="rp-hint-text">点击切换驾车/步行</text>
+          </view>
+
+          <!-- waypoints 列表 -->
+          <text class="rp-section-title">点位列表 ({{form.waypoints.length}})</text>
+          <view class="wp-edit-list">
+            <view class="wp-edit-card" wx:for="{{form.waypoints}}" wx:key="index" wx:for-item="wp" wx:for-index="wpIdx">
+              <view class="wp-edit-head">
+                <text class="wp-edit-no">#{{wpIdx + 1}}</text>
+                <view class="wp-edit-actions">
+                  <view
+                    class="wpa-btn {{wpIdx === 0 ? 'disabled' : ''}}"
+                    catchtap="moveWaypointUp"
+                    data-index="{{wpIdx}}"
+                  >↑</view>
+                  <view
+                    class="wpa-btn {{wpIdx === form.waypoints.length - 1 ? 'disabled' : ''}}"
+                    catchtap="moveWaypointDown"
+                    data-index="{{wpIdx}}"
+                  >↓</view>
+                  <view
+                    class="wpa-btn danger"
+                    catchtap="removeWaypoint"
+                    data-index="{{wpIdx}}"
+                  >×</view>
+                </view>
+              </view>
+
+              <input
+                class="wp-input"
+                placeholder="点位名称(如:长山尾灯塔)"
+                value="{{wp.name}}"
+                data-index="{{wpIdx}}"
+                data-field="name"
+                bindinput="onWaypointInput"
+              />
+
+              <!-- 选地图按钮独占一行,醒目 -->
+              <view
+                class="wp-choose-loc-btn"
+                data-index="{{wpIdx}}"
+                bindtap="chooseWaypointLocation"
+              >
+                <image class="wp-choose-icon" src="/images/icons/pin.svg" mode="aspectFit"></image>
+                <text>从地图选取位置</text>
+              </view>
+
+              <!-- 经纬度同行,各 50% -->
+              <view class="wp-coord-row">
+                <view class="wp-coord-col">
+                  <text class="wp-mini-label">纬度</text>
+                  <input
+                    class="wp-input wp-coord-input"
+                    placeholder="23.4566"
+                    value="{{wp.latitude}}"
+                    data-index="{{wpIdx}}"
+                    data-field="latitude"
+                    bindinput="onWaypointInput"
+                    type="digit"
+                  />
+                </view>
+                <view class="wp-coord-col">
+                  <text class="wp-mini-label">经度</text>
+                  <input
+                    class="wp-input wp-coord-input"
+                    placeholder="117.1310"
+                    value="{{wp.longitude}}"
+                    data-index="{{wpIdx}}"
+                    data-field="longitude"
+                    bindinput="onWaypointInput"
+                    type="digit"
+                  />
+                </view>
+              </view>
+
+              <!-- 第几天 + 停留分钟同行,各 50% -->
+              <view class="wp-coord-row">
+                <view class="wp-coord-col">
+                  <text class="wp-mini-label">第几天</text>
+                  <picker
+                    class="wp-day-picker"
+                    range="{{daysOptions}}"
+                    value="{{wp.dayIndex - 1}}"
+                    data-index="{{wpIdx}}"
+                    bindchange="onWaypointDayChange"
+                  >
+                    <view class="wp-day-val">D{{wp.dayIndex}}</view>
+                  </picker>
+                </view>
+                <view class="wp-coord-col">
+                  <text class="wp-mini-label">停留 (分钟)</text>
+                  <input
+                    class="wp-input wp-coord-input"
+                    placeholder="30"
+                    value="{{wp.stayMin}}"
+                    data-index="{{wpIdx}}"
+                    data-field="stayMin"
+                    bindinput="onWaypointInput"
+                    type="number"
+                  />
+                </view>
+              </view>
+
+              <textarea
+                class="wp-textarea"
+                placeholder="点位介绍(可选)"
+                value="{{wp.desc}}"
+                data-index="{{wpIdx}}"
+                data-field="desc"
+                bindinput="onWaypointInput"
+                maxlength="200"
+                auto-height="{{true}}"
+              />
+
+              <input
+                class="wp-input wp-tip-input"
+                placeholder="特别提示(可选,如:⭐ 日落首选,17:00前到)"
+                value="{{wp.tip}}"
+                data-index="{{wpIdx}}"
+                data-field="tip"
+                bindinput="onWaypointInput"
+              />
+            </view>
+          </view>
+
+          <view class="wp-add-btn" bindtap="addWaypoint">+ 添加点位</view>
+
+          <text class="rp-tip" wx:if="{{form.waypoints.length >= 2}}">保存后将自动重新规划路线</text>
+        </view>
+      </view>
+    </block>
   </view>
 
   <!-- 底部按钮 -->

@@ -1,0 +1,430 @@
+/* pages/route-detail/index.wxss · 路线详情 */
+.route-page {
+  min-height: 100vh;
+  background: var(--bg-canvas);
+}
+
+/* === 错误态 === */
+.error-block {
+  margin: 200rpx var(--space-lg) 0;
+  padding: var(--space-2xl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  text-align: center;
+}
+.error-text {
+  display: block;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+}
+.error-btn {
+  display: inline-block;
+  padding: 16rpx 60rpx;
+  background: var(--cat-route);
+  color: var(--text-white);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-sm);
+  font-weight: 600;
+}
+
+/* === 地图区 === */
+.map-wrap {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+}
+
+.map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.map-banner {
+  position: absolute;
+  top: 24rpx;
+  left: 24rpx;
+  right: 24rpx;
+  padding: 12rpx 20rpx;
+  border-radius: var(--radius-md);
+  font-size: var(--font-xs);
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.12);
+  z-index: 10;
+}
+
+.offline-banner {
+  background: #FFF6E5;
+  border: 2rpx solid #F0C870;
+  color: #8B6914;
+}
+.fallback-banner {
+  top: 84rpx;
+  background: #FFEBE0;
+  border: 2rpx solid #E89A3C;
+  color: #B45A1D;
+}
+
+.banner-dot {
+  color: #E89A3C;
+  font-size: 16rpx;
+  animation: dot-pulse 1.5s ease-in-out infinite;
+}
+@keyframes dot-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+/* Day 切换 chip(位于地图右下) */
+.day-filter-bar {
+  position: absolute;
+  bottom: 24rpx;
+  right: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  z-index: 10;
+}
+
+.day-chip {
+  --day-color: var(--cat-route);
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8rpx);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 1rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.12);
+  border: 2rpx solid transparent;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.day-chip.active {
+  background: var(--day-color);
+  color: var(--text-white);
+  border-color: var(--day-color);
+  transform: scale(1.05);
+}
+
+.day-chip:active { transform: scale(0.92); }
+
+/* === 路线总览卡 === */
+.overview-card {
+  margin: -40rpx var(--space-lg) var(--space-md);
+  padding: var(--space-xl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 5;
+}
+
+.overview-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5rpx;
+  line-height: 1.3;
+  margin-bottom: var(--space-sm);
+}
+
+.overview-summary {
+  display: block;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: var(--space-md);
+}
+
+.overview-meta {
+  display: flex;
+  align-items: stretch;
+  padding-top: var(--space-md);
+  border-top: 2rpx solid var(--divider-color);
+}
+
+.ov-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.ov-value {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--cat-route);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.5rpx;
+}
+
+.ov-label {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  letter-spacing: 1rpx;
+}
+
+.ov-sep {
+  width: 2rpx;
+  background: var(--divider-color);
+  margin: 0 var(--space-sm);
+}
+
+/* === 时间轴区 === */
+.timeline-area {
+  padding: 0 var(--space-lg);
+}
+
+.day-block {
+  margin-bottom: var(--space-xl);
+}
+
+.day-header {
+  --day-color: var(--cat-route);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+}
+
+.day-badge {
+  flex-shrink: 0;
+  height: 56rpx;
+  padding: 0 24rpx;
+  line-height: 52rpx;
+  background: var(--day-color);
+  color: var(--text-white);
+  font-size: var(--font-sm);
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  letter-spacing: 1rpx;
+}
+
+.day-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2rpx;
+}
+
+.day-transport {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.day-stats {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.day-stats-dot { opacity: 0.5; }
+
+/* waypoint 行 + rail */
+.wp-list { padding-left: 0; }
+
+.wp-row {
+  --day-color: var(--cat-route);
+  display: flex;
+  gap: var(--space-md);
+  position: relative;
+}
+
+.wp-rail {
+  flex-shrink: 0;
+  width: 60rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wp-dot {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background: var(--day-color);
+  color: var(--text-white);
+  font-size: var(--font-sm);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.15);
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.wp-line {
+  width: 4rpx;
+  flex: 1;
+  background: var(--day-color);
+  opacity: 0.25;
+  margin-top: 4rpx;
+  min-height: 60rpx;
+}
+
+.wp-card {
+  flex: 1;
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.wp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12rpx;
+  margin-bottom: 6rpx;
+}
+
+.wp-name {
+  flex: 1;
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3rpx;
+}
+
+.wp-nav-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4rpx;
+  padding: 8rpx 18rpx;
+  background: var(--cat-route-soft);
+  color: var(--cat-route);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.5rpx;
+}
+
+.wp-nav-btn:active { transform: scale(0.95); opacity: 0.85; }
+
+.wp-nav-icon { width: 22rpx; height: 22rpx; }
+
+.wp-stay {
+  display: inline-block;
+  font-size: var(--font-xs);
+  color: var(--cat-route);
+  background: var(--cat-route-soft);
+  padding: 4rpx 12rpx;
+  border-radius: var(--radius-sm);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: var(--space-sm);
+}
+
+.wp-desc {
+  display: block;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: var(--space-sm);
+}
+
+.wp-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 6rpx;
+  padding: 10rpx 14rpx;
+  background: #FFF8E8;
+  border-left: 4rpx solid #F0C870;
+  border-radius: var(--radius-sm);
+}
+
+.tip-icon { font-size: 22rpx; flex-shrink: 0; }
+.tip-text { flex: 1; font-size: var(--font-xs); color: #8B6914; line-height: 1.5; }
+
+/* 段间信息 */
+.seg-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding-left: 28rpx;
+  margin-bottom: var(--space-sm);
+}
+
+.seg-line {
+  width: 4rpx;
+  height: 30rpx;
+  background: var(--day-color);
+  opacity: 0.25;
+  margin-left: -4rpx;
+}
+
+.seg-meta {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.3rpx;
+}
+
+.seg-dot { opacity: 0.5; }
+.seg-fallback { color: #E89A3C; }
+
+/* === 底部固定操作栏 === */
+.bottom-spacer {
+  height: 160rpx;
+}
+
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-md) var(--space-lg);
+  padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+  background: var(--bg-surface);
+  border-top: 2rpx solid var(--divider-color);
+  display: flex;
+  gap: var(--space-md);
+  box-shadow: 0 -4rpx 12rpx rgba(0,0,0,0.04);
+  z-index: 100;
+}
+
+.ab-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  height: 88rpx;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  letter-spacing: 0.5rpx;
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
+.ab-btn::after { border: none; }
+
+.ab-share {
+  background: var(--bg-muted);
+  color: var(--cat-route);
+  border: 2rpx solid var(--cat-route-soft);
+  flex: 0 0 auto;
+  width: 200rpx;
+}
+
+.ab-primary {
+  background: var(--cat-route);
+  color: var(--text-white);
+  box-shadow: 0 4rpx 12rpx rgba(62, 122, 110, 0.3);
+}
+
+.ab-btn:active { transform: scale(0.97); opacity: 0.9; }
+.ab-icon { width: 28rpx; height: 28rpx; }

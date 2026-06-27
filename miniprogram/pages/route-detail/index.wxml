@@ -1,0 +1,160 @@
+<!--pages/route-detail/index.wxml-->
+<view class="route-page">
+  <!-- 加载态 -->
+  <loading-state wx:if="{{loading && !route}}" text="加载路线..."></loading-state>
+
+  <!-- 错误态 -->
+  <view class="error-block" wx:if="{{!loading && errorMsg}}">
+    <text class="error-text">{{errorMsg}}</text>
+    <view class="error-btn" bindtap="goBack">返回</view>
+  </view>
+
+  <block wx:if="{{route}}">
+    <!-- 地图区 -->
+    <view class="map-wrap">
+      <map
+        class="map-canvas"
+        latitude="{{mapCenter.latitude}}"
+        longitude="{{mapCenter.longitude}}"
+        scale="{{mapScale}}"
+        markers="{{mapMarkers}}"
+        polyline="{{mapPolyline}}"
+        include-points="{{includePoints}}"
+        show-location="{{true}}"
+        enable-rotate="{{false}}"
+      ></map>
+
+      <!-- 离线提示条 -->
+      <view class="map-banner offline-banner" wx:if="{{isOffline}}">
+        <text class="banner-dot">●</text>
+        <text>当前为离线数据,下拉刷新重试</text>
+      </view>
+
+      <!-- fallback 提示条 -->
+      <view class="map-banner fallback-banner" wx:if="{{isFallback}}">
+        <text>⚠ 线路示意 · 实际路径请以导航 App 为准</text>
+      </view>
+
+      <!-- Day 切换 chip(days > 1 时显示) -->
+      <view class="day-filter-bar" wx:if="{{showDayFilter}}">
+        <view
+          class="day-chip {{activeDay === 'all' ? 'active' : ''}}"
+          data-day="all"
+          bindtap="selectDay"
+        >全部</view>
+        <view
+          class="day-chip {{activeDay === item.dayIndex ? 'active' : ''}}"
+          wx:for="{{daySummary}}"
+          wx:key="dayIndex"
+          data-day="{{item.dayIndex}}"
+          bindtap="selectDay"
+          style="--day-color: {{item.color}}"
+        >D{{item.dayIndex}}</view>
+      </view>
+    </view>
+
+    <!-- 路线总览卡 -->
+    <view class="overview-card">
+      <view class="overview-title">{{route.title}}</view>
+      <text class="overview-summary" wx:if="{{route.summary}}">{{route.summary}}</text>
+      <view class="overview-meta">
+        <view class="ov-item">
+          <text class="ov-value">{{route.waypointCount}}</text>
+          <text class="ov-label">站</text>
+        </view>
+        <view class="ov-sep"></view>
+        <view class="ov-item" wx:if="{{route.totalDurationDisplay}}">
+          <text class="ov-value">{{route.totalDurationDisplay}}</text>
+          <text class="ov-label">车程</text>
+        </view>
+        <view class="ov-sep" wx:if="{{route.totalDurationDisplay}}"></view>
+        <view class="ov-item" wx:if="{{route.totalDistanceDisplay}}">
+          <text class="ov-value">{{route.totalDistanceDisplay}}</text>
+          <text class="ov-label">距离</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Day 分组时间轴 -->
+    <view class="timeline-area">
+      <block wx:for="{{daySummary}}" wx:key="dayIndex" wx:for-item="dayInfo">
+        <view class="day-block" wx:if="{{activeDay === 'all' || activeDay === dayInfo.dayIndex}}">
+          <!-- Day 标题行 -->
+          <view class="day-header" style="--day-color: {{dayInfo.color}}">
+            <view class="day-badge">D{{dayInfo.dayIndex}}</view>
+            <view class="day-meta">
+              <text class="day-transport">{{dayInfo.transportLabel}}</text>
+              <text class="day-stats" wx:if="{{dayInfo.distanceDisplay || dayInfo.durationDisplay}}">
+                <text wx:if="{{dayInfo.durationDisplay}}">{{dayInfo.durationDisplay}}</text>
+                <text class="day-stats-dot" wx:if="{{dayInfo.durationDisplay && dayInfo.distanceDisplay}}"> · </text>
+                <text wx:if="{{dayInfo.distanceDisplay}}">{{dayInfo.distanceDisplay}}</text>
+              </text>
+            </view>
+          </view>
+
+          <!-- waypoint 列表 -->
+          <view class="wp-list">
+            <block wx:for="{{waypointsByDay[dayInfo.dayIndex]}}" wx:key="index" wx:for-item="wp" wx:for-index="wpIdx">
+              <view class="wp-row" style="--day-color: {{dayInfo.color}}">
+                <view class="wp-rail">
+                  <view class="wp-dot">{{wpIdx + 1}}</view>
+                  <view class="wp-line" wx:if="{{wpIdx < waypointsByDay[dayInfo.dayIndex].length - 1}}"></view>
+                </view>
+                <view class="wp-card">
+                  <view class="wp-head">
+                    <text class="wp-name">{{wp.name}}</text>
+                    <view
+                      class="wp-nav-btn"
+                      data-latitude="{{wp.latitude}}"
+                      data-longitude="{{wp.longitude}}"
+                      data-name="{{wp.name}}"
+                      catchtap="navigateTo"
+                    >
+                      <image class="wp-nav-icon" src="/images/icons/pin.svg" mode="aspectFit"></image>
+                      <text>导航</text>
+                    </view>
+                  </view>
+                  <text class="wp-stay" wx:if="{{wp.stayDisplay}}">{{wp.stayDisplay}}</text>
+                  <text class="wp-desc" wx:if="{{wp.desc}}">{{wp.desc}}</text>
+                  <view class="wp-tip" wx:if="{{wp.tip}}">
+                    <text class="tip-icon">💡</text>
+                    <text class="tip-text">{{wp.tip}}</text>
+                  </view>
+                </view>
+              </view>
+
+              <!-- 段间信息行(距离/时长) -->
+              <view
+                class="seg-row"
+                wx:if="{{wpIdx < waypointsByDay[dayInfo.dayIndex].length - 1 && segmentsByDay[dayInfo.dayIndex][wpIdx]}}"
+              >
+                <view class="seg-line"></view>
+                <view class="seg-meta">
+                  <text wx:if="{{segmentsByDay[dayInfo.dayIndex][wpIdx].distanceDisplay}}">{{segmentsByDay[dayInfo.dayIndex][wpIdx].distanceDisplay}}</text>
+                  <text class="seg-dot" wx:if="{{segmentsByDay[dayInfo.dayIndex][wpIdx].distanceDisplay && segmentsByDay[dayInfo.dayIndex][wpIdx].durationDisplay}}"> · </text>
+                  <text wx:if="{{segmentsByDay[dayInfo.dayIndex][wpIdx].durationDisplay}}">{{segmentsByDay[dayInfo.dayIndex][wpIdx].modeLabel}} {{segmentsByDay[dayInfo.dayIndex][wpIdx].durationDisplay}}</text>
+                  <text wx:if="{{segmentsByDay[dayInfo.dayIndex][wpIdx].fallback}}" class="seg-fallback"> · 示意</text>
+                </view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 底部占位,避免内容被固定栏遮挡 -->
+    <view class="bottom-spacer"></view>
+
+    <!-- 底部固定操作栏 -->
+    <view class="action-bar">
+      <button class="ab-btn ab-share" open-type="share">
+        <image class="ab-icon" src="/images/icons/heart.svg" mode="aspectFit"></image>
+        <text>分享</text>
+      </button>
+      <view class="ab-btn ab-primary" bindtap="navigateToNext">
+        <image class="ab-icon" src="/images/icons/pin-white.svg" mode="aspectFit"></image>
+        <text>导航到下一站</text>
+      </view>
+    </view>
+  </block>
+</view>

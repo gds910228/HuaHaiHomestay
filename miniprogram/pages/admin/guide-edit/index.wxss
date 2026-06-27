@@ -339,3 +339,312 @@
   background: var(--brand-primary);
   color: var(--bg-surface);
 }
+
+
+/* ============ 路线规划面板 ============ */
+.route-panel {
+  margin-top: var(--space-xl);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-surface);
+  border: 2rpx solid var(--cat-route-soft);
+  border-radius: var(--radius-xl);
+}
+
+.route-panel-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+}
+
+.rp-title {
+  flex: 1;
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3rpx;
+}
+
+.rp-hint {
+  font-size: var(--font-xs);
+  color: var(--cat-route);
+  background: var(--cat-route-soft);
+  padding: 4rpx 14rpx;
+  border-radius: var(--radius-pill);
+  font-variant-numeric: tabular-nums;
+}
+
+.rp-toggle {
+  font-size: 28rpx;
+  color: var(--text-tertiary);
+  width: 40rpx;
+  text-align: center;
+}
+
+.route-panel-body {
+  padding-top: var(--space-md);
+}
+
+/* 顶部 days / transport */
+.rp-row {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.rp-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.rp-label {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  letter-spacing: 0.5rpx;
+}
+
+.rp-picker {
+  width: 100%;
+}
+
+.rp-picker-value {
+  padding: 16rpx 20rpx;
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+}
+
+/* mixed 各日 transport */
+.rp-day-transport {
+  margin-bottom: var(--space-md);
+  padding: var(--space-md);
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+}
+
+.rp-sub-label {
+  display: block;
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+}
+
+.rp-dt-list {
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.rp-dt-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 10rpx 20rpx;
+  background: var(--bg-surface);
+  border: 2rpx solid var(--cat-route-soft);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-xs);
+}
+
+.rp-dt-item:active { transform: scale(0.97); }
+
+.rp-dt-day {
+  font-weight: 700;
+  color: var(--cat-route);
+  letter-spacing: 0.5rpx;
+}
+
+.rp-dt-mode {
+  color: var(--text-secondary);
+}
+
+.rp-hint-text {
+  display: block;
+  margin-top: 10rpx;
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+}
+
+/* waypoints 列表 */
+.rp-section-title {
+  display: block;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: var(--space-md) 0 var(--space-sm);
+}
+
+.wp-edit-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.wp-edit-card {
+  padding: var(--space-md);
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.wp-edit-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wp-edit-no {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--cat-route);
+  letter-spacing: 0.5rpx;
+}
+
+.wp-edit-actions {
+  display: flex;
+  gap: 8rpx;
+}
+
+.wpa-btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.06);
+}
+
+.wpa-btn:active { transform: scale(0.92); }
+
+.wpa-btn.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.wpa-btn.danger {
+  color: #C04040;
+}
+
+.wp-input {
+  width: 100%;
+  padding: 20rpx 22rpx;
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  box-sizing: border-box;
+  min-height: 72rpx;
+  line-height: 1.4;
+}
+
+/* "从地图选取位置" 按钮 · 独占一行,显著 */
+.wp-choose-loc-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  padding: 20rpx;
+  background: var(--cat-route);
+  color: var(--text-white);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.5rpx;
+  box-shadow: 0 2rpx 6rpx rgba(62, 122, 110, 0.25);
+}
+
+.wp-choose-loc-btn:active { transform: scale(0.98); opacity: 0.9; }
+
+.wp-choose-icon {
+  width: 28rpx;
+  height: 28rpx;
+}
+
+/* 经纬度 / day-stayMin 行:各占 50% 宽,各自带小 label */
+.wp-coord-row {
+  display: flex;
+  gap: 14rpx;
+}
+
+.wp-coord-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.wp-coord-input {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5rpx;
+}
+
+.wp-mini-label {
+  font-size: 22rpx;
+  color: var(--text-tertiary);
+  letter-spacing: 0.5rpx;
+}
+
+.wp-day-picker { width: 100%; }
+
+.wp-day-val {
+  padding: 20rpx 22rpx;
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  min-height: 72rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.wp-textarea {
+  width: 100%;
+  padding: 18rpx 22rpx;
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  min-height: 80rpx;
+  box-sizing: border-box;
+  line-height: 1.55;
+}
+
+.wp-tip-input {
+  background: #FFF8E8;
+}
+
+.wp-add-btn {
+  margin-top: var(--space-md);
+  padding: 20rpx;
+  background: var(--cat-route-soft);
+  color: var(--cat-route);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  text-align: center;
+  border-radius: var(--radius-md);
+  border: 2rpx dashed var(--cat-route);
+  letter-spacing: 0.5rpx;
+}
+
+.wp-add-btn:active { transform: scale(0.99); opacity: 0.88; }
+
+.rp-tip {
+  display: block;
+  margin-top: var(--space-md);
+  font-size: var(--font-xs);
+  color: var(--cat-route);
+  text-align: center;
+  letter-spacing: 0.5rpx;
+}

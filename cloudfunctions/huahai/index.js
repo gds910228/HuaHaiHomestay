@@ -111,6 +111,10 @@ exports.main = async (event, context) => {
       case 'cleanupFiles':
         return await cleanupFiles(event);
 
+      // ==================== 路线规划(转发到 route-plan 云函数) ====================
+      case 'planRoute':
+        return await planRoute(event);
+
       default:
         return {
           success: false,
@@ -607,6 +611,9 @@ async function adminGetGuides(event) {
 
 /**
  * 保存攻略（新增或编辑）
+ *
+ * 副作用:category='route' 且 waypoints 非空时,异步 fire-and-forget 触发 route-plan 重算
+ *        失败不阻断保存,仅 console.warn
  */
 async function adminSaveGuide(event) {
   // eslint-disable-next-line no-unused-vars
@@ -617,6 +624,7 @@ async function adminSaveGuide(event) {
     updateTime: new Date()
   };
 
+  let savedId = id;
   if (id) {
     // 编辑
     await db.collection('guides').doc(id).update({ data });
@@ -627,11 +635,25 @@ async function adminSaveGuide(event) {
     if (typeof data.likes !== 'number') data.likes = 0;
     if (typeof data.weight !== 'number') data.weight = 0;
     data.createTime = new Date();
-    await db.collection('guides').add({ data });
+    const addRes = await db.collection('guides').add({ data });
+    savedId = addRes._id;
+  }
+
+  // route 类型 + 有 waypoints → 异步重算 polyline,不 await
+  if (data.category === 'route' && Array.isArray(data.waypoints) && data.waypoints.length >= 2) {
+    cloud.callFunction({
+      name: 'route-plan',
+      data: { type: 'plan', routeId: savedId }
+    }).then(r => {
+      console.log(`[adminSaveGuide] route-plan ${savedId} →`, r.result);
+    }).catch(err => {
+      console.warn(`[adminSaveGuide] route-plan ${savedId} 失败:`, err.message);
+    });
   }
 
   return {
-    success: true
+    success: true,
+    data: { _id: savedId }
   };
 }
 
@@ -1164,4 +1186,48 @@ async function cleanupFiles(event) {
       failures: result.filter(r => r.status !== 0)
     }
   };
+}
+
+// ==================== 路线规划 ====================
+
+/**
+ * 转发到 route-plan 云函数做实时规划
+ *
+ * 用途:
+ *  1. admin 端保存 route 后主动触发(adminSaveGuide 已经异步触发了一次,这是给前端"立刻重算"按钮用)
+ *  2. 排查工具
+ *
+ * 鉴权:必须带 adminPassword;校验失败直接拒绝(避免有人在前端面板手动触发把 AMap 配额跑光)
+ *
+ * @param {Object} event
+ * @param {string} event.routeId       要规划的路线 _id
+ * @param {string} event.adminPassword 管理密码(检查 ADMIN_PASSWORD 环境变量)
+ */
+async function planRoute(event) {
+  const { routeId, adminPassword } = event || {};
+  const auth = checkAdminPassword(adminPassword);
+  if (!auth.configured) {
+    return {
+      success: false,
+      errMsg: '云函数未配置 ADMIN_PASSWORD 环境变量,请在控制台 → 函数配置 → 环境变量 中设置'
+    };
+  }
+  if (!auth.ok) {
+    return { success: false, errMsg: '管理密码错误' };
+  }
+  if (!routeId) {
+    return { success: false, errMsg: 'routeId 必填' };
+  }
+
+  try {
+    const res = await cloud.callFunction({
+      name: 'route-plan',
+      data: { type: 'plan', routeId }
+    });
+    // 把 route-plan 的响应原样透传
+    return res.result || { success: false, errMsg: 'route-plan 返回空' };
+  } catch (err) {
+    console.error('[planRoute] callFunction 失败:', err);
+    return { success: false, errMsg: 'route-plan 调用失败: ' + (err.message || err) };
+  }
 }

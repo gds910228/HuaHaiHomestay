@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "路线详情",
+  "backgroundColor": "#FBF7F0",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "loading-state": "/components/loading-state/index"
+  }
+}

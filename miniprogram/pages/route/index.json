@@ -5,5 +5,7 @@
     "optimized-image": "/components/optimized-image/index",
     "empty-state": "/components/empty-state/index"
   },
-  "navigationBarTitleText": "游玩路线"
+  "navigationBarTitleText": "游玩路线",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
 }

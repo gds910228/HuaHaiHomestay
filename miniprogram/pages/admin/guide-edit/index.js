@@ -1,4 +1,11 @@
 // pages/admin/guide-edit/index.js
+const TRANSPORT_OPTIONS = [
+  { value: 'driving', label: '驾车' },
+  { value: 'walking', label: '步行' },
+  { value: 'mixed', label: '混合' }
+];
+const DAYS_OPTIONS = [1, 2, 3];
+
 Page({
   data: {
     id: '',
@@ -13,7 +20,13 @@ Page({
       content: '',
       address: '',
       area: '',
-      info: []
+      info: [],
+      // ===== route 专属字段 =====
+      routeKey: '',
+      days: 1,
+      transport: 'driving',
+      dayTransport: {},      // { '1': 'driving', '2': 'walking' }
+      waypoints: []
     },
     categories: [
       { value: 'food', label: '美食推荐' },
@@ -26,6 +39,15 @@ Page({
     areaIndex: 0,
     uploading: false,
     categoryLabel: '美食推荐',
+
+    // ===== 路线编辑面板 =====
+    transportOptions: TRANSPORT_OPTIONS,
+    daysOptions: DAYS_OPTIONS,
+    transportIndex: 0,    // 在 transportOptions 中的下标
+    daysIndex: 0,         // 在 daysOptions 中的下标
+    dayArray: [1],        // [1] / [1,2] / [1,2,3],wx:for 用
+    dayTransportLabels: ['驾车'],  // 与 dayArray 等长,显示每日交通方式 label
+    routePanelExpanded: true,
 
     // ===== 标签管理 =====
     tagInput: '',          // 当前输入框的内容
@@ -66,6 +88,14 @@ Page({
         const categories = this.data.categories;
         const categoryLabel = categories.find(c => c.value === guide.category)?.label || '美食推荐';
 
+        // route 字段回显
+        const days = Number(guide.days) || 1;
+        const transport = guide.transport || 'driving';
+        const transportIndex = Math.max(0, TRANSPORT_OPTIONS.findIndex(o => o.value === transport));
+        const daysIndex = Math.max(0, DAYS_OPTIONS.indexOf(days));
+        const dayTransport = guide.dayTransport || {};
+        const waypoints = Array.isArray(guide.waypoints) ? guide.waypoints.map(normalizeWaypoint) : [];
+
         this.setData({
           form: {
             title: guide.title || '',
@@ -77,10 +107,20 @@ Page({
             content: guide.content || '',
             address: guide.address || '',
             area: guide.area || '',
-            info: guide.info || []
+            info: guide.info || [],
+            // route 字段
+            routeKey: guide.routeKey || '',
+            days,
+            transport,
+            dayTransport,
+            waypoints
           },
           areaIndex: Math.max(0, this.data.areaOptions.indexOf(guide.area || '')),
-          categoryLabel
+          categoryLabel,
+          transportIndex,
+          daysIndex,
+          dayArray: Array.from({ length: days }, (_, i) => i + 1),
+          dayTransportLabels: deriveDayTransportLabels(days, transport, dayTransport)
         });
 
         // 把内容塞进编辑器：
@@ -489,6 +529,42 @@ Page({
       return;
     }
 
+    // 按 category 剥离不相关字段,避免污染数据
+    const payload = { ...finalForm };
+    if (payload.category !== 'route') {
+      delete payload.routeKey;
+      delete payload.days;
+      delete payload.transport;
+      delete payload.dayTransport;
+      delete payload.waypoints;
+    } else {
+      // route 类校验
+      if (!Array.isArray(payload.waypoints) || payload.waypoints.length < 2) {
+        wx.showToast({ title: '路线至少需要 2 个点位', icon: 'none' });
+        return;
+      }
+      // 数字字段保证是 number
+      payload.waypoints = payload.waypoints.map(w => ({
+        name: String(w.name || '').trim(),
+        latitude: Number(w.latitude),
+        longitude: Number(w.longitude),
+        dayIndex: Number(w.dayIndex) || 1,
+        stayMin: Number(w.stayMin) || 0,
+        desc: String(w.desc || ''),
+        tip: String(w.tip || '')
+      }));
+      const bad = payload.waypoints.find(w => !w.name || !isFinite(w.latitude) || !isFinite(w.longitude));
+      if (bad) {
+        wx.showToast({ title: '点位名称/坐标不能为空', icon: 'none' });
+        return;
+      }
+      payload.days = Number(payload.days) || 1;
+      // 非 mixed 时清除 dayTransport,保持数据干净
+      if (payload.transport !== 'mixed') {
+        payload.dayTransport = {};
+      }
+    }
+
     wx.showLoading({ title: '保存中...' });
 
     try {
@@ -496,7 +572,7 @@ Page({
         name: 'huahai',
         data: {
           type: 'adminSaveGuide',
-          ...finalForm,
+          ...payload,
           id: this.data.id || undefined
         }
       });
@@ -505,9 +581,22 @@ Page({
 
       if (res.result.success) {
         wx.showToast({ title: '保存成功', icon: 'success' });
-        setTimeout(() => {
-          wx.navigateBack();
-        }, 1500);
+
+        // route 类型:返回后异步触发 route-plan,告诉用户路线正在重算
+        if (this.data.form.category === 'route' && Array.isArray(this.data.form.waypoints) && this.data.form.waypoints.length >= 2) {
+          // adminSaveGuide 服务端已 fire-and-forget 触发了一次,这里前端不再重复触发,
+          // 仅给用户友好提示
+          setTimeout(() => {
+            wx.showToast({ title: '路线规划中,稍后返回列表查看', icon: 'none', duration: 2200 });
+          }, 1700);
+          setTimeout(() => {
+            wx.navigateBack();
+          }, 4000);
+        } else {
+          setTimeout(() => {
+            wx.navigateBack();
+          }, 1500);
+        }
       } else {
         wx.showToast({ title: res.result.errMsg || '保存失败', icon: 'none' });
       }
@@ -515,5 +604,185 @@ Page({
       wx.hideLoading();
       wx.showToast({ title: '保存失败', icon: 'none' });
     }
+  },
+
+  // ==================== 路线编辑(category === 'route' 时显示) ====================
+
+  toggleRoutePanel() {
+    this.setData({ routePanelExpanded: !this.data.routePanelExpanded });
+  },
+
+  onDaysChange(e) {
+    const idx = Number(e.detail.value) || 0;
+    const days = DAYS_OPTIONS[idx];
+    this.setData({
+      daysIndex: idx,
+      'form.days': days,
+      dayArray: Array.from({ length: days }, (_, i) => i + 1),
+      dayTransportLabels: deriveDayTransportLabels(days, this.data.form.transport, this.data.form.dayTransport)
+    });
+  },
+
+  onTransportChange(e) {
+    const idx = Number(e.detail.value) || 0;
+    const transport = TRANSPORT_OPTIONS[idx].value;
+    this.setData({
+      transportIndex: idx,
+      'form.transport': transport,
+      dayTransportLabels: deriveDayTransportLabels(this.data.form.days, transport, this.data.form.dayTransport)
+    });
+  },
+
+  /** mixed 时,某一 day 的 driving/walking 切换 */
+  onDayTransportToggle(e) {
+    const day = String(e.currentTarget.dataset.day);
+    const cur = this.data.form.dayTransport[day] || (Number(day) === 1 ? 'driving' : 'walking');
+    const next = cur === 'driving' ? 'walking' : 'driving';
+    const dayTransport = { ...this.data.form.dayTransport, [day]: next };
+    this.setData({
+      'form.dayTransport': dayTransport,
+      dayTransportLabels: deriveDayTransportLabels(this.data.form.days, this.data.form.transport, dayTransport)
+    });
+  },
+
+  /** 修改 waypoint 某字段 */
+  onWaypointInput(e) {
+    const { index, field } = e.currentTarget.dataset;
+    const value = e.detail.value;
+    const waypoints = [...this.data.form.waypoints];
+    if (!waypoints[index]) return;
+    waypoints[index] = { ...waypoints[index], [field]: value };
+    this.setData({ 'form.waypoints': waypoints });
+  },
+
+  /** 修改 waypoint dayIndex(下拉) */
+  onWaypointDayChange(e) {
+    const index = Number(e.currentTarget.dataset.index);
+    const idx = Number(e.detail.value) || 0;
+    const dayIndex = DAYS_OPTIONS[idx];
+    const waypoints = [...this.data.form.waypoints];
+    if (!waypoints[index]) return;
+    waypoints[index] = { ...waypoints[index], dayIndex };
+    this.setData({ 'form.waypoints': waypoints });
+  },
+
+  /** 选地图选点位 */
+  chooseWaypointLocation(e) {
+    const index = Number(e.currentTarget.dataset.index);
+    wx.chooseLocation({
+      success: (res) => {
+        if (!res || res.latitude == null) {
+          wx.showToast({ title: '未选择位置', icon: 'none' });
+          return;
+        }
+        const waypoints = [...this.data.form.waypoints];
+        if (!waypoints[index]) return;
+        waypoints[index] = {
+          ...waypoints[index],
+          // 若原 name 已填且非空,优先保留(避免覆盖用户手填);否则用 AMap 名称
+          name: waypoints[index].name && waypoints[index].name.trim() ? waypoints[index].name : (res.name || ''),
+          latitude: Number(res.latitude.toFixed(6)),
+          longitude: Number(res.longitude.toFixed(6))
+        };
+        this.setData({ 'form.waypoints': waypoints });
+        wx.showToast({ title: '已填入坐标', icon: 'success' });
+      },
+      fail: (err) => {
+        console.warn('chooseLocation', err);
+        const msg = (err && err.errMsg) || '';
+        if (msg.indexOf('cancel') > -1) {
+          // 主动取消,轻提示一下让用户知道按钮有响应
+          wx.showToast({ title: '已取消选点', icon: 'none', duration: 1200 });
+          return;
+        }
+        if (msg.indexOf('auth') > -1 || msg.indexOf('scope') > -1 || msg.indexOf('privacy') > -1) {
+          wx.showModal({
+            title: '需要位置权限',
+            content: '请在设置中允许小程序使用位置信息,以便从地图选取点位',
+            confirmText: '去设置',
+            success: (r) => {
+              if (r.confirm) wx.openSetting();
+            }
+          });
+          return;
+        }
+        wx.showToast({ title: '打开地图失败,请重试', icon: 'none' });
+      }
+    });
+  },
+
+  addWaypoint() {
+    const days = Number(this.data.form.days) || 1;
+    const wps = [...this.data.form.waypoints, {
+      name: '',
+      latitude: '',
+      longitude: '',
+      dayIndex: 1,
+      stayMin: 30,
+      desc: '',
+      tip: ''
+    }];
+    this.setData({ 'form.waypoints': wps });
+    // 滚动到底部(若有锚点的话);现在 toast 一下就行
+    wx.showToast({ title: `已添加点位 #${wps.length}`, icon: 'none' });
+    if (days > 1) {
+      // 提示用户多日游需要正确分配 dayIndex
+      // 不阻塞,只 console 提示
+    }
+  },
+
+  removeWaypoint(e) {
+    const index = Number(e.currentTarget.dataset.index);
+    const wps = [...this.data.form.waypoints];
+    wps.splice(index, 1);
+    this.setData({ 'form.waypoints': wps });
+  },
+
+  moveWaypointUp(e) {
+    const index = Number(e.currentTarget.dataset.index);
+    if (!Number.isInteger(index) || index <= 0) return;
+    const wps = [...this.data.form.waypoints];
+    [wps[index - 1], wps[index]] = [wps[index], wps[index - 1]];
+    this.setData({ 'form.waypoints': wps });
+  },
+
+  moveWaypointDown(e) {
+    const index = Number(e.currentTarget.dataset.index);
+    const wps = [...this.data.form.waypoints];
+    if (!Number.isInteger(index) || index < 0 || index >= wps.length - 1) return;
+    [wps[index], wps[index + 1]] = [wps[index + 1], wps[index]];
+    this.setData({ 'form.waypoints': wps });
   }
 });
+
+/** 规整 waypoint:数字字段确保是数字 */
+function normalizeWaypoint(w) {
+  return {
+    name: String(w.name || ''),
+    latitude: Number(w.latitude),
+    longitude: Number(w.longitude),
+    dayIndex: Number(w.dayIndex) || 1,
+    stayMin: Number(w.stayMin) || 0,
+    desc: String(w.desc || ''),
+    tip: String(w.tip || '')
+  };
+}
+
+/**
+ * 派生每日交通方式的中文 label,与 dayArray 等长
+ * - driving / walking 模式:全部统一
+ * - mixed 模式:看 dayTransport[day],缺省 D1=驾车, D2+=步行
+ */
+function deriveDayTransportLabels(days, transport, dayTransport) {
+  const labels = [];
+  for (let i = 1; i <= days; i++) {
+    let mode;
+    if (transport === 'mixed') {
+      mode = (dayTransport || {})[String(i)] || (i === 1 ? 'driving' : 'walking');
+    } else {
+      mode = transport || 'driving';
+    }
+    labels.push(mode === 'walking' ? '步行' : '驾车');
+  }
+  return labels;
+}

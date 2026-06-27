@@ -16,6 +16,23 @@
     </view>
   </view>
 
+  <!-- 离线提示条 -->
+  <view class="offline-banner" wx:if="{{isOffline}}">
+    <text class="offline-dot">●</text>
+    <text>当前为离线数据,下拉刷新重试</text>
+  </view>
+
+  <!-- Day tab -->
+  <view class="days-tab-bar">
+    <view
+      class="days-tab {{activeDays === item.key ? 'active' : ''}}"
+      wx:for="{{daysTabs}}"
+      wx:key="key"
+      data-days="{{item.key}}"
+      bindtap="selectDays"
+    >{{item.label}}</view>
+  </view>
+
   <!-- 标签筛选 -->
   <view class="tag-filter-bar" wx:if="{{tagOptions.length > 0}}">
     <view class="tag-filter-wrap {{tagsExpanded ? 'expanded' : 'collapsed'}}">
@@ -30,7 +47,7 @@
     </view>
     <view class="tag-filter-toggle clickable" bindtap="toggleTagsExpanded" wx:if="{{tagOptions.length > 8}}">
       <text>{{tagsExpanded ? '收起' : '展开'}}</text>
-      <image class="toggle-icon {{tagsExpanded ? 'up' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233E7A6E' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
+      <image class="toggle-icon {{tagsExpanded ? 'up' : ''}}" src="/images/icons/chevron-down.svg" mode="aspectFit"></image>
     </view>
   </view>
 
@@ -41,77 +58,78 @@
   </view>
 
   <empty-state
-    wx:if="{{!loading && guides.length === 0}}"
-    title="暂无{{category.name}}"
-    description="管理员正在努力添加中..."
+    wx:if="{{!loading && filtered.length === 0}}"
+    title="暂无路线"
+    description="切换 day 或清除标签筛选试试"
     actionText="返回首页"
     bind:action="goHome"
   ></empty-state>
 
-  <view class="list-area" wx:if="{{!loading && guides.length > 0}}">
+  <view class="list-area" wx:if="{{!loading && filtered.length > 0}}">
     <view class="card-list">
       <view
-        class="guide-card fade-in-up clickable"
-        wx:for="{{guides}}"
+        class="route-card fade-in-up clickable"
+        wx:for="{{filtered}}"
         wx:key="_id"
         wx:for-item="guide"
         style="animation-delay: {{index * 60}}ms"
         data-id="{{guide._id}}"
         bindtap="viewGuide"
       >
-        <optimized-image
-          wx:if="{{guide.hasRealImage}}"
-          class="guide-image"
-          src="{{guide.coverImage}}"
-          width="100%"
-          height="340rpx"
-          mode="aspectFill"
-          badge="{{guide.images.length}}"
-          catchtap="previewImage"
-          data-url="{{guide.coverImage}}"
-          data-images="{{guide.images}}"
-        ></optimized-image>
+        <!-- 封面图 / 占位 -->
+        <view class="card-cover">
+          <optimized-image
+            wx:if="{{guide.hasRealImage}}"
+            src="{{guide.coverImage}}"
+            width="100%"
+            height="280rpx"
+            mode="aspectFill"
+          ></optimized-image>
+          <view wx:if="{{!guide.hasRealImage}}" class="cover-fallback">
+            <image class="fallback-icon" src="/images/icons/deco-route-white.svg" mode="aspectFit"></image>
+          </view>
+          <view class="cover-overlay"></view>
 
-        <view wx:if="{{!guide.hasRealImage}}" class="guide-no-image">
-          <image class="no-image-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233E7A6E' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='6' cy='5' r='2'/%3E%3Ccircle cx='18' cy='19' r='2'/%3E%3Cpath d='M6 7 c 0 4 12 4 12 10' stroke-dasharray='3 3'/%3E%3C/svg%3E" mode="aspectFit"></image>
-          <text class="no-image-text">暂无图片</text>
+          <!-- 卡片角标 · days + 点位数 -->
+          <view class="cover-badge">
+            <text class="badge-days">{{guide.daysLabel}}</text>
+            <text class="badge-dot">·</text>
+            <text class="badge-stops">{{guide.waypointCount}} 站</text>
+          </view>
         </view>
 
-        <view class="guide-info">
-          <text class="guide-title">{{guide.title}}</text>
+        <view class="card-body">
+          <text class="route-title">{{guide.title}}</text>
 
-          <view class="guide-address" wx:if="{{guide.address}}">
-            <image class="addr-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22 s -7 -7 -7 -13 a 7 7 0 0 1 14 0 c 0 6 -7 13 -7 13 z'/%3E%3Ccircle cx='12' cy='9' r='2.4'/%3E%3C/svg%3E" mode="aspectFit"></image>
-            <text class="addr-text text-ellipsis">{{guide.address}}</text>
+          <!-- 元信息行 · 距离 / 时长 / 交通方式 -->
+          <view class="meta-row">
+            <view class="meta-chip" wx:if="{{guide.durationDisplay}}">
+              <image class="meta-icon" src="/images/icons/clock.svg" mode="aspectFit"></image>
+              <text>{{guide.durationDisplay}}</text>
+            </view>
+            <view class="meta-chip" wx:if="{{guide.distanceDisplay}}">
+              <image class="meta-icon" src="/images/icons/route.svg" mode="aspectFit"></image>
+              <text>{{guide.distanceDisplay}}</text>
+            </view>
+            <view class="meta-chip meta-chip-transport">
+              <text>{{guide.transportLabel}}</text>
+            </view>
           </view>
 
-          <view class="guide-tags" wx:if="{{guide.tags && guide.tags.length > 0}}">
+          <!-- SVG 缩略路径(预览路线轮廓,精度有损,详情页 map 才是准确路径) -->
+          <view class="trail-thumb" wx:if="{{guide.miniTrailSrc}}">
+            <image class="trail-svg" src="{{guide.miniTrailSrc}}" mode="aspectFit"></image>
+          </view>
+
+          <text class="route-desc text-clamp-2" wx:if="{{guide.summary}}">{{guide.summary}}</text>
+
+          <view class="route-tags" wx:if="{{guide.tags && guide.tags.length > 0}}">
             <view class="tag tag-route" wx:for="{{guide.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</view>
           </view>
 
-          <text class="guide-desc text-clamp-2" wx:if="{{guide.summary}}">{{guide.summary}}</text>
-
-          <view class="guide-actions">
-            <button
-              class="action-btn nav-btn"
-              data-latitude="{{guide.location && guide.location.latitude}}"
-              data-longitude="{{guide.location && guide.location.longitude}}"
-              data-title="{{guide.title}}"
-              data-address="{{guide.address}}"
-              catchtap="navigate"
-            >
-              <image class="action-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='3 11 22 2 13 21 11 13 3 11'/%3E%3C/svg%3E" mode="aspectFit"></image>
-              <text>导航</text>
-            </button>
-            <button
-              class="action-btn fav-btn {{guide.isFavorited ? 'favorited' : ''}}"
-              data-id="{{guide._id}}"
-              catchtap="toggleFavorite"
-            >
-              <image wx:if="{{guide.isFavorited}}" class="action-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFFFFF' stroke='%23FFFFFF' stroke-width='1.6'%3E%3Cpath d='M20.84 4.61 a 5.5 5.5 0 0 0 -7.78 0 L 12 5.67 l -1.06 -1.06 a 5.5 5.5 0 0 0 -7.78 7.78 l 1.06 1.06 L 12 21.23 l 7.78 -7.78 1.06 -1.06 a 5.5 5.5 0 0 0 0 -7.78 z'/%3E%3C/svg%3E" mode="aspectFit"></image>
-              <image wx:else class="action-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233E7A6E' stroke-width='2'%3E%3Cpath d='M20.84 4.61 a 5.5 5.5 0 0 0 -7.78 0 L 12 5.67 l -1.06 -1.06 a 5.5 5.5 0 0 0 -7.78 7.78 l 1.06 1.06 L 12 21.23 l 7.78 -7.78 1.06 -1.06 a 5.5 5.5 0 0 0 0 -7.78 z'/%3E%3C/svg%3E" mode="aspectFit"></image>
-              <text>{{guide.isFavorited ? '已收藏' : '收藏'}}</text>
-            </button>
+          <view class="card-cta">
+            <text class="cta-text">查看详情与地图</text>
+            <image class="cta-arrow" src="/images/icons/chevron-right.svg" mode="aspectFit"></image>
           </view>
         </view>
       </view>
