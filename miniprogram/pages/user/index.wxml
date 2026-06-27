@@ -110,12 +110,12 @@
 
       <view class="menu-divider"></view>
 
-      <view class="menu-item clickable" bindtap="goToInit">
+      <view class="menu-item clickable" bindtap="goToAdmin">
         <view class="menu-left">
           <view class="menu-icon-wrap menu-icon-muted">
-            <image class="menu-icon" src="/images/icons/database.svg" mode="aspectFit"></image>
+            <image class="menu-icon" src="/images/icons/edit.svg" mode="aspectFit"></image>
           </view>
-          <text class="menu-label">数据初始化</text>
+          <text class="menu-label">管理后台</text>
         </view>
         <image class="menu-arrow" src="/images/icons/chevron-right.svg" mode="aspectFit"></image>
       </view>

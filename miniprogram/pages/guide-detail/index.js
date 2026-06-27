@@ -29,6 +29,20 @@ Page({
 
       if (res.result.success) {
         const guide = res.result.data;
+
+        // 派生轮播图:cover 优先,images 跟后,去重去空
+        const displayImages = [];
+        const seen = new Set();
+        const pushIf = (url) => {
+          if (!url) return;
+          if (seen.has(url)) return;
+          seen.add(url);
+          displayImages.push(url);
+        };
+        pushIf(guide.cover);
+        (guide.images || []).forEach(pushIf);
+        guide.displayImages = displayImages;
+
         this.setData({
           guide: guide,
           isFavorite: guide.isFavorited || false

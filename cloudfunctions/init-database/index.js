@@ -12,6 +12,23 @@ const _ = db.command;
 const foodData = require('./food-data.js');
 
 /**
+ * 校验管理密码 - 从云函数环境变量 ADMIN_PASSWORD 读取
+ * 仓库公开,密码绝不写在源码里。部署前请在
+ * 云开发控制台 → 云函数 → init-database → 函数配置 → 环境变量
+ * 配置 ADMIN_PASSWORD=<你的密码>
+ */
+function checkAdminPassword(input) {
+  const expected = process.env.ADMIN_PASSWORD;
+  if (!expected) {
+    return { ok: false, configured: false };
+  }
+  if (typeof input !== 'string' || input.length !== expected.length) {
+    return { ok: false, configured: true };
+  }
+  return { ok: input === expected, configured: true };
+}
+
+/**
  * 数据库初始化云函数
  * 自动创建集合并添加初始数据
  */
@@ -21,8 +38,15 @@ exports.main = async (event, context) => {
   console.log('=== 开始执行初始化 ===');
   console.log('操作类型:', type);
 
-  // 简单的安全验证
-  if (password !== 'huahai2026') {
+  const check = checkAdminPassword(password);
+  if (!check.configured) {
+    console.error('云函数未配置 ADMIN_PASSWORD 环境变量,拒绝执行');
+    return {
+      success: false,
+      errMsg: '云函数未配置 ADMIN_PASSWORD,请到云开发控制台 → 云函数 → init-database → 函数配置 → 环境变量 添加后重试'
+    };
+  }
+  if (!check.ok) {
     console.log('密码验证失败');
     return {
       success: false,
@@ -57,18 +81,6 @@ exports.main = async (event, context) => {
         console.log('执行 addSanFangRoom');
         result = await addSanFangRoom();
         break;
-      case 'initGuides':
-        console.log('执行 initGuides');
-        result = await initGuides();
-        break;
-      case 'clearAll':
-        console.log('执行 clearAll');
-        result = await clearAll();
-        break;
-      case 'clearRooms':
-        console.log('执行 clearRooms');
-        result = await clearRooms();
-        break;
       case 'initFood':
         console.log('执行 initFood');
         result = await initFood();
@@ -76,10 +88,6 @@ exports.main = async (event, context) => {
       case 'updateRoomFacilities':
         console.log('执行 updateRoomFacilities');
         result = await updateRoomFacilities();
-        break;
-      case 'seedSpots':
-        console.log('执行 seedSpots(委托 spot-sync 云函数)');
-        result = await seedSpots();
         break;
       default:
         console.log('未知的操作类型');
@@ -108,8 +116,7 @@ async function initAll() {
 
   const results = {
     hostel: await initHostel(),
-    rooms: await initRooms(),
-    guides: await initGuides()
+    rooms: await initRooms()
   };
 
   console.log('所有数据初始化完成:', results);
@@ -475,20 +482,6 @@ async function initRooms() {
 }
 
 /**
- * 初始化攻略数据
- * ⚠️ 已清空假数据，使用 initFood() 导入真实美食数据
- */
-async function initGuides() {
-  console.log('3. ⚠️ initGuides() 已废弃');
-  console.log('3.1 请使用"美食攻略（真实数据）"按钮导入真实数据');
-
-  return {
-    success: true,
-    message: '示例攻略已移除，请使用"美食攻略（真实数据）"导入基于真实攻略文件的数据'
-  };
-}
-
-/**
  * 初始化美食攻略数据
  */
 async function initFood() {
@@ -555,45 +548,6 @@ async function initFood() {
     console.error('5.X 美食攻略数据初始化出错:', err);
     throw err;
   }
-}
-
-/**
- * 清空所有数据（慎用！）
- */
-async function clearAll() {
-  console.log('4. 开始清空所有数据');
-
-  // 获取所有集合的记录
-  const collections = ['guides', 'hostel', 'rooms', 'favorites'];
-  const cleared = {};
-
-  for (const collName of collections) {
-    try {
-      console.log(`4.1 清空集合: ${collName}`);
-      const res = await db.collection(collName).get();
-      console.log(`4.2 ${collName} 有 ${res.data.length} 条记录`);
-
-      let deleteCount = 0;
-      for (const doc of res.data) {
-        await db.collection(collName).doc(doc._id).remove();
-        deleteCount++;
-      }
-
-      cleared[collName] = deleteCount;
-      console.log(`4.3 ${collName} 删除了 ${deleteCount} 条记录`);
-    } catch (err) {
-      console.error(`4.X 清空 ${collName} 失败:`, err);
-      cleared[collName] = 0;
-    }
-  }
-
-  console.log('4.4 清空完成:', cleared);
-
-  return {
-    success: true,
-    message: '所有数据已清空',
-    data: cleared
-  };
 }
 
 /**
@@ -1184,38 +1138,6 @@ async function addSanFangRoom() {
 }
 
 /**
- * 清空rooms集合
- */
-async function clearRooms() {
-  console.log('7. 开始清空rooms集合');
-
-  try {
-    const res = await db.collection('rooms').get();
-    console.log(`7.1 rooms集合有 ${res.data.length} 条记录`);
-
-    let deleteCount = 0;
-    for (const doc of res.data) {
-      await db.collection('rooms').doc(doc._id).remove();
-      deleteCount++;
-    }
-
-    console.log(`7.2 删除了 ${deleteCount} 条记录`);
-
-    return {
-      success: true,
-      message: `已清空rooms集合（删除了${deleteCount}条记录）`,
-      count: deleteCount
-    };
-  } catch (err) {
-    console.error('7.X 清空rooms集合失败:', err);
-    return {
-      success: false,
-      errMsg: err.message
-    };
-  }
-}
-
-/**
  * 更新所有房型的 detailedFacilities 字段
  * 为没有 detailedFacilities 或该字段为空的房型添加默认设施数据
  */
@@ -1308,37 +1230,6 @@ async function updateRoomFacilities() {
     return {
       success: false,
       errMsg: err.message
-    };
-  }
-}
-
-/**
- * 9.0 初始化景点数据
- * 委托 spot-sync 云函数的 syncSeedOnly,把 18 条真实南澳岛景点写入 guides 集合
- * 前置:spot-sync 云函数已部署 (右键 cloudfunctions/spot-sync 上传并部署)
- */
-async function seedSpots() {
-  try {
-    const res = await cloud.callFunction({
-      name: 'spot-sync',
-      data: { type: 'syncSeedOnly' }
-    });
-    if (res.result && res.result.success) {
-      return {
-        success: true,
-        message: '景点种子数据已写入',
-        detail: res.result.data
-      };
-    }
-    return {
-      success: false,
-      errMsg: (res.result && res.result.errMsg) || '调用 spot-sync 失败,请确认已部署该云函数'
-    };
-  } catch (err) {
-    console.error('seedSpots 失败:', err);
-    return {
-      success: false,
-      errMsg: err.message + ' (提示:请先部署 spot-sync 云函数)'
     };
   }
 }

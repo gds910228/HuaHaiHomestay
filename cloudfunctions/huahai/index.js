@@ -17,6 +17,29 @@ const categoryMap = {
 };
 
 /**
+ * 校验管理密码 - 从云函数环境变量 ADMIN_PASSWORD 读取
+ *
+ * 仓库公开,密码绝不能写在源码里。部署前请在
+ * 云开发控制台 → 云函数 → huahai → 函数配置 → 环境变量
+ * 配置 ADMIN_PASSWORD=<你的密码>
+ *
+ * 返回:
+ *   { ok: true }                       密码正确
+ *   { ok: false, configured: false }   云函数没配 ADMIN_PASSWORD 环境变量
+ *   { ok: false, configured: true }    密码错误
+ */
+function checkAdminPassword(input) {
+  const expected = process.env.ADMIN_PASSWORD;
+  if (!expected) {
+    return { ok: false, configured: false };
+  }
+  if (typeof input !== 'string' || input.length !== expected.length) {
+    return { ok: false, configured: true };
+  }
+  return { ok: input === expected, configured: true };
+}
+
+/**
  * 云函数入口
  */
 exports.main = async (event, context) => {
@@ -79,6 +102,14 @@ exports.main = async (event, context) => {
         return await adminSaveRoom(event);
       case 'adminDeleteRoom':
         return await adminDeleteRoom(event);
+
+      // ==================== 存储维护工具 ====================
+      case 'scanGuideImages':
+        return await scanGuideImages(event);
+      case 'computeOrphans':
+        return await computeOrphans(event);
+      case 'cleanupFiles':
+        return await cleanupFiles(event);
 
       default:
         return {
@@ -547,19 +578,22 @@ async function getRoomDetail(event) {
 async function adminLogin(event) {
   const { password } = event;
 
-  // 这里应该使用更安全的方式，比如密码哈希等
-  if (password === 'huahai2026') {
+  const check = checkAdminPassword(password);
+  if (!check.configured) {
+    console.error('[adminLogin] 云函数未配置 ADMIN_PASSWORD 环境变量');
     return {
-      success: true,
-      data: {
-        token: 'admin_token_' + Date.now()
-      }
+      success: false,
+      errMsg: '管理后台未配置,请联系管理员'
     };
   }
-
+  if (!check.ok) {
+    return { success: false, errMsg: '密码错误' };
+  }
   return {
-    success: false,
-    errMsg: '密码错误'
+    success: true,
+    data: {
+      token: 'admin_token_' + Date.now()
+    }
   };
 }
 
@@ -877,4 +911,274 @@ function haversineKm(lat1, lng1, lat2, lng2) {
     Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return Math.round(R * c * 1000) / 1000;
+}
+
+// ==================== 存储维护工具 ====================
+
+/**
+ * 从富文本内容里抽出所有 cloud:// 文件 ID
+ * 匹配两种格式:
+ *   1) <img ... data-fileid="cloud://...">   (新版,推荐)
+ *   2) <img src="cloud://...">                (旧版兼容)
+ */
+function extractFileIdsFromContent(html) {
+  const ids = [];
+  if (!html || typeof html !== 'string') return ids;
+  const re1 = /data-fileid=["']([^"']+)["']/g;
+  let m;
+  while ((m = re1.exec(html)) !== null) {
+    if (m[1] && m[1].indexOf('cloud://') === 0) ids.push(m[1]);
+  }
+  const re2 = /src=["'](cloud:\/\/[^"']+)["']/g;
+  while ((m = re2.exec(html)) !== null) {
+    ids.push(m[1]);
+  }
+  return ids;
+}
+
+function isCloudFile(s) {
+  return typeof s === 'string' && s.indexOf('cloud://') === 0;
+}
+
+/**
+ * 扫描所有 guides 引用了哪些 cloud:// 文件
+ * event:
+ *   verify: boolean (默认 false) - true 时调用 getTempFileURL 验证每个 fileID 是否还存在
+ *                                  打开后会更慢,但能查出"DB 有引用但文件已删"的死链
+ *   sampleByGuide: number (默认 5) - byGuide 字段保留多少条详情(避免响应过大)
+ * 返回:
+ *   referenced: 所有去重后的 fileID 列表(用于 Step 2 算孤儿)
+ *   byGuide:    每条攻略引用的 fileID 概况(cover/images/contentImages)
+ *   broken:     verify=true 时,无法 getTempFileURL 的 fileID(死链)
+ *   stats:      汇总
+ */
+async function scanGuideImages(event) {
+  const verify = !!event.verify;
+  const sampleByGuide = Number(event.sampleByGuide) > 0 ? Number(event.sampleByGuide) : 5;
+
+  // 分页拉取所有 guides(默认每页 100)
+  const guides = [];
+  let skip = 0;
+  const pageSize = 100;
+  while (true) {
+    const res = await db.collection('guides').skip(skip).limit(pageSize).get();
+    if (!res.data || res.data.length === 0) break;
+    guides.push(...res.data);
+    if (res.data.length < pageSize) break;
+    skip += pageSize;
+  }
+
+  const fileIdSet = new Set();
+  const byGuide = [];
+
+  for (const g of guides) {
+    const ref = {
+      id: g._id,
+      title: g.title || '(无标题)',
+      cover: null,
+      images: [],
+      contentImages: []
+    };
+    if (isCloudFile(g.cover)) {
+      ref.cover = g.cover;
+      fileIdSet.add(g.cover);
+    }
+    (Array.isArray(g.images) ? g.images : []).forEach(f => {
+      if (isCloudFile(f)) {
+        ref.images.push(f);
+        fileIdSet.add(f);
+      }
+    });
+    extractFileIdsFromContent(g.content).forEach(f => {
+      ref.contentImages.push(f);
+      fileIdSet.add(f);
+    });
+    byGuide.push(ref);
+  }
+
+  const referenced = Array.from(fileIdSet);
+
+  // 可选:验证每个 fileID 是否还在存储里
+  const broken = [];
+  if (verify && referenced.length > 0) {
+    // getTempFileURL 单次最多 50 个
+    for (let i = 0; i < referenced.length; i += 50) {
+      const batch = referenced.slice(i, i + 50);
+      try {
+        const res = await cloud.getTempFileURL({ fileList: batch });
+        (res.fileList || []).forEach(f => {
+          if (f.status !== 0 || !f.tempFileURL) {
+            broken.push({
+              fileID: f.fileID,
+              status: f.status,
+              errMsg: f.errMsg || 'unknown'
+            });
+          }
+        });
+      } catch (err) {
+        batch.forEach(fid => broken.push({
+          fileID: fid,
+          status: -1,
+          errMsg: err.message || 'getTempFileURL exception'
+        }));
+      }
+    }
+  }
+
+  // 只保留每条引用的前 N 个 byGuide 详情,避免响应体过大
+  // (但 cover 和 images 都是少量,主要担心 content 内嵌图)
+  const byGuideTrimmed = byGuide
+    .filter(g => g.cover || g.images.length || g.contentImages.length)
+    .slice(0, sampleByGuide * 20)
+    .map(g => ({
+      ...g,
+      contentImages: g.contentImages.slice(0, sampleByGuide)
+    }));
+
+  return {
+    success: true,
+    data: {
+      stats: {
+        totalGuides: guides.length,
+        totalReferences: referenced.length,
+        brokenReferences: broken.length,
+        verified: verify
+      },
+      referenced,
+      byGuide: byGuideTrimmed,
+      broken
+    }
+  };
+}
+
+/**
+ * 算孤儿:输入存储里的全部 fileID 列表(由用户从云控制台导出后传进来),
+ *        和 DB 引用清单 diff,返回 storage 里有但 DB 没引用的 fileID
+ * event:
+ *   storageFileIds: Array<string>  必填,从云存储控制台导出的全量 fileID 列表
+ * 返回:
+ *   orphans:  孤儿 fileID 列表(可直接传给 cleanupFiles 删除)
+ *   inboth:   DB 有引用且存储有的 fileID(健康)
+ *   missing:  DB 有引用但 storageFileIds 里没有的 fileID(死链,建议清 DB 引用)
+ */
+async function computeOrphans(event) {
+  const { storageFileIds } = event;
+  if (!Array.isArray(storageFileIds)) {
+    return { success: false, errMsg: 'storageFileIds 必须是数组' };
+  }
+
+  const scan = await scanGuideImages({});
+  if (!scan.success) return scan;
+
+  const referencedSet = new Set(scan.data.referenced);
+  const storageSet = new Set(storageFileIds);
+
+  const orphans = [];
+  const inboth = [];
+  storageFileIds.forEach(f => {
+    if (referencedSet.has(f)) inboth.push(f);
+    else orphans.push(f);
+  });
+
+  const missing = [];
+  referencedSet.forEach(f => {
+    if (!storageSet.has(f)) missing.push(f);
+  });
+
+  return {
+    success: true,
+    data: {
+      stats: {
+        totalStorage: storageFileIds.length,
+        totalReferenced: referencedSet.size,
+        orphans: orphans.length,
+        inboth: inboth.length,
+        missing: missing.length
+      },
+      orphans,
+      missing
+    }
+  };
+}
+
+/**
+ * 批量删除云存储文件
+ * event:
+ *   fileIds: Array<string>  必填,要删除的 cloud:// fileID 列表
+ *   password: string         必填,管理密码(同 init-database)
+ *   dryRun:  boolean         可选,true 时不实际删除,只返回计划
+ *
+ * 限流:单次最多 200 个,超出请分批
+ */
+async function cleanupFiles(event) {
+  const { fileIds, password, dryRun = false } = event;
+
+  const check = checkAdminPassword(password);
+  if (!check.configured) {
+    console.error('[cleanupFiles] 云函数未配置 ADMIN_PASSWORD 环境变量');
+    return { success: false, errMsg: '云函数未配置 ADMIN_PASSWORD,请到控制台配置后重试' };
+  }
+  if (!check.ok) {
+    return { success: false, errMsg: '密码错误' };
+  }
+  if (!Array.isArray(fileIds) || fileIds.length === 0) {
+    return { success: false, errMsg: 'fileIds 必须是非空数组' };
+  }
+  if (fileIds.length > 200) {
+    return { success: false, errMsg: `单次最多删除 200 个文件(当前 ${fileIds.length} 个),请分批` };
+  }
+
+  // 校验都是 cloud:// 协议,避免误删
+  const invalid = fileIds.filter(f => !isCloudFile(f));
+  if (invalid.length > 0) {
+    return {
+      success: false,
+      errMsg: `存在 ${invalid.length} 个非 cloud:// 协议的 fileID,拒绝执行`,
+      data: { invalid: invalid.slice(0, 10) }
+    };
+  }
+
+  if (dryRun) {
+    return {
+      success: true,
+      data: {
+        dryRun: true,
+        plan: { willDelete: fileIds.length, sample: fileIds.slice(0, 10) }
+      }
+    };
+  }
+
+  const result = [];
+  // deleteFile 单次最多 50 个
+  for (let i = 0; i < fileIds.length; i += 50) {
+    const batch = fileIds.slice(i, i + 50);
+    try {
+      const res = await cloud.deleteFile({ fileList: batch });
+      (res.fileList || []).forEach(f => {
+        result.push({
+          fileID: f.fileID,
+          status: f.status,
+          errMsg: f.errMsg || (f.status === 0 ? 'ok' : 'unknown')
+        });
+      });
+    } catch (err) {
+      batch.forEach(fid => result.push({
+        fileID: fid,
+        status: -1,
+        errMsg: err.message || 'deleteFile exception'
+      }));
+    }
+  }
+
+  const ok = result.filter(r => r.status === 0).length;
+  const failed = result.length - ok;
+
+  return {
+    success: true,
+    data: {
+      stats: { total: result.length, ok, failed },
+      // 只返回失败明细,成功的太多没意义
+      failures: result.filter(r => r.status !== 0)
+    }
+  };
 }

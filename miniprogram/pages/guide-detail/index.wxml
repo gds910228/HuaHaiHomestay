@@ -1,15 +1,15 @@
 <!--pages/guide-detail/index.wxml-->
 <view class="detail-container" wx:if="{{!loading && guide}}">
   <!-- 顶部图片轮播 -->
-  <view class="detail-images">
-    <swiper class="images-swiper" indicator-dots="{{guide.images.length > 1}}" indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#FFFFFF" autoplay circular>
-      <swiper-item wx:for="{{guide.images}}" wx:key="*this">
+  <view class="detail-images" wx:if="{{guide.displayImages.length > 0}}">
+    <swiper class="images-swiper" indicator-dots="{{guide.displayImages.length > 1}}" indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#FFFFFF" autoplay circular>
+      <swiper-item wx:for="{{guide.displayImages}}" wx:key="*this">
         <image
           class="detail-image"
           src="{{item}}"
           mode="aspectFill"
           data-url="{{item}}"
-          data-urls="{{guide.images}}"
+          data-urls="{{guide.displayImages}}"
           bindtap="previewImage"
         ></image>
       </swiper-item>

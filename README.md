@@ -115,7 +115,7 @@ const res = await wx.cloud.callFunction({
 
 ## 管理员登录
 
-管理后台默认密码: `huahai2026`
+管理后台密码在云函数环境变量 `ADMIN_PASSWORD` 中配置(不会出现在仓库内)。首次部署或修改密码,见 [docs/cloud-env-vars.md](docs/cloud-env-vars.md)。
 
 ## 待完成功能
 

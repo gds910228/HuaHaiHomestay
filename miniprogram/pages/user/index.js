@@ -196,10 +196,10 @@ Page({
     });
   },
 
-  // 跳转到数据初始化
-  goToInit() {
+  // 跳转到管理后台
+  goToAdmin() {
     wx.navigateTo({
-      url: '/pages/init/index'
+      url: '/pages/admin/index'
     });
   },
 
