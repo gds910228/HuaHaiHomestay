@@ -5,11 +5,11 @@
   padding-bottom: 80rpx;
 }
 
-/* === 用户头部 (沉浸式渐变 sheet) === */
+/* === 用户头部 · 暖色暮调 sheet === */
 .user-header {
   position: relative;
   padding: 56rpx var(--space-xl) var(--space-2xl);
-  background: linear-gradient(160deg, #FBF7F0 0%, #F4EFE6 100%);
+  background: linear-gradient(160deg, #FBF7F0 0%, #F4EFE6 60%, #ECE6DA 100%);
   overflow: hidden;
   margin-bottom: var(--space-md);
 }
@@ -23,7 +23,7 @@
 .header-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(40rpx);
+  filter: blur(36rpx);
   opacity: 0.55;
 }
 
@@ -62,14 +62,58 @@
   align-items: center;
 }
 
+/* 头像 wrap · 承载涟漪 */
+.avatar-wrap {
+  position: relative;
+  width: 132rpx;
+  height: 132rpx;
+  flex-shrink: 0;
+  margin-right: var(--space-lg);
+}
+
 .user-avatar {
+  position: relative;
+  z-index: 2;
   width: 132rpx;
   height: 132rpx;
   border-radius: 50%;
-  margin-right: var(--space-lg);
   background: var(--bg-surface);
-  border: 4rpx solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 8rpx 20rpx rgba(30, 82, 102, 0.12);
+  border: 4rpx solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8rpx 20rpx rgba(30, 82, 102, 0.15);
+}
+
+/* 头像外环涟漪 · 暖橘 + 深海青双层,错相位扩散淡出 */
+.avatar-ripple {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 132rpx;
+  height: 132rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(232, 145, 109, 0.55);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ripple-1 {
+  animation: avatar-ripple 5s ease-out infinite;
+}
+
+.ripple-2 {
+  border-color: rgba(30, 82, 102, 0.45);
+  animation: avatar-ripple 5s ease-out infinite;
+  animation-delay: -2.5s;
+}
+
+@keyframes avatar-ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
 }
 
 .user-detail {
