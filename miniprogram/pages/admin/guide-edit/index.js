@@ -669,18 +669,26 @@ Page({
   /** 选地图选点位 */
   chooseWaypointLocation(e) {
     const index = Number(e.currentTarget.dataset.index);
+    // handled 标志:确保 toast 只显示一次(success/fail/complete 兜底不重复)
+    let handled = false;
+
     wx.chooseLocation({
       success: (res) => {
-        if (!res || res.latitude == null) {
-          wx.showToast({ title: '未选择位置', icon: 'none' });
+        if (handled) return;
+        handled = true;
+        // 某些基础库版本:取消时也走 success 回调,但 res 是空对象 / latitude 为 undefined
+        if (!res || res.latitude == null || res.longitude == null) {
+          wx.showToast({ title: '已取消选点', icon: 'none', duration: 1200 });
           return;
         }
         const waypoints = [...this.data.form.waypoints];
         if (!waypoints[index]) return;
         waypoints[index] = {
           ...waypoints[index],
-          // 若原 name 已填且非空,优先保留(避免覆盖用户手填);否则用 AMap 名称
-          name: waypoints[index].name && waypoints[index].name.trim() ? waypoints[index].name : (res.name || ''),
+          // 若原 name 已填则保留(不被 AMap 名称覆盖),否则用 AMap 名称
+          name: waypoints[index].name && waypoints[index].name.trim()
+            ? waypoints[index].name
+            : (res.name || ''),
           latitude: Number(res.latitude.toFixed(6)),
           longitude: Number(res.longitude.toFixed(6))
         };
@@ -688,10 +696,12 @@ Page({
         wx.showToast({ title: '已填入坐标', icon: 'success' });
       },
       fail: (err) => {
-        console.warn('chooseLocation', err);
+        if (handled) return;
+        handled = true;
+        console.warn('chooseLocation fail', err);
         const msg = (err && err.errMsg) || '';
+        // 三类失败:cancel / auth / 其他;都给 toast,确保用户始终有反馈
         if (msg.indexOf('cancel') > -1) {
-          // 主动取消,轻提示一下让用户知道按钮有响应
           wx.showToast({ title: '已取消选点', icon: 'none', duration: 1200 });
           return;
         }
@@ -707,6 +717,16 @@ Page({
           return;
         }
         wx.showToast({ title: '打开地图失败,请重试', icon: 'none' });
+      },
+      complete: () => {
+        // 兜底:极端情况下(早期基础库)cancel 既不调 success 也不调 fail,但会调 complete
+        // 延时 200ms 等 success/fail 抢先;若仍未处理,这里补一个反馈
+        setTimeout(() => {
+          if (!handled) {
+            handled = true;
+            wx.showToast({ title: '已取消选点', icon: 'none', duration: 1200 });
+          }
+        }, 200);
       }
     });
   },

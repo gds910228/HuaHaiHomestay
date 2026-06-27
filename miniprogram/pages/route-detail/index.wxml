@@ -10,6 +10,32 @@
   </view>
 
   <block wx:if="{{route}}">
+    <!-- 顶部图片轮播(封面 + images,去重) -->
+    <view class="detail-images" wx:if="{{route.displayImages && route.displayImages.length > 0}}">
+      <swiper
+        class="images-swiper"
+        indicator-dots="{{route.displayImages.length > 1}}"
+        indicator-color="rgba(255,255,255,0.4)"
+        indicator-active-color="#FFFFFF"
+        autoplay="{{route.displayImages.length > 1}}"
+        circular="{{route.displayImages.length > 1}}"
+        interval="4000"
+      >
+        <swiper-item wx:for="{{route.displayImages}}" wx:key="*this">
+          <image
+            class="detail-image"
+            src="{{item}}"
+            mode="aspectFill"
+            data-url="{{item}}"
+            data-urls="{{route.displayImages}}"
+            bindtap="previewImage"
+          ></image>
+        </swiper-item>
+      </swiper>
+      <view class="images-tint"></view>
+      <view class="images-badge">{{route.displayImages.length}} 张</view>
+    </view>
+
     <!-- 地图区 -->
     <view class="map-wrap">
       <map

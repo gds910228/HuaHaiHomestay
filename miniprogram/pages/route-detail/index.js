@@ -101,6 +101,18 @@ Page({
     const days = Number(route.days) || 1;
     const isFallback = route.routePlanStatus === 'fallback-straight';
 
+    // 派生轮播图:cover 优先 + images 跟后,去重去空(与 guide-detail 一致的 pattern)
+    const displayImages = [];
+    const seen = new Set();
+    const pushIf = (url) => {
+      if (!url) return;
+      if (seen.has(url)) return;
+      seen.add(url);
+      displayImages.push(url);
+    };
+    pushIf(route.cover);
+    (route.images || []).forEach(pushIf);
+
     // 按 day 分组 waypoints / segments
     const waypointsByDay = {};
     const segmentsByDay = {};
@@ -146,6 +158,7 @@ Page({
     this.setData({
       route: {
         ...route,
+        displayImages,
         totalDistanceDisplay: formatDistance(route.totalDistance),
         totalDurationDisplay: formatDuration(route.totalDuration),
         transportLabel: TRANSPORT_LABEL[route.transport] || '驾车',
@@ -280,6 +293,13 @@ Page({
         mapCenter: center || this.data.mapCenter
       });
     }
+  },
+
+  /** 点击轮播图全屏预览 */
+  previewImage(e) {
+    const { url, urls } = e.currentTarget.dataset;
+    const list = Array.isArray(urls) && urls.length ? urls : [url];
+    wx.previewImage({ current: url, urls: list });
   },
 
   /** 单点导航 → 微信内置地图 */

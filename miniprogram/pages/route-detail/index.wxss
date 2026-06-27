@@ -28,11 +28,46 @@
   font-weight: 600;
 }
 
+/* === 顶部图片轮播 === */
+.detail-images {
+  position: relative;
+  width: 100%;
+  height: 480rpx;
+  background: var(--bg-muted);
+}
+
+.images-swiper,
+.detail-image {
+  width: 100%;
+  height: 100%;
+}
+
+.images-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 65%, rgba(15, 56, 72, 0.25) 100%);
+}
+
+.images-badge {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  padding: 6rpx 16rpx;
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--text-white);
+  font-size: var(--font-xs);
+  border-radius: var(--radius-pill);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5rpx;
+  z-index: 2;
+}
+
 /* === 地图区 === */
 .map-wrap {
   position: relative;
   width: 100%;
-  height: 60vh;
+  height: 50vh;
 }
 
 .map-canvas {
