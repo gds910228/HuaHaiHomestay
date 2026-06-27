@@ -380,52 +380,6 @@
 
 .loc-refresh:active { transform: scale(0.95); opacity: 0.8; }
 
-/* === 天气筛选条 === */
-.weather-filter-bar {
-  margin: 0 var(--space-lg) var(--space-sm);
-  display: flex;
-  gap: 12rpx;
-}
-
-.wf-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8rpx;
-  padding: 10rpx 22rpx;
-  background: var(--bg-surface);
-  border-radius: var(--radius-pill);
-  border: 2rpx solid var(--border-line);
-  font-size: var(--font-sm);
-  color: var(--text-secondary);
-  transition: all var(--duration-fast) var(--ease-out);
-}
-
-.wf-chip.active {
-  background: var(--cat-spot-soft);
-  border-color: var(--cat-spot);
-  color: var(--cat-spot);
-  font-weight: 600;
-}
-
-.wf-chip:active { transform: scale(0.97); }
-
-.wf-emoji { font-size: 28rpx; }
-.wf-text { letter-spacing: 0.5rpx; }
-.wf-count {
-  margin-left: 4rpx;
-  padding: 2rpx 10rpx;
-  background: var(--text-tertiary);
-  color: var(--text-white);
-  font-size: var(--font-xs);
-  font-weight: 700;
-  border-radius: var(--radius-pill);
-  font-variant-numeric: tabular-nums;
-}
-
-.wf-chip.active .wf-count {
-  background: var(--cat-spot);
-}
-
 /* === 天气徽章(卡片右上角) === */
 .guide-card { position: relative; }
 
@@ -482,11 +436,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* === playable 高亮 === */
-.guide-card.playable {
-  box-shadow: 0 0 0 3rpx var(--color-success), var(--shadow-md);
-}
-
 /* === 错误态 === */
 .error-block {
   margin: var(--space-2xl) var(--space-lg);
@@ -517,13 +466,3 @@
   letter-spacing: 1rpx;
 }
 .error-btn:active { transform: scale(0.96); opacity: 0.9; }
-
-/* === filter 空态 === */
-.empty-soft {
-  margin: var(--space-xl) var(--space-lg);
-  padding: var(--space-lg);
-  text-align: center;
-  font-size: var(--font-sm);
-  color: var(--text-tertiary);
-  letter-spacing: 0.5rpx;
-}

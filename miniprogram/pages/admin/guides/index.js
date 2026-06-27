@@ -61,23 +61,13 @@ Page({
 
       if (res.result.success) {
         let rawData = res.result.data || [];
-        console.log('[攻略管理] 云函数返回', rawData.length, '条，筛选条件:',
-          { status: this.data.filterStatus, category: this.data.filterCategory });
 
         // ===== 前端兜底过滤（云函数未部署/旧版本时仍能筛选）=====
         if (this.data.filterStatus) {
-          const before = rawData.length;
           rawData = rawData.filter(g => g.status === this.data.filterStatus);
-          if (rawData.length !== before) {
-            console.log('[攻略管理] 兜底按状态过滤:', before, '→', rawData.length);
-          }
         }
         if (this.data.filterCategory) {
-          const before = rawData.length;
           rawData = rawData.filter(g => g.category === this.data.filterCategory);
-          if (rawData.length !== before) {
-            console.log('[攻略管理] 兜底按分类过滤:', before, '→', rawData.length);
-          }
         }
 
         const data = rawData.map(g => ({

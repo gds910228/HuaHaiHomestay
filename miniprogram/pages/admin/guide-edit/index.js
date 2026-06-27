@@ -66,11 +66,6 @@ Page({
         const categories = this.data.categories;
         const categoryLabel = categories.find(c => c.value === guide.category)?.label || '美食推荐';
 
-        // 诊断:看数据库里到底存了什么
-        console.log('[编辑回显] guide.cover:', guide.cover || '(空)');
-        console.log('[编辑回显] guide.images:', guide.images);
-        console.log('[编辑回显] images 数量:', (guide.images || []).length);
-
         this.setData({
           form: {
             title: guide.title || '',

@@ -82,8 +82,6 @@ Page({
         const results = await Promise.all(promises);
         const validFavorites = results.filter(item => item !== null);
 
-        console.log('[收藏列表] 加载完成，共', validFavorites.length, '条');
-
         this.setData({
           favorites: validFavorites,
           loading: false

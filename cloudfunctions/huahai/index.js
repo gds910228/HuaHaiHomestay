@@ -216,27 +216,10 @@ async function getGuideDetail(event) {
 
   const guide = res.data;
 
-  // 调试日志
-  console.log('=== getGuideDetail 调试信息 ===');
-  console.log('攻略ID:', id);
-  console.log('原始 cover:', guide.cover);
-  console.log('原始 images:', guide.images);
-  console.log('原始 images.length:', guide.images ? guide.images.length : 0);
-
   // 确保 images 数组不为空，如果为空且有 cover，则使用 cover
   if (!guide.images || guide.images.length === 0) {
-    if (guide.cover) {
-      guide.images = [guide.cover];
-      console.log('images 为空，使用 cover 填充');
-    } else {
-      guide.images = [];
-      console.log('images 和 cover 都为空');
-    }
+    guide.images = guide.cover ? [guide.cover] : [];
   }
-
-  console.log('最终 images:', guide.images);
-  console.log('最终 images.length:', guide.images.length);
-  console.log('========================');
 
   // 刷新富文本正文里 editor 插入的图片链接（cloud:// 文件 ID 的 tempFileURL 仅 2 小时有效）
   if (guide.content && typeof guide.content === 'string') {

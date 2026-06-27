@@ -2,8 +2,7 @@
 Page({
   data: {
     category: { id: 'spot', name: '景点打卡', emoji: '📍', subtitle: '热门景点 / 摄影机位 / 海岛风光' },
-    guides: [],          // 原始数据(已附加 distance/walkingMin/weatherBrief/playable)
-    filteredGuides: [],  // 应用 weatherFilter 后的展示数据
+    guides: [],
     loading: false,
     isFirstLoad: true,
     errorMsg: '',
@@ -15,11 +14,7 @@ Page({
     // 定位
     userLocation: null,        // {latitude, longitude} or null
     hasLocation: false,        // 是否已获得用户位置
-    locationDenied: false,     // 是否被拒绝(用于显示去设置引导)
-
-    // 天气筛选
-    weatherFilter: false,      // 是否只看"现在适合玩"
-    playableCount: 0           // 适合玩的景点数
+    locationDenied: false      // 是否被拒绝(用于显示去设置引导)
   },
 
   onLoad() {
@@ -127,12 +122,6 @@ Page({
     this.setData({ tagsExpanded: !this.data.tagsExpanded });
   },
 
-  toggleWeatherFilter() {
-    const next = !this.data.weatherFilter;
-    this.setData({ weatherFilter: next });
-    this.applyFilter();
-  },
-
   async loadGuides() {
     if (this.data.loading) return;
     this.setData({ loading: true, errorMsg: '' });
@@ -193,22 +182,15 @@ Page({
 
         // 天气摘要
         guide.weatherBrief = this.extractWeatherBrief(guide.weather);
-
-        // 是否适合玩
-        guide.playable = this.isPlayable(guide.weather);
       });
 
       await this.checkFavoritesStatus(guides);
 
-      const playableCount = guides.filter(g => g.playable).length;
-
       this.setData({
         guides,
-        playableCount,
         loading: false,
         isFirstLoad: false
       });
-      this.applyFilter();
     } catch (err) {
       console.error('[景点] 加载失败', err);
       this.setData({
@@ -217,13 +199,6 @@ Page({
         errorMsg: err.message || '加载失败,请下拉重试'
       });
     }
-  },
-
-  /** 根据 weatherFilter 派生 filteredGuides */
-  applyFilter() {
-    const { guides, weatherFilter } = this.data;
-    const filteredGuides = weatherFilter ? guides.filter(g => g.playable) : guides;
-    this.setData({ filteredGuides });
   },
 
   /** 派生"1.2km · 步行 15 分钟"显示字符串 */
@@ -283,18 +258,6 @@ Page({
       };
     }
     return null;
-  },
-
-  /** 是否"现在适合玩":无雨/雷/雪 且 风力 <6 (now 缺失则看 forecast 当日) */
-  isPlayable(weather) {
-    if (!weather) return false;
-    const src = weather.now || (weather.forecast3d && weather.forecast3d[0]) || null;
-    if (!src) return false;
-    const text = String(src.text || src.textDay || '');
-    if (/雨|雷|雪|沙尘|霾/.test(text)) return false;
-    const ws = Number(src.windScale || src.windScaleDay);
-    if (isFinite(ws) && ws >= 6) return false;
-    return true;
   },
 
   viewGuide(e) {
@@ -358,7 +321,6 @@ Page({
           g._id === id ? { ...g, isFavorited } : g
         );
         this.setData({ guides });
-        this.applyFilter();
         wx.showToast({ title: isFavorited ? '已收藏' : '已取消收藏', icon: 'success' });
       }
     } catch (err) {

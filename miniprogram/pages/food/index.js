@@ -63,7 +63,6 @@ Page({
     this.setData({ loading: true });
 
     try {
-      console.log('[美食页面] 开始加载数据...');
       const callData = {
         type: 'getGuides',
         category: 'food',
@@ -78,74 +77,47 @@ Page({
         data: callData
       });
 
-      console.log('[美食页面] 云函数返回结果:', res);
-
       if (res.result && res.result.success) {
         let guides = res.result.data || [];
-        console.log('[美食页面] 云函数返回:', guides.length, '条，activeTag=', this.data.activeTag);
 
         // ===== 前端兜底过滤 =====
-        // 0) 严格按分类过滤（云函数若未重新部署、category 参数未生效时兜底）
-        const beforeCat = guides.length;
+        // 严格按分类 + 已发布 + 标签
         guides = guides.filter(g => g.category === 'food');
-        if (guides.length !== beforeCat) {
-          console.log('[美食页面] 兜底按分类过滤:', beforeCat, '→', guides.length);
-        }
-
-        // 1) 只展示已发布的
-        const beforeStatus = guides.length;
         guides = guides.filter(g => !g.status || g.status === 'published');
-        if (guides.length !== beforeStatus) {
-          console.log('[美食页面] 兜底按发布状态过滤:', beforeStatus, '→', guides.length);
-        }
-
-        // 2) 按标签过滤（云函数若未部署/筛选未生效时兜底）
         if (this.data.activeTag) {
           const t = this.data.activeTag;
-          const before = guides.length;
           guides = guides.filter(g => Array.isArray(g.tags) && g.tags.indexOf(t) > -1);
-          console.log('[美食页面] 兜底按标签过滤:', t, before, '→', guides.length);
         }
 
-        // 预处理：判断每个店铺是否有真实图片（非占位图）
+        // 预处理:卡片缩略图优先 cover,回退 images[0]
         guides.forEach((guide) => {
           const hasImages = guide.images && guide.images.length > 0;
           const firstImage = hasImages ? guide.images[0] : '';
-          // 卡片缩略图:优先用 cover 字段,回退到 images[0]
           const coverImage = guide.cover || firstImage || '';
           const isPlaceholder = coverImage && coverImage.includes('placeholder');
 
           guide.coverImage = coverImage;
           guide.hasRealImage = !!coverImage && !isPlaceholder;
-
-          console.log(`[调试] ${guide.title}:`);
-          console.log(`  images.length: ${guide.images ? guide.images.length : 0}`);
-          console.log(`  cover 字段: ${guide.cover ? '有' : '无'}`);
-          console.log(`  最终缩略图: ${coverImage ? coverImage.substring(0, 60) : '无'}`);
-          console.log(`  有真实图片: ${guide.hasRealImage ? '是' : '否'}`);
         });
 
         // 检查收藏状态
         await this.checkFavoritesStatus(guides);
 
         const grouped = this.groupGuidesByArea(guides);
-        console.log('[美食页面] 分组结果:', grouped);
 
-        // 构建选项卡列表
+        // 构建选项卡列表(只显示有数据的)
         const tabs = [
           { key: '后宅镇', name: '后宅镇', icon: '📍', count: grouped['后宅镇'].length },
           { key: '青澳湾', name: '青澳湾', icon: '🌊', count: grouped['青澳湾'].length },
           { key: '云澳镇', name: '云澳镇', icon: '🏖', count: grouped['云澳镇'].length }
-        ].filter(tab => tab.count > 0);  // 只显示有数据的选项卡
-
-        console.log('[美食页面] 选项卡列表:', tabs);
+        ].filter(tab => tab.count > 0);
 
         this.setData({
           guides,
           groupedGuides: grouped,
           tabs: tabs,
           loading: false,
-          isFirstLoad: false  // 首次加载完成
+          isFirstLoad: false
         });
 
         if (guides.length === 0) {
@@ -189,8 +161,6 @@ Page({
       '云澳镇': []
     };
 
-    console.log('[分组] 开始分组，总数据:', guides.length);
-
     // 定义每个区域的关键词列表
     const areaKeywords = {
       '青澳湾': [
@@ -208,13 +178,7 @@ Page({
       ]
     };
 
-    guides.forEach((guide, index) => {
-      console.log(`[分组] 第${index}条数据:`, {
-        title: guide.title,
-        area: guide.area,
-        address: guide.address
-      });
-
+    guides.forEach((guide) => {
       // 优先用后台显式设置的 area；没有再按地址关键字猜
       let area = '';
       if (guide.area && groups[guide.area]) {
@@ -242,14 +206,7 @@ Page({
         }
       }
 
-      console.log(`[分组] 第${index}条归类为: ${area}`);
       groups[area].push(guide);
-    });
-
-    console.log('[分组] 分组结果:', {
-      后宅镇: groups['后宅镇'].length,
-      青澳湾: groups['青澳湾'].length,
-      云澳镇: groups['云澳镇'].length
     });
 
     return groups;
@@ -304,13 +261,11 @@ Page({
   },
 
   // 图片加载成功
-  onImageLoad(e) {
-    console.log('[美食] 图片加载成功:', e.detail);
-  },
+  onImageLoad() {},
 
   // 图片加载失败
   onImageError(e) {
-    console.log('[美食] 图片加载失败:', e.detail);
+    console.warn('[美食] 图片加载失败:', e.detail);
   },
 
   // 批量检查收藏状态
@@ -334,8 +289,6 @@ Page({
           );
           guide.isFavorited = isFavorited;
         });
-
-        console.log('[美食] 收藏状态检查完成');
       }
     } catch (err) {
       console.error('[美食] 检查收藏状态失败:', err);

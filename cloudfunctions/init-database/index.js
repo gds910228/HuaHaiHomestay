@@ -35,8 +35,6 @@ function checkAdminPassword(input) {
 exports.main = async (event, context) => {
   const { type, password } = event;
 
-  console.log('=== 开始执行初始化 ===');
-  console.log('操作类型:', type);
 
   const check = checkAdminPassword(password);
   if (!check.configured) {
@@ -47,7 +45,6 @@ exports.main = async (event, context) => {
     };
   }
   if (!check.ok) {
-    console.log('密码验证失败');
     return {
       success: false,
       errMsg: '密码错误'
@@ -58,46 +55,36 @@ exports.main = async (event, context) => {
     let result;
     switch (type) {
       case 'initAll':
-        console.log('执行 initAll');
         result = await initAll();
         break;
       case 'initHostel':
-        console.log('执行 initHostel');
         result = await initHostel();
         break;
       case 'initRooms':
-        console.log('执行 initRooms');
         result = await initRooms();
         break;
       case 'addLingFengRoom':
-        console.log('执行 addLingFengRoom');
         result = await addLingFengRoom();
         break;
       case 'addWangHaiRoom':
-        console.log('执行 addWangHaiRoom');
         result = await addWangHaiRoom();
         break;
       case 'addSanFangRoom':
-        console.log('执行 addSanFangRoom');
         result = await addSanFangRoom();
         break;
       case 'initFood':
-        console.log('执行 initFood');
         result = await initFood();
         break;
       case 'updateRoomFacilities':
-        console.log('执行 updateRoomFacilities');
         result = await updateRoomFacilities();
         break;
       default:
-        console.log('未知的操作类型');
         return {
           success: false,
           errMsg: 'Invalid operation type'
         };
     }
 
-    console.log('执行结果:', result);
     return result;
   } catch (err) {
     console.error('初始化过程出错:', err);
@@ -112,14 +99,12 @@ exports.main = async (event, context) => {
  * 初始化所有数据
  */
 async function initAll() {
-  console.log('--- 开始初始化所有数据 ---');
 
   const results = {
     hostel: await initHostel(),
     rooms: await initRooms()
   };
 
-  console.log('所有数据初始化完成:', results);
 
   return {
     success: true,
@@ -132,27 +117,21 @@ async function initAll() {
  * 初始化民宿信息
  */
 async function initHostel() {
-  console.log('1. 开始初始化民宿信息');
 
   try {
     // 先尝试查询，触发集合创建
-    console.log('1.1 检查/创建 hostel 集合');
     const checkResult = await db.collection('hostel').limit(1).get();
-    console.log('1.2 查询结果:', checkResult);
 
     // 判断是否真的有数据 - 使用 count() 更准确
     const countResult = await db.collection('hostel').count();
-    console.log('1.3 count 结果:', countResult);
 
     if (countResult.total > 0) {
-      console.log('1.4 民宿信息已存在，跳过');
       return {
         success: true,
         message: '民宿信息已存在，跳过初始化'
       };
     }
 
-    console.log('1.5 准备添加民宿数据');
     const hostelData = {
       name: '画海民宿',
       description: '欢迎来到画海民宿，我们位于美丽的南澳岛青澳湾，为您提供舒适的住宿环境和贴心的服务。民宿出门即是海滩，环境优美，是您度假的理想选择。',
@@ -183,23 +162,18 @@ async function initHostel() {
       updateTime: new Date()
     };
 
-    console.log('1.6 开始添加数据');
     const addResult = await db.collection('hostel').add({
       data: hostelData
     });
 
-    console.log('1.7 添加结果:', addResult);
-    console.log('1.8 添加的 _id:', addResult._id || addResult.id);
 
     if (addResult._id || addResult.id) {
-      console.log('1.9 ✅ 民宿信息添加成功');
       return {
         success: true,
         message: '民宿信息初始化成功',
         data: hostelData
       };
     } else {
-      console.log('1.10 ❌ 民宿信息添加失败');
       return {
         success: false,
         errMsg: '添加民宿信息失败'
@@ -216,25 +190,19 @@ async function initHostel() {
  * 更新：增强数据结构，支持详细的房间信息、设施分类、入住规则等
  */
 async function initRooms() {
-  console.log('2. 开始初始化房型数据');
 
   try {
-    console.log('2.1 检查/创建 rooms 集合');
     const checkResult = await db.collection('rooms').limit(1).get();
-    console.log('2.2 查询结果:', checkResult);
 
     const countResult = await db.collection('rooms').count();
-    console.log('2.3 count 结果:', countResult);
 
     if (countResult.total > 0) {
-      console.log('2.4 房型数据已存在，跳过');
       return {
         success: true,
         message: '房型数据已存在，跳过初始化'
       };
     }
 
-    console.log('2.5 准备添加房型数据（增强版数据结构）');
     const roomsData = [
       // 模拟房型1：海景大床房（旧数据结构，保留兼容）
       {
@@ -434,13 +402,11 @@ async function initRooms() {
       }
     ];
 
-    console.log('2.6 开始添加房型数据，数量:', roomsData.length);
     let successCount = 0;
     let failCount = 0;
 
     for (let i = 0; i < roomsData.length; i++) {
       const room = roomsData[i];
-      console.log(`2.7.${i + 1} 添加房型: ${room.roomType}`);
 
       try {
         const addResult = await db.collection('rooms').add({
@@ -448,10 +414,8 @@ async function initRooms() {
         });
 
         if (addResult._id || addResult.id) {
-          console.log(`2.8.${i + 1} ✅ ${room.roomType} 添加成功, ID: ${addResult._id || addResult.id}`);
           successCount++;
         } else {
-          console.log(`2.9.${i + 1} ❌ ${room.roomType} 添加失败`);
           failCount++;
         }
       } catch (err) {
@@ -460,7 +424,6 @@ async function initRooms() {
       }
     }
 
-    console.log(`2.11 房型添加完成，成功: ${successCount}/${roomsData.length}`);
 
     if (successCount > 0) {
       return {
@@ -485,20 +448,15 @@ async function initRooms() {
  * 初始化美食攻略数据
  */
 async function initFood() {
-  console.log('5. 开始初始化美食攻略数据');
 
   try {
-    console.log('5.1 检查/创建 guides 集合');
     const checkResult = await db.collection('guides').limit(1).get();
-    console.log('5.2 查询结果:', checkResult);
 
-    console.log('5.3 准备添加美食攻略数据，数量:', foodData.foodGuides.length);
     let successCount = 0;
     let failCount = 0;
 
     for (let i = 0; i < foodData.foodGuides.length; i++) {
       const guide = foodData.foodGuides[i];
-      console.log(`5.4.${i + 1} 添加美食攻略: ${guide.title}`);
 
       try {
         // 先检查是否已存在相同标题的攻略
@@ -507,7 +465,6 @@ async function initFood() {
         }).get();
 
         if (existing.data.length > 0) {
-          console.log(`5.5.${i + 1} ⚠️ ${guide.title} 已存在，跳过`);
           successCount++;
           continue;
         }
@@ -517,10 +474,8 @@ async function initFood() {
         });
 
         if (addResult._id || addResult.id) {
-          console.log(`5.6.${i + 1} ✅ ${guide.title} 添加成功, ID: ${addResult._id || addResult.id}`);
           successCount++;
         } else {
-          console.log(`5.7.${i + 1} ❌ ${guide.title} 添加失败`);
           failCount++;
         }
       } catch (err) {
@@ -529,7 +484,6 @@ async function initFood() {
       }
     }
 
-    console.log(`5.9 美食攻略添加完成，成功: ${successCount}/${foodData.foodGuides.length}`);
 
     if (successCount > 0) {
       return {
@@ -555,17 +509,14 @@ async function initFood() {
  * 检查是否已存在，如果不存在则添加
  */
 async function addLingFengRoom() {
-  console.log('6. 开始添加"画海-聆风"房型');
 
   try {
     // 检查是否已存在"海景一室大床房"
-    console.log('6.1 检查房型是否已存在');
     const existing = await db.collection('rooms').where({
       roomType: '海景一室大床房'
     }).get();
 
     if (existing.data.length > 0) {
-      console.log('6.2 ⚠️ "画海-聆风"房型已存在，跳过添加');
       return {
         success: true,
         message: '"画海-聆风"房型已存在，无需重复添加',
@@ -573,7 +524,6 @@ async function addLingFengRoom() {
       };
     }
 
-    console.log('6.3 准备添加"画海-聆风"房型数据');
 
     // "画海-聆风"房型数据
     const lingFengRoom = {
@@ -716,13 +666,11 @@ async function addLingFengRoom() {
       updateTime: new Date()
     };
 
-    console.log('6.4 开始添加房型');
     const addResult = await db.collection('rooms').add({
       data: lingFengRoom
     });
 
     if (addResult._id || addResult.id) {
-      console.log(`6.5 ✅ "画海-聆风"房型添加成功, ID: ${addResult._id || addResult.id}`);
       return {
         success: true,
         message: '"画海-聆风"房型添加成功',
@@ -730,7 +678,6 @@ async function addLingFengRoom() {
         roomId: addResult._id || addResult.id
       };
     } else {
-      console.log('6.6 ❌ "画海-聆风"房型添加失败');
       return {
         success: false,
         errMsg: '"画海-聆风"房型添加失败'
@@ -750,17 +697,14 @@ async function addLingFengRoom() {
  * 海景二室一厅套房，奶油原木风，楼下沙滩，县城中心
  */
 async function addWangHaiRoom() {
-  console.log('7. 开始添加"画海-望海"房型');
 
   try {
     // 检查是否已存在"海景二室一厅套房"
-    console.log('7.1 检查房型是否已存在');
     const existing = await db.collection('rooms').where({
       roomType: '海景二室一厅套房'
     }).get();
 
     if (existing.data.length > 0) {
-      console.log('7.2 ⚠️ "画海-望海"房型已存在，跳过添加');
       return {
         success: true,
         message: '"画海-望海"房型已存在，无需重复添加',
@@ -768,7 +712,6 @@ async function addWangHaiRoom() {
       };
     }
 
-    console.log('7.3 准备添加"画海-望海"房型数据');
 
     // "画海-望海"房型数据
     const wangHaiRoom = {
@@ -914,12 +857,10 @@ async function addWangHaiRoom() {
     };
 
     // 添加到数据库
-    console.log('7.4 插入"画海-望海"房型到数据库');
     const result = await db.collection('rooms').add({
       data: wangHaiRoom
     });
 
-    console.log('7.5 ✅ "画海-望海"房型添加成功，ID:', result._id);
 
     return {
       success: true,
@@ -942,17 +883,14 @@ async function addWangHaiRoom() {
  * 海景三室一厅套房，Ins风双投影，楼下沙滩，县城中心
  */
 async function addSanFangRoom() {
-  console.log('8. 开始添加"画海-三房一厅"房型');
 
   try {
     // 检查是否已存在"海景三室一厅套房"
-    console.log('8.1 检查房型是否已存在');
     const existing = await db.collection('rooms').where({
       roomType: '海景三室一厅套房'
     }).get();
 
     if (existing.data.length > 0) {
-      console.log('8.2 ⚠️ "画海-三房一厅"房型已存在，跳过添加');
       return {
         success: true,
         message: '"画海-三房一厅"房型已存在，无需重复添加',
@@ -960,7 +898,6 @@ async function addSanFangRoom() {
       };
     }
 
-    console.log('8.3 准备添加"画海-三房一厅"房型数据');
 
     // "画海-三房一厅"房型数据
     const sanFangRoom = {
@@ -1114,12 +1051,10 @@ async function addSanFangRoom() {
     };
 
     // 添加到数据库
-    console.log('8.4 插入"画海-三房一厅"房型到数据库');
     const result = await db.collection('rooms').add({
       data: sanFangRoom
     });
 
-    console.log('8.5 ✅ "画海-三房一厅"房型添加成功，ID:', result._id);
 
     return {
       success: true,
@@ -1142,12 +1077,10 @@ async function addSanFangRoom() {
  * 为没有 detailedFacilities 或该字段为空的房型添加默认设施数据
  */
 async function updateRoomFacilities() {
-  console.log('8. 开始更新房型 detailedFacilities 字段');
 
   try {
     // 获取所有房型
     const res = await db.collection('rooms').get();
-    console.log(`8.1 找到 ${res.data.length} 个房型`);
 
     if (res.data.length === 0) {
       return {
@@ -1173,7 +1106,6 @@ async function updateRoomFacilities() {
     };
 
     for (const room of res.data) {
-      console.log(`8.2 处理房型: ${room.roomType || room._id}`);
 
       // 检查是否已有 detailedFacilities
       if (!room.detailedFacilities ||
@@ -1199,7 +1131,6 @@ async function updateRoomFacilities() {
         let facilitiesToUpdate = { ...defaultFacilities };
         if (room.facilities && Array.isArray(room.facilities) && room.facilities.length > 0) {
           facilitiesToUpdate.basic = room.facilities;
-          console.log(`  -> 迁移旧设施数据到 basic: ${room.facilities.join(', ')}`);
         }
 
         // 更新房型
@@ -1209,15 +1140,12 @@ async function updateRoomFacilities() {
           }
         });
 
-        console.log(`  -> ✅ 已更新 detailedFacilities`);
         updateCount++;
       } else {
-        console.log(`  -> ⏭️ 跳过（已有详细设施数据）`);
         skipCount++;
       }
     }
 
-    console.log(`8.3 更新完成: ${updateCount} 个房型已更新, ${skipCount} 个房型已跳过`);
 
     return {
       success: true,

@@ -187,8 +187,6 @@ Page({
           detailedFacilities[cat] = Array.isArray(loadedFacilities[cat]) ? loadedFacilities[cat] : [];
         });
 
-        console.log('加载的设施数据:', detailedFacilities);
-
         this.setData({
           formData: {
             roomType: room.roomType || '',
@@ -406,26 +404,19 @@ Page({
    */
   async uploadImage(tempFilePath) {
     try {
-      console.log('开始上传图片:', tempFilePath);
-
       // 生成随机文件名
       const random = Math.random().toString(36).substring(2, 15);
       const cloudPath = `room-images/${Date.now()}-${random}.jpg`;
-
-      console.log('云存储路径:', cloudPath);
 
       const res = await wx.cloud.uploadFile({
         cloudPath: cloudPath,
         filePath: tempFilePath
       });
 
-      console.log('上传结果:', res);
-
       // 检查上传是否成功
       // 云存储返回 statusCode: 204 表示成功（No Content）， errMsg: "cloud.uploadFile:ok" 也表示成功
       if (res.errMsg === 'cloud.uploadFile:ok' || res.statusCode === 200 || res.statusCode === 204) {
         if (res.fileID) {
-          console.log('✅ 上传成功，fileID:', res.fileID);
           return res.fileID;
         } else {
           throw new Error('上传成功但未返回fileID');
@@ -559,14 +550,8 @@ Page({
    * 切换设施选项
    */
   toggleFacility(e) {
-    console.log('=== toggleFacility 被调用 ===');
     const { category, facility } = e.currentTarget.dataset;
-    console.log('点击的设施类别:', category);
-    console.log('点击的设施名称:', facility);
-
     const facilities = this.data.detailedFacilities[category];
-    console.log('当前类别的设施列表:', facilities);
-    console.log('detailedFacilities 完整数据:', this.data.detailedFacilities);
 
     if (!facilities) {
       console.error('设施类别不存在:', category);
@@ -578,23 +563,17 @@ Page({
     }
 
     const index = facilities.indexOf(facility);
-    console.log('设施在列表中的索引:', index);
-
     if (index > -1) {
       // 已存在，移除
       facilities.splice(index, 1);
-      console.log('移除设施后的列表:', facilities);
     } else {
       // 不存在，添加
       facilities.push(facility);
-      console.log('添加设施后的列表:', facilities);
     }
 
     this.setData({
       [`detailedFacilities.${category}`]: facilities
     });
-
-    console.log('setData 完成，新的 detailedFacilities:', this.data.detailedFacilities);
   },
 
   /**

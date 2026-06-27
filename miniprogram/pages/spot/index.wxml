@@ -30,15 +30,6 @@
     </view>
   </view>
 
-  <!-- 天气筛选 -->
-  <view class="weather-filter-bar" wx:if="{{guides.length > 0 && playableCount > 0}}">
-    <view class="wf-chip {{weatherFilter ? 'active' : ''}}" bindtap="toggleWeatherFilter">
-      <text class="wf-emoji">🌤</text>
-      <text class="wf-text">现在适合玩</text>
-      <text class="wf-count">{{playableCount}}</text>
-    </view>
-  </view>
-
   <view class="tag-filter-bar" wx:if="{{tagOptions.length > 0}}">
     <view class="tag-filter-wrap {{tagsExpanded ? 'expanded' : 'collapsed'}}">
       <view class="tag-chip {{activeTag === '' ? 'active' : ''}}" data-tag="" bindtap="selectTag">全部</view>
@@ -77,11 +68,11 @@
     bind:action="goHome"
   ></empty-state>
 
-  <view class="list-area" wx:if="{{!loading && filteredGuides.length > 0}}">
+  <view class="list-area" wx:if="{{!loading && guides.length > 0}}">
     <view class="card-list">
       <view
-        class="guide-card fade-in-up clickable {{guide.playable && weatherFilter ? 'playable' : ''}}"
-        wx:for="{{filteredGuides}}"
+        class="guide-card fade-in-up clickable"
+        wx:for="{{guides}}"
         wx:key="_id"
         wx:for-item="guide"
         style="animation-delay: {{index * 60}}ms"
@@ -157,10 +148,5 @@
         </view>
       </view>
     </view>
-  </view>
-
-  <!-- weatherFilter 激活但无结果 -->
-  <view class="empty-soft" wx:if="{{!loading && weatherFilter && guides.length > 0 && filteredGuides.length === 0}}">
-    <text>当前没有适合玩的景点 · 试试取消筛选</text>
   </view>
 </view>

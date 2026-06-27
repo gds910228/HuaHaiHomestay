@@ -30,8 +30,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    console.log('房间详情页加载，参数:', options);
-
     const { id } = options;
     if (!id) {
       wx.showToast({
@@ -55,8 +53,6 @@ Page({
    * 加载房间详情
    */
   async loadRoomDetail(roomId) {
-    console.log('开始加载房间详情，ID:', roomId);
-
     try {
       wx.showLoading({
         title: '加载中...',
@@ -72,14 +68,8 @@ Page({
         }
       });
 
-      console.log('房间详情查询结果:', res);
-
       if (res.result.success && res.result.data) {
         const room = res.result.data;
-
-        // 打印 detailedFacilities 数据用于调试
-        console.log('房型 detailedFacilities 数据:', room.detailedFacilities);
-        console.log('房型 facilities 数据:', room.facilities);
 
         // 确保 detailedFacilities 存在且有默认结构
         if (!room.detailedFacilities) {
@@ -93,7 +83,6 @@ Page({
             entertainment: [],
             leisure: []
           };
-          console.log('初始化 detailedFacilities 结构');
         }
 
         // 处理价格兼容性（支持旧数据结构的 price.low/high 和新数据结构的 fixedPrice）
