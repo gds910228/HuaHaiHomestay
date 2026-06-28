@@ -1,119 +1,233 @@
-<!--pages/info/index.wxml-->
-<view class="cat-page cat-info">
+<!--pages/info/index.wxml · 实用信息仪表盘-->
+<view class="info-page">
+  <!-- Hero · 沿用 cat-info 暖橙主题装饰 -->
   <view class="cat-hero">
     <image class="hero-deco" src="/images/icons/deco-info-white.svg" mode="aspectFit"></image>
     <view class="hero-bubble bubble-1"></view>
     <view class="hero-bubble bubble-2"></view>
     <view class="hero-bubble bubble-3"></view>
-    <view class="hero-spark spark-1"></view>
-    <view class="hero-spark spark-2"></view>
-    <view class="hero-spark spark-3"></view>
     <view class="hero-glow"></view>
     <view class="hero-meta">
-      <view class="hero-eyebrow">GUIDE · 实用信息</view>
-      <view class="hero-title">出行须知</view>
-      <view class="hero-sub">来南澳之前先看看</view>
+      <view class="hero-eyebrow">DASHBOARD · 实用信息</view>
+      <view class="hero-title">出行就看这里</view>
+      <view class="hero-sub">天气 · 潮汐 · 渡轮 · 应急</view>
     </view>
   </view>
 
-  <view class="tag-filter-bar" wx:if="{{tagOptions.length > 0}}">
-    <view class="tag-filter-wrap {{tagsExpanded ? 'expanded' : 'collapsed'}}">
-      <view class="tag-chip {{activeTag === '' ? 'active' : ''}}" data-tag="" bindtap="selectTag">全部</view>
-      <view
-        class="tag-chip {{activeTag === item.name ? 'active' : ''}}"
-        wx:for="{{tagOptions}}"
-        wx:key="name"
-        data-tag="{{item.name}}"
-        bindtap="selectTag"
-      >{{item.name}}</view>
-    </view>
-    <view class="tag-filter-toggle clickable" bindtap="toggleTagsExpanded" wx:if="{{tagOptions.length > 8}}">
-      <text>{{tagsExpanded ? '收起' : '展开'}}</text>
-      <image class="toggle-icon {{tagsExpanded ? 'up' : ''}}" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B6F3F' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9 l 6 6 6 -6'/%3E%3C/svg%3E" mode="aspectFit"></image>
-    </view>
+  <!-- 离线提示条 -->
+  <view class="offline-banner" wx:if="{{isOffline}}">
+    <text class="offline-dot">●</text>
+    <text>当前为离线数据,下拉刷新重试</text>
   </view>
 
-  <loading-state wx:if="{{loading && !isFirstLoad}}" text="正在加载..."></loading-state>
+  <!-- ============ 模块 A · 天气 + 活动评分 ============ -->
+  <view class="section weather-section">
+    <view class="section-head">
+      <text class="section-title">今日天气 · 活动指数</text>
+      <text class="section-source" wx:if="{{weatherDisplay.sourceSpot}}">{{weatherDisplay.sourceSpot}}</text>
+    </view>
 
-  <view class="skeleton-wrapper" wx:if="{{loading && isFirstLoad}}">
-    <skeleton-card wx:for="{{[1,2,3]}}" wx:key="*this"></skeleton-card>
-  </view>
+    <block wx:if="{{weatherLoading && !weather}}">
+      <skeleton-card></skeleton-card>
+    </block>
 
-  <empty-state
-    wx:if="{{!loading && guides.length === 0}}"
-    title="暂无{{category.name}}"
-    description="管理员正在努力添加中..."
-    actionText="返回首页"
-    bind:action="goHome"
-  ></empty-state>
+    <block wx:elif="{{weatherError && !weather}}">
+      <view class="module-error">
+        <text>{{weatherError}}</text>
+        <view class="retry-btn" data-module="weather" bindtap="retryModule">重试</view>
+      </view>
+    </block>
 
-  <view class="list-area" wx:if="{{!loading && guides.length > 0}}">
-    <view class="card-list">
-      <view
-        class="guide-card fade-in-up clickable"
-        wx:for="{{guides}}"
-        wx:key="_id"
-        wx:for-item="guide"
-        style="animation-delay: {{index * 60}}ms"
-        data-id="{{guide._id}}"
-        bindtap="viewGuide"
-      >
-        <optimized-image
-          wx:if="{{guide.hasRealImage}}"
-          class="guide-image"
-          src="{{guide.coverImage}}"
-          width="100%"
-          height="340rpx"
-          mode="aspectFill"
-          badge="{{guide.images.length}}"
-          catchtap="previewImage"
-          data-url="{{guide.coverImage}}"
-          data-images="{{guide.images}}"
-        ></optimized-image>
-
-        <view wx:if="{{!guide.hasRealImage}}" class="guide-no-image">
-          <image class="no-image-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B6F3F' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 4 h 12 a 2 2 0 0 1 2 2 v 14 l -8 -4 -8 4 z'/%3E%3Cpath d='M9 9 h 6 M 9 13 h 4' opacity='0.7'/%3E%3C/svg%3E" mode="aspectFit"></image>
-          <text class="no-image-text">暂无图片</text>
+    <view class="weather-card" wx:elif="{{weatherDisplay}}">
+      <view class="weather-main">
+        <text class="weather-emoji">{{weatherDisplay.emoji}}</text>
+        <view class="weather-info">
+          <text class="weather-temp">{{weatherDisplay.tempStr}}</text>
+          <text class="weather-summary">{{weatherDisplay.summary}}</text>
+          <text class="weather-humidity" wx:if="{{weatherDisplay.humidityStr}}">湿度 {{weatherDisplay.humidityStr}}</text>
         </view>
+      </view>
 
-        <view class="guide-info">
-          <text class="guide-title">{{guide.title}}</text>
-
-          <view class="guide-address" wx:if="{{guide.address}}">
-            <image class="addr-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A39A8D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22 s -7 -7 -7 -13 a 7 7 0 0 1 14 0 c 0 6 -7 13 -7 13 z'/%3E%3Ccircle cx='12' cy='9' r='2.4'/%3E%3C/svg%3E" mode="aspectFit"></image>
-            <text class="addr-text text-ellipsis">{{guide.address}}</text>
+      <!-- 活动评分 grid -->
+      <view class="score-grid">
+        <view class="score-item" wx:for="{{scoreItems}}" wx:key="key">
+          <text class="score-emoji">{{item.emoji}}</text>
+          <text class="score-label">{{item.label}}</text>
+          <view class="stars-row">
+            <view
+              wx:for="{{item.stars}}"
+              wx:key="*this"
+              wx:for-item="star"
+              wx:for-index="sIdx"
+              class="star star-{{star}}"
+            ></view>
           </view>
-
-          <view class="guide-tags" wx:if="{{guide.tags && guide.tags.length > 0}}">
-            <view class="tag tag-info" wx:for="{{guide.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</view>
-          </view>
-
-          <text class="guide-desc text-clamp-2" wx:if="{{guide.summary}}">{{guide.summary}}</text>
-
-          <view class="guide-actions">
-            <button
-              class="action-btn nav-btn"
-              data-latitude="{{guide.location && guide.location.latitude}}"
-              data-longitude="{{guide.location && guide.location.longitude}}"
-              data-title="{{guide.title}}"
-              data-address="{{guide.address}}"
-              catchtap="navigate"
-            >
-              <image class="action-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='3 11 22 2 13 21 11 13 3 11'/%3E%3C/svg%3E" mode="aspectFit"></image>
-              <text>导航</text>
-            </button>
-            <button
-              class="action-btn fav-btn {{guide.isFavorited ? 'favorited' : ''}}"
-              data-id="{{guide._id}}"
-              catchtap="toggleFavorite"
-            >
-              <image wx:if="{{guide.isFavorited}}" class="action-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFFFFF' stroke='%23FFFFFF' stroke-width='1.6'%3E%3Cpath d='M20.84 4.61 a 5.5 5.5 0 0 0 -7.78 0 L 12 5.67 l -1.06 -1.06 a 5.5 5.5 0 0 0 -7.78 7.78 l 1.06 1.06 L 12 21.23 l 7.78 -7.78 1.06 -1.06 a 5.5 5.5 0 0 0 0 -7.78 z'/%3E%3C/svg%3E" mode="aspectFit"></image>
-              <image wx:else class="action-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B6F3F' stroke-width='2'%3E%3Cpath d='M20.84 4.61 a 5.5 5.5 0 0 0 -7.78 0 L 12 5.67 l -1.06 -1.06 a 5.5 5.5 0 0 0 -7.78 7.78 l 1.06 1.06 L 12 21.23 l 7.78 -7.78 1.06 -1.06 a 5.5 5.5 0 0 0 0 -7.78 z'/%3E%3C/svg%3E" mode="aspectFit"></image>
-              <text>{{guide.isFavorited ? '已收藏' : '收藏'}}</text>
-            </button>
-          </view>
+          <text class="score-value">{{item.valueDisplay}}</text>
         </view>
       </view>
     </view>
+  </view>
+
+  <!-- ============ 模块 B · 潮汐曲线 ============ -->
+  <view class="section tide-section">
+    <view class="section-head">
+      <text class="section-title">潮汐 · {{tide.date || '今日'}}</text>
+      <text class="section-source" wx:if="{{tide.station}}">{{tide.station}}</text>
+    </view>
+
+    <block wx:if="{{tideLoading && !tide}}">
+      <skeleton-card></skeleton-card>
+    </block>
+
+    <block wx:elif="{{tideError && !tide}}">
+      <view class="module-error">
+        <text>{{tideError}}</text>
+        <view class="retry-btn" data-module="tide" bindtap="retryModule">重试</view>
+      </view>
+    </block>
+
+    <view class="tide-card" wx:elif="{{tide}}">
+      <view class="tide-current" wx:if="{{tide.currentHeight != null}}">
+        <text class="tide-current-label">现在</text>
+        <text class="tide-current-value">{{tide.currentHeight}}m</text>
+        <text class="tide-current-trend">
+          {{tide.currentTrend === 'rising' ? '↑ 涨潮' : (tide.currentTrend === 'falling' ? '↓ 退潮' : '— 平潮')}}
+        </text>
+      </view>
+
+      <canvas
+        type="2d"
+        id="tide-canvas"
+        class="tide-canvas"
+      ></canvas>
+
+      <view class="tide-key-times">
+        <view class="key-time-item type-{{item.type}}" wx:for="{{tideKeyTimes}}" wx:key="time">
+          <text class="kt-icon">{{item.typeIcon}}</text>
+          <view class="kt-info">
+            <text class="kt-time">{{item.time}}</text>
+            <text class="kt-label">{{item.typeLabel}} {{item.height}}m</text>
+          </view>
+        </view>
+      </view>
+
+      <text class="tide-source-note">数据来源:WorldTides · 仅供参考</text>
+    </view>
+  </view>
+
+  <!-- ============ 模块 C · 渡轮班次 ============ -->
+  <view class="section ferries-section">
+    <view class="section-head">
+      <text class="section-title">渡轮班次</text>
+    </view>
+
+    <block wx:if="{{ferriesLoading && !ferries}}">
+      <skeleton-card></skeleton-card>
+    </block>
+
+    <block wx:elif="{{ferriesError && (!ferries || ferries.length === 0)}}">
+      <view class="module-error">
+        <text>{{ferriesError}}</text>
+        <view class="retry-btn" data-module="ferries" bindtap="retryModule">重试</view>
+      </view>
+    </block>
+
+    <view class="ferry-card" wx:for="{{ferries}}" wx:key="_id" wx:for-item="ferry">
+      <view class="ferry-head">
+        <text class="ferry-route">{{ferry.route}}</text>
+        <text class="ferry-mode-tag" wx:if="{{ferry.isHoliday}}">节假日班次</text>
+      </view>
+
+      <view class="ferry-list">
+        <view
+          class="ferry-row {{t.isPast ? 'past' : ''}} {{idx === ferry.nextIndex ? 'next' : ''}}"
+          wx:for="{{ferry.todayList}}"
+          wx:key="departure"
+          wx:for-item="t"
+          wx:for-index="idx"
+        >
+          <view class="ferry-time-col">
+            <text class="ferry-departure">{{t.departure}}</text>
+            <text class="ferry-arrow">→</text>
+            <text class="ferry-arrival">{{t.arrival}}</text>
+          </view>
+          <view class="next-badge" wx:if="{{idx === ferry.nextIndex}}">NEXT</view>
+        </view>
+      </view>
+
+      <text class="ferry-disclaimer">{{ferry.disclaimer}}</text>
+    </view>
+  </view>
+
+  <!-- ============ 模块 D · 应急 POI ============ -->
+  <view class="section emergency-section">
+    <view class="section-head">
+      <text class="section-title">应急联系</text>
+      <view class="loc-btn-mini" wx:if="{{!hasUserLocation}}" bindtap="useMyLocation">
+        <image class="loc-icon-mini" src="/images/icons/pin.svg" mode="aspectFit"></image>
+        <text>按距离排序</text>
+      </view>
+      <text class="section-source" wx:elif="{{hasUserLocation}}">📍 已按距离排序</text>
+    </view>
+
+    <block wx:if="{{emergencyLoading && !emergency}}">
+      <skeleton-card></skeleton-card>
+    </block>
+
+    <block wx:elif="{{emergencyError && !emergency}}">
+      <view class="module-error">
+        <text>{{emergencyError}}</text>
+        <view class="retry-btn" data-module="emergency" bindtap="retryModule">重试</view>
+      </view>
+    </block>
+
+    <block wx:elif="{{emergency}}">
+      <!-- 分类 tab -->
+      <view class="emergency-tabs">
+        <view
+          class="em-tab {{activeEmergencyCat === cat ? 'active' : ''}}"
+          wx:for="{{emergencyCategoryOrder}}"
+          wx:key="*this"
+          wx:for-item="cat"
+          data-cat="{{cat}}"
+          bindtap="selectEmergencyCat"
+        >{{emergencyCategoryLabels[cat]}}</view>
+      </view>
+
+      <!-- 当前分类列表 -->
+      <view class="emergency-list">
+        <view
+          class="em-row"
+          wx:for="{{emergency.grouped[activeEmergencyCat]}}"
+          wx:key="_id"
+          wx:for-item="poi"
+        >
+          <view class="em-info">
+            <text class="em-name">{{poi.name}}</text>
+            <text class="em-address text-ellipsis" wx:if="{{poi.address}}">{{poi.address}}</text>
+            <text class="em-distance" wx:if="{{poi.distanceDisplay}}">📍 {{poi.distanceDisplay}}</text>
+          </view>
+          <view
+            class="em-phone-btn {{!poi.phone ? 'disabled' : ''}}"
+            wx:if="{{poi.phone}}"
+            data-phone="{{poi.phone}}"
+            bindtap="callPhone"
+            bindlongpress="copyPhone"
+          >
+            <image class="phone-icon" src="/images/icons/phone.svg" mode="aspectFit"></image>
+            <text>{{poi.phone}}</text>
+          </view>
+        </view>
+
+        <view class="empty-cat" wx:if="{{!emergency.grouped[activeEmergencyCat] || emergency.grouped[activeEmergencyCat].length === 0}}">
+          <text>该分类暂无数据</text>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="page-footer">
+    <text>数据来源:QWeather · WorldTides · 公开整理</text>
+    <text wx:if="{{cachedAt}}">缓存于 {{cachedAt}}</text>
   </view>
 </view>

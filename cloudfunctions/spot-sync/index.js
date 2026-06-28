@@ -122,10 +122,18 @@ async function syncWeather() {
     if (!latitude || !longitude) { stats.failed++; continue; }
     const now = await qweather.getNow(longitude, latitude);
     const forecast = await qweather.get7d(longitude, latitude);
-    if (now || forecast.length) {
+    // forecast 现在是 { forecast7d, forecast3d } 双字段(qweather.js 改造后)
+    const f7 = forecast.forecast7d || [];
+    const f3 = forecast.forecast3d || [];
+    if (now || f7.length) {
       await db.collection('guides').doc(spot._id).update({
         data: {
-          weather: { now, forecast3d: forecast, updatedAt: new Date().toISOString() },
+          weather: {
+            now,
+            forecast3d: f3,    // 向后兼容旧消费者(spot 页 / route-detail 等)
+            forecast7d: f7,    // info-board 仪表盘消费完整 7 天
+            updatedAt: new Date().toISOString()
+          },
           syncedAt: new Date()
         }
       });

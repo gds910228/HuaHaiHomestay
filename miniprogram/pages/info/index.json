@@ -1,9 +1,9 @@
 {
   "usingComponents": {
     "skeleton-card": "/components/skeleton-card/index",
-    "loading-state": "/components/loading-state/index",
-    "optimized-image": "/components/optimized-image/index",
-    "empty-state": "/components/empty-state/index"
+    "loading-state": "/components/loading-state/index"
   },
-  "navigationBarTitleText": "实用信息"
+  "navigationBarTitleText": "实用信息",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
 }

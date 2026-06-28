@@ -1,0 +1,10 @@
+{
+  "name": "info-board",
+  "version": "1.0.0",
+  "description": "南澳岛实用信息聚合:天气 / 潮汐 / 渡轮 / 应急 POI",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "axios": "^1.6.7"
+  }
+}

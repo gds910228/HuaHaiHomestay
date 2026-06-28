@@ -90,14 +90,17 @@ async function getNow(lng, lat) {
 }
 
 /**
- * 未来 7 天天气,取前 3 天
+ * 未来 7 天天气
+ * 历史:旧版本 slice(0, 3) 只取前 3 天给 spot 卡片;现在保留完整 7 天供 info 仪表盘
+ * 返回 { forecast7d, forecast3d } 双字段,forecast3d 是 forecast7d 的前 3 天别名
+ * 旧消费者(spot 页 weatherBrief / fallback)仍可读 forecast3d 不破
  */
 async function get7d(lng, lat) {
   try {
     const data = await request('/weather/7d', {
       location: `${Number(lng).toFixed(2)},${Number(lat).toFixed(2)}`
     });
-    return (data.daily || []).slice(0, 3).map(d => ({
+    const all7d = (data.daily || []).map(d => ({
       date: d.fxDate,
       tempMax: d.tempMax,
       tempMin: d.tempMin,
@@ -105,11 +108,17 @@ async function get7d(lng, lat) {
       iconDay: d.iconDay,
       iconDayUrl: d.iconDay ? `https://a.hecdn.net/img/sdk/qweather/icon/${d.iconDay}.svg` : '',
       windScaleDay: d.windScaleDay,
-      windDirDay: d.windDirDay
+      windDirDay: d.windDirDay,
+      // info 仪表盘多用的字段
+      humidity: d.humidity,
+      uvIndex: d.uvIndex,
+      sunrise: d.sunrise,
+      sunset: d.sunset
     }));
+    return { forecast7d: all7d, forecast3d: all7d.slice(0, 3) };
   } catch (err) {
     console.warn('[qweather] 7d failed:', err.message);
-    return [];
+    return { forecast7d: [], forecast3d: [] };
   }
 }
 
