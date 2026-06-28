@@ -11,21 +11,39 @@ const cloud = require('wx-server-sdk');
 const db = cloud.database();
 
 async function getEmergencyPOIs(userLocation) {
-  const res = await db.collection('emergency_pois')
-    .orderBy('weight', 'desc')
-    .limit(50)
-    .get();
+  let res;
+  try {
+    res = await db.collection('emergency_pois')
+      .orderBy('weight', 'desc')
+      .limit(100)
+      .get();
+  } catch (err) {
+    const msg = (err && (err.errMsg || err.message)) || '';
+    if (err.errCode === -502005 || /not exist/i.test(msg)) {
+      return { grouped: {}, list: [], hasLocation: !!userLocation };
+    }
+    throw err;
+  }
   const pois = res.data || [];
 
-  // 清洗电话号码:留数字 / - / 空格视为可拨号,前端用 makePhoneCall 时再做最终清洗
+  // 拆多号码(空格 / 斜杠 / 顿号 分隔)→ phoneList 数组
   pois.forEach(p => {
-    p.phoneClean = String(p.phone || '').replace(/[^\d]/g, '');
+    const raw = String(p.phone || '');
+    // 一个 POI 可能挂多个号码,如 '0754-89802123 / 0754-86803033'
+    const parts = raw.split(/\s*[/、,]\s*/).map(s => s.trim()).filter(Boolean);
+    p.phoneList = parts.map(s => ({
+      raw: s,
+      clean: s.replace(/[^\d]/g, '')  // 拨号用的纯数字
+    }));
+    // 兼容旧字段:phone 保留首号码
+    p.phone = parts[0] || '';
+    p.phoneClean = p.phoneList[0] ? p.phoneList[0].clean : '';
   });
 
   // 有定位则附加距离 + 排序
   if (userLocation && isFinite(userLocation.latitude) && isFinite(userLocation.longitude)) {
     pois.forEach(p => {
-      if (isFinite(p.latitude) && isFinite(p.longitude)) {
+      if (isFinite(p.latitude) && isFinite(p.longitude) && p.latitude !== 0) {
         p.distanceKm = haversineKm(
           userLocation.latitude, userLocation.longitude,
           p.latitude, p.longitude
@@ -36,6 +54,8 @@ async function getEmergencyPOIs(userLocation) {
         p.distanceDisplay = '';
       }
     });
+    // 在每个 category 内部按距离重排(category 间顺序保持 weight)
+    // 简单实现:整体按 distance 排,无 distance 的放后面
     pois.sort((a, b) => {
       const ad = a.distanceKm == null ? Infinity : a.distanceKm;
       const bd = b.distanceKm == null ? Infinity : b.distanceKm;
@@ -43,7 +63,7 @@ async function getEmergencyPOIs(userLocation) {
     });
   }
 
-  // 按 category 分组返回(前端按分组渲染卡片)
+  // 按 category 分组
   const grouped = {};
   for (const p of pois) {
     const cat = p.category || 'general';

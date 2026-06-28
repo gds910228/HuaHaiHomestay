@@ -111,14 +111,21 @@
         </view>
       </view>
 
-      <text class="tide-source-note">数据来源:WorldTides · 仅供参考</text>
+      <text class="tide-source-note">
+        {{tide.source === 'manual' ? '数据来源:手工录入 · ' + (tide.station || '官方潮汐表') :
+          (tide.source === 'chaoxibiao' ? '数据来源:大鱼潮汐表 · ' + (tide.lunar || '') + (tide.tideType ? ' · ' + tide.tideType : '') :
+            (tide.source === 'harmonic' ? '本地谐波算法(±30-60min)· 仅供参考' :
+              (tide.source === 'seed' ? '⚠ 可能存在偏差 · 请以官方为准' :
+                '数据来源:WorldTides · 仅供参考')))}}
+      </text>
     </view>
   </view>
 
   <!-- ============ 模块 C · 渡轮班次 ============ -->
   <view class="section ferries-section">
     <view class="section-head">
-      <text class="section-title">渡轮班次</text>
+      <text class="section-title">渡轮 · 莱长渡口</text>
+      <text class="section-source" wx:if="{{ferries[0].isHoliday}}">节假日加密班次</text>
     </view>
 
     <block wx:if="{{ferriesLoading && !ferries}}">
@@ -133,25 +140,118 @@
     </block>
 
     <view class="ferry-card" wx:for="{{ferries}}" wx:key="_id" wx:for-item="ferry">
-      <view class="ferry-head">
+      <view class="ferry-route-head">
         <text class="ferry-route">{{ferry.route}}</text>
-        <text class="ferry-mode-tag" wx:if="{{ferry.isHoliday}}">节假日班次</text>
       </view>
 
-      <view class="ferry-list">
-        <view
-          class="ferry-row {{t.isPast ? 'past' : ''}} {{idx === ferry.nextIndex ? 'next' : ''}}"
-          wx:for="{{ferry.todayList}}"
-          wx:key="departure"
-          wx:for-item="t"
-          wx:for-index="idx"
-        >
-          <view class="ferry-time-col">
-            <text class="ferry-departure">{{t.departure}}</text>
-            <text class="ferry-arrow">→</text>
-            <text class="ferry-arrival">{{t.arrival}}</text>
+      <!-- 子 tab:班次 / 收费 / 联系 -->
+      <view class="ferry-tabs">
+        <view class="ferry-tab {{ferryTab === 'schedule' ? 'active' : ''}}" data-tab="schedule" bindtap="selectFerryTab">班次</view>
+        <view class="ferry-tab {{ferryTab === 'price' ? 'active' : ''}}" data-tab="price" bindtap="selectFerryTab">收费</view>
+        <view class="ferry-tab {{ferryTab === 'contact' ? 'active' : ''}}" data-tab="contact" bindtap="selectFerryTab">联系 / 提醒</view>
+      </view>
+
+      <!-- Tab 1: 班次 -->
+      <view class="ferry-tab-pane" wx:if="{{ferryTab === 'schedule'}}">
+        <!-- 进岛 -->
+        <view class="ferry-direction-block">
+          <view class="ferry-direction-head">
+            <text class="ferry-dir-icon">→</text>
+            <text class="ferry-dir-name">进岛(莱芜 → 长山尾)</text>
           </view>
-          <view class="next-badge" wx:if="{{idx === ferry.nextIndex}}">NEXT</view>
+          <view class="ferry-trip-list">
+            <view
+              class="ferry-trip {{t.isPast ? 'past' : ''}} {{idx === ferry.toIslandNextIdx ? 'next' : ''}}"
+              wx:for="{{ferry.toIsland}}"
+              wx:key="departure"
+              wx:for-item="t"
+              wx:for-index="idx"
+            >
+              <text class="ferry-time">{{t.departure}}</text>
+              <text class="ferry-sell-info" wx:if="{{t.sellStart}}">售 {{t.sellStart}}~{{t.departure}}</text>
+              <view class="next-badge" wx:if="{{idx === ferry.toIslandNextIdx}}">NEXT</view>
+              <view class="holiday-badge" wx:if="{{t.isHolidayExtra}}">假日加班</view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 出岛 -->
+        <view class="ferry-direction-block">
+          <view class="ferry-direction-head">
+            <text class="ferry-dir-icon ferry-dir-back">←</text>
+            <text class="ferry-dir-name">出岛(长山尾 → 莱芜)</text>
+          </view>
+          <view class="ferry-trip-list">
+            <view
+              class="ferry-trip {{t.isPast ? 'past' : ''}} {{idx === ferry.toMainlandNextIdx ? 'next' : ''}}"
+              wx:for="{{ferry.toMainland}}"
+              wx:key="departure"
+              wx:for-item="t"
+              wx:for-index="idx"
+            >
+              <text class="ferry-time">{{t.departure}}</text>
+              <view class="next-badge" wx:if="{{idx === ferry.toMainlandNextIdx}}">NEXT</view>
+              <view class="holiday-badge" wx:if="{{t.isHolidayExtra}}">假日加班</view>
+            </view>
+          </view>
+        </view>
+
+        <text class="ferry-note" wx:if="{{ferry.ticketingNote}}">{{ferry.ticketingNote}}</text>
+      </view>
+
+      <!-- Tab 2: 收费 -->
+      <view class="ferry-tab-pane" wx:if="{{ferryTab === 'price'}}">
+        <view class="price-table">
+          <view
+            class="price-row {{p.highlight ? 'highlight' : ''}}"
+            wx:for="{{ferry.prices}}"
+            wx:key="item"
+            wx:for-item="p"
+          >
+            <text class="price-item">{{p.item}}</text>
+            <view class="price-amount-col">
+              <text class="price-amount">¥{{p.amount}}</text>
+              <text class="price-unit">{{p.unit}}{{p.suffix || ''}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="price-notes">
+          <view class="price-note-row" wx:for="{{ferry.priceNotes}}" wx:key="*this">
+            <text class="note-dot">·</text>
+            <text>{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Tab 3: 联系 + 出行提醒 -->
+      <view class="ferry-tab-pane" wx:if="{{ferryTab === 'contact'}}">
+        <view class="contact-list">
+          <view
+            class="contact-row"
+            wx:for="{{ferry.contacts}}"
+            wx:key="phone"
+            data-phone="{{item.phone}}"
+            bindtap="callPhone"
+            bindlongpress="copyPhone"
+          >
+            <view class="contact-info">
+              <text class="contact-name">{{item.name}}</text>
+              <text class="contact-phone">{{item.phone}}</text>
+            </view>
+            <image class="contact-icon" src="/images/icons/phone.svg" mode="aspectFit"></image>
+          </view>
+        </view>
+
+        <view class="official-account" wx:if="{{ferry.officialAccount}}">
+          <text class="oa-label">📌 关注公众号获取最新通知:</text>
+          <text class="oa-name">「{{ferry.officialAccount}}」</text>
+        </view>
+
+        <view class="tip-list">
+          <view class="tip-row" wx:for="{{ferry.tips}}" wx:key="title">
+            <text class="tip-title">{{item.title}}</text>
+            <text class="tip-content">{{item.content}}</text>
+          </view>
         </view>
       </view>
 
@@ -159,10 +259,10 @@
     </view>
   </view>
 
-  <!-- ============ 模块 D · 应急 POI ============ -->
+  <!-- ============ 模块 D · 应急联系 ============ -->
   <view class="section emergency-section">
     <view class="section-head">
-      <text class="section-title">应急联系</text>
+      <text class="section-title">应急 & 便民</text>
       <view class="loc-btn-mini" wx:if="{{!hasUserLocation}}" bindtap="useMyLocation">
         <image class="loc-icon-mini" src="/images/icons/pin.svg" mode="aspectFit"></image>
         <text>按距离排序</text>
@@ -182,8 +282,8 @@
     </block>
 
     <block wx:elif="{{emergency}}">
-      <!-- 分类 tab -->
-      <view class="emergency-tabs">
+      <!-- 分类 tab(水平滚动) -->
+      <scroll-view class="emergency-tabs" scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}">
         <view
           class="em-tab {{activeEmergencyCat === cat ? 'active' : ''}}"
           wx:for="{{emergencyCategoryOrder}}"
@@ -191,8 +291,11 @@
           wx:for-item="cat"
           data-cat="{{cat}}"
           bindtap="selectEmergencyCat"
-        >{{emergencyCategoryLabels[cat]}}</view>
-      </view>
+        >
+          <text>{{emergencyCategoryLabels[cat]}}</text>
+          <text class="em-tab-count" wx:if="{{emergency.grouped[cat] && emergency.grouped[cat].length > 0}}">{{emergency.grouped[cat].length}}</text>
+        </view>
+      </scroll-view>
 
       <!-- 当前分类列表 -->
       <view class="emergency-list">
@@ -204,18 +307,25 @@
         >
           <view class="em-info">
             <text class="em-name">{{poi.name}}</text>
-            <text class="em-address text-ellipsis" wx:if="{{poi.address}}">{{poi.address}}</text>
+            <text class="em-subtitle text-ellipsis" wx:if="{{poi.subtitle}}">{{poi.subtitle}}</text>
+            <text class="em-address text-ellipsis" wx:if="{{poi.address && poi.address !== '全国统一' && poi.address !== '南澳县旅游服务' && poi.address !== '南澳县政府'}}">{{poi.address}}</text>
             <text class="em-distance" wx:if="{{poi.distanceDisplay}}">📍 {{poi.distanceDisplay}}</text>
           </view>
-          <view
-            class="em-phone-btn {{!poi.phone ? 'disabled' : ''}}"
-            wx:if="{{poi.phone}}"
-            data-phone="{{poi.phone}}"
-            bindtap="callPhone"
-            bindlongpress="copyPhone"
-          >
-            <image class="phone-icon" src="/images/icons/phone.svg" mode="aspectFit"></image>
-            <text>{{poi.phone}}</text>
+
+          <!-- 多号码:横排,每个独立可点 -->
+          <view class="em-phone-list" wx:if="{{poi.phoneList && poi.phoneList.length > 0}}">
+            <view
+              class="em-phone-btn"
+              wx:for="{{poi.phoneList}}"
+              wx:key="raw"
+              wx:for-item="ph"
+              data-phone="{{ph.raw}}"
+              catchtap="callPhone"
+              catchlongpress="copyPhone"
+            >
+              <image class="phone-icon" src="/images/icons/phone.svg" mode="aspectFit"></image>
+              <text>{{ph.raw}}</text>
+            </view>
           </view>
         </view>
 

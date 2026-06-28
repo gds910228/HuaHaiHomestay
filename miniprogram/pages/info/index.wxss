@@ -288,7 +288,7 @@
 
 .tide-canvas {
   width: 100%;
-  height: 240rpx;
+  height: 320rpx;
   background: rgba(30, 82, 102, 0.02);
   border-radius: var(--radius-md);
 }
@@ -356,77 +356,120 @@
 }
 .ferry-card:first-child { margin-top: 0; }
 
-.ferry-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.ferry-route-head {
   margin-bottom: var(--space-md);
 }
 
 .ferry-route {
   font-size: var(--font-md);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.3rpx;
 }
 
-.ferry-mode-tag {
-  padding: 4rpx 14rpx;
-  background: var(--cat-info-soft, rgba(232, 154, 60, 0.15));
-  color: var(--cat-info);
+/* 子 Tab(班次/收费/联系) */
+.ferry-tabs {
+  display: flex;
+  gap: 8rpx;
+  padding: 4rpx;
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+}
+
+.ferry-tab {
+  flex: 1;
+  text-align: center;
+  padding: 12rpx 0;
   font-size: var(--font-xs);
-  font-weight: 600;
-  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
   letter-spacing: 0.5rpx;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
-.ferry-list {
+.ferry-tab.active {
+  background: var(--bg-surface);
+  color: var(--cat-info);
+  font-weight: 700;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.05);
+}
+
+.ferry-tab-pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* 进岛 / 出岛 方向块 */
+.ferry-direction-block {
   display: flex;
   flex-direction: column;
   gap: 8rpx;
 }
 
-.ferry-row {
+.ferry-direction-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 14rpx 18rpx;
+  gap: 8rpx;
+  padding: 6rpx 0;
+}
+
+.ferry-dir-icon {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--cat-info);
+  width: 36rpx;
+  text-align: center;
+}
+
+.ferry-dir-icon.ferry-dir-back { color: var(--text-secondary); }
+
+.ferry-dir-name {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 班次行(单方向) */
+.ferry-trip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.ferry-trip {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 12rpx 16rpx;
   background: var(--bg-muted);
   border-radius: var(--radius-sm);
   position: relative;
 }
 
-.ferry-row.past {
-  opacity: 0.4;
-}
+.ferry-trip.past { opacity: 0.4; }
 
-.ferry-row.next {
+.ferry-trip.next {
   background: rgba(232, 154, 60, 0.12);
   border-left: 4rpx solid var(--cat-info);
 }
 
-.ferry-time-col {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-  font-variant-numeric: tabular-nums;
-}
-
-.ferry-departure {
-  font-size: var(--font-sm);
+.ferry-time {
+  font-size: var(--font-md);
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.5rpx;
+  font-variant-numeric: tabular-nums;
+  min-width: 110rpx;
 }
 
-.ferry-arrow {
+.ferry-sell-info {
+  flex: 1;
+  font-size: var(--font-xs);
   color: var(--text-tertiary);
-  font-size: 22rpx;
-}
-
-.ferry-arrival {
-  font-size: var(--font-sm);
-  color: var(--text-secondary);
-  letter-spacing: 0.5rpx;
+  font-variant-numeric: tabular-nums;
 }
 
 .next-badge {
@@ -439,9 +482,190 @@
   letter-spacing: 1rpx;
 }
 
+.holiday-badge {
+  padding: 4rpx 10rpx;
+  background: var(--cat-route-soft);
+  color: var(--cat-route);
+  font-size: 20rpx;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+}
+
+.ferry-note {
+  display: block;
+  margin-top: 8rpx;
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+
+/* 价目表 */
+.price-table {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  margin-bottom: var(--space-md);
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12rpx;
+  padding: 12rpx 16rpx;
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+}
+
+.price-row.highlight {
+  background: rgba(232, 154, 60, 0.1);
+  border-left: 4rpx solid var(--cat-info);
+}
+
+.price-item {
+  flex: 1;
+  font-size: var(--font-xs);
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.price-amount-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2rpx;
+}
+
+.price-amount {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--cat-info);
+  font-variant-numeric: tabular-nums;
+}
+
+.price-unit {
+  font-size: 20rpx;
+  color: var(--text-tertiary);
+}
+
+.price-notes {
+  padding: 14rpx 16rpx;
+  background: #FFF8E8;
+  border-radius: var(--radius-sm);
+  border-left: 4rpx solid #F0C870;
+}
+
+.price-note-row {
+  display: flex;
+  gap: 4rpx;
+  font-size: var(--font-xs);
+  color: #8B6914;
+  line-height: 1.6;
+}
+
+.note-dot {
+  flex-shrink: 0;
+  color: #F0C870;
+}
+
+/* 联系 + 提醒 */
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  margin-bottom: var(--space-md);
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 14rpx 16rpx;
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+}
+
+.contact-row:active { background: var(--cat-info-soft, rgba(232, 154, 60, 0.15)); }
+
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rpx;
+}
+
+.contact-name {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+}
+
+.contact-phone {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--cat-info);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.3rpx;
+}
+
+.contact-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.official-account {
+  margin-bottom: var(--space-md);
+  padding: 14rpx 16rpx;
+  background: rgba(30, 82, 102, 0.06);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.oa-label {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+}
+
+.oa-name {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--cat-spot, #1E5266);
+}
+
+.tip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.tip-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  padding: 12rpx 16rpx;
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+}
+
+.tip-title {
+  font-size: var(--font-xs);
+  font-weight: 700;
+  color: var(--cat-info);
+  letter-spacing: 0.5rpx;
+}
+
+.tip-content {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
 .ferry-disclaimer {
   display: block;
   margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 2rpx solid var(--divider-color);
   font-size: 22rpx;
   color: var(--text-tertiary);
   line-height: 1.5;
@@ -472,14 +696,15 @@
 .emergency-tabs {
   display: flex;
   gap: 8rpx;
-  overflow-x: auto;
+  white-space: nowrap;
   padding-bottom: 4rpx;
   margin-bottom: var(--space-md);
 }
 
-.emergency-tabs::-webkit-scrollbar { display: none; }
-
 .em-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
   flex-shrink: 0;
   padding: 10rpx 20rpx;
   background: var(--bg-muted);
@@ -496,6 +721,19 @@
   font-weight: 600;
 }
 
+.em-tab-count {
+  font-size: 20rpx;
+  padding: 0 8rpx;
+  background: rgba(255,255,255,0.25);
+  border-radius: 8rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+.em-tab:not(.active) .em-tab-count {
+  background: var(--bg-surface);
+  color: var(--text-tertiary);
+}
+
 .emergency-list {
   display: flex;
   flex-direction: column;
@@ -504,7 +742,7 @@
 
 .em-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12rpx;
   padding: 14rpx 16rpx;
   background: var(--bg-muted);
@@ -525,9 +763,16 @@
   color: var(--text-primary);
 }
 
+.em-subtitle {
+  font-size: 22rpx;
+  color: var(--cat-info);
+  line-height: 1.4;
+}
+
 .em-address {
   font-size: 22rpx;
   color: var(--text-tertiary);
+  line-height: 1.4;
 }
 
 .em-distance {
@@ -537,15 +782,23 @@
   margin-top: 2rpx;
 }
 
-.em-phone-btn {
+/* 多电话:右侧 stack 排列 */
+.em-phone-list {
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  align-items: flex-end;
+}
+
+.em-phone-btn {
   display: inline-flex;
   align-items: center;
   gap: 6rpx;
-  padding: 10rpx 18rpx;
+  padding: 8rpx 14rpx;
   background: var(--cat-info);
   color: var(--text-white);
-  font-size: var(--font-xs);
+  font-size: 22rpx;
   font-weight: 600;
   border-radius: var(--radius-pill);
   letter-spacing: 0.3rpx;
@@ -554,15 +807,9 @@
 
 .em-phone-btn:active { transform: scale(0.95); opacity: 0.9; }
 
-.em-phone-btn.disabled {
-  background: var(--bg-muted);
-  color: var(--text-tertiary);
-  pointer-events: none;
-}
-
 .phone-icon {
-  width: 22rpx;
-  height: 22rpx;
+  width: 20rpx;
+  height: 20rpx;
   filter: brightness(0) invert(1);
 }
 

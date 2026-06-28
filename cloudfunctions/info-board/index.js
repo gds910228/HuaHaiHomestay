@@ -30,8 +30,21 @@ const ferries = require('./lib/ferries');
 const emergency = require('./lib/emergency');
 
 exports.main = async (event) => {
-  const type = (event && event.type) || 'all';
-  console.log(`[info-board] type=${type}`);
+  // 定时触发器:event = { Type:'Timer', Message:'<trigger name>', Time:'...' }
+  // 手动调用:event = { type:'xxx', ... }
+  let type;
+  if (event && event.Type === 'Timer') {
+    const triggerName = event.Message || '';
+    if (triggerName === 'prewarm' || triggerName === 'tidesPrewarmDaily') {
+      type = 'prewarmToday';
+    } else {
+      type = 'prewarmToday';  // 默认行为
+    }
+    console.log(`[info-board] timer trigger=${triggerName} → type=${type}`);
+  } else {
+    type = (event && event.type) || 'all';
+    console.log(`[info-board] manual call → type=${type}`);
+  }
 
   try {
     switch (type) {
@@ -55,6 +68,39 @@ exports.main = async (event) => {
         return { success: true, data: await seedTidesManual(event) };
       case 'seedAll':
         return { success: true, data: await seedAll() };
+      case 'prewarmToday':
+        // 定时触发:预拉今天的潮汐数据写 cache,用户白天访问无延迟
+        return { success: true, data: await prewarmToday() };
+      case 'probeTideSource':
+        // 数据源探针:在云函数控制台调一次,看哪个公开站点能拉到
+        return { success: true, data: await require('./lib/cnss-probe').probeAll() };
+      case 'probeTideSource2':
+        // 第二轮深挖:NMC 完整 HTML + NMEFC XHR API 探测
+        return { success: true, data: await require('./lib/cnss-probe2').probeAll() };
+      case 'probeChaoxibiao':
+        // 第三轮:chaoxibiao.net 探针(用户提供的高质量数据源)
+        return { success: true, data: await require('./lib/chaoxibiao-probe').probeAll() };
+      case 'probeChaoxibiao2':
+        // 第四轮:chaoxibiao 完整 HTML dump + XHR 端点探测
+        return { success: true, data: await require('./lib/chaoxibiao-probe2').probeAll() };
+      case 'fetchChaoxibiao':
+        // 单日拉 + 解析:event.date='YYYY-MM-DD' 缺省今天
+        return {
+          success: true,
+          data: await require('./lib/chaoxibiao').fetchDay(event && event.date)
+        };
+      case 'fetchChaoxibiaoBatch':
+        // 批量拉未来 N 天:event.startDate / event.days(默认 7)
+        return {
+          success: true,
+          data: await require('./lib/chaoxibiao').fetchDays(
+            event && event.startDate,
+            (event && event.days) || 7
+          )
+        };
+      case 'probeChaoxibiao3':
+        // 第五轮:找能拉未来日期的 URL 变种
+        return { success: true, data: await require('./lib/chaoxibiao-probe3').probeAll() };
       case 'inspect':
         return { success: true, data: await inspect() };
       default:
@@ -183,8 +229,19 @@ async function ensureCollection(db, name) {
   } catch (err) {
     const code = err && err.errCode;
     const msg = (err && (err.errMsg || err.message)) || '';
-    if (code === -502002 || /already exist/i.test(msg) || /existed/i.test(msg)) {
-      // 已存在,正常
+    // 集合已存在的几种表现(WeChat 云开发不同版本/不同后端实现不一致):
+    //  - errCode -501001 (新版,ResourceExist)
+    //  - errCode -502002 (老版)
+    //  - errMsg 含 'Table exist' / 'ResourceExist' / 'ALREADY_EXIST' / 'already exist' / 'existed'
+    if (
+      code === -501001 ||
+      code === -502002 ||
+      /Table exist/i.test(msg) ||
+      /ResourceExist/i.test(msg) ||
+      /ALREADY[_\s]?EXIST/i.test(msg) ||
+      /already.{0,3}exist/i.test(msg) ||
+      /existed/i.test(msg)
+    ) {
       return;
     }
     console.warn(`[ensureCollection] ${name} 创建失败(可能无权限或其他错误):`, msg);
@@ -300,6 +357,36 @@ async function seedAll() {
     emergency: await seedEmergency(),
     tides: await seedTides()
   };
+}
+
+/**
+ * 定时任务:预拉今天的潮汐数据
+ *
+ * 由定时触发器每天凌晨 0:30 触发(具体在云开发控制台配置)。
+ * 触发后调用 tide.getTide() 不传 date → 默认今天 → 内部走 chaoxibiao GET → 写 cache。
+ *
+ * 用户白天访问 info 页时,cache 已有今天数据,响应 < 100ms(原本需要 ~500ms HTTP)。
+ *
+ * 若 chaoxibiao 临时挂掉,getTide 内部会降级到谐波公式;cron 失败不影响用户访问。
+ */
+async function prewarmToday() {
+  const start = Date.now();
+  try {
+    const result = await tide.getTide();  // 默认今天
+    return {
+      ok: !!result,
+      source: result && result.source,
+      date: result && result.date,
+      extremeCount: result && result.extremes ? result.extremes.length : 0,
+      durationMs: Date.now() - start
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      errMsg: err.message,
+      durationMs: Date.now() - start
+    };
+  }
 }
 
 async function inspect() {

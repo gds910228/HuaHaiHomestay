@@ -29,21 +29,23 @@ Page({
     tideKeyTimes: [],          // [{ time, height, type, typeLabel }]
 
     // ===== 渡轮 =====
-    ferries: null,             // [{ route, todayList, nextIndex, ... }]
+    ferries: null,             // [{ route, toIsland, toMainland, prices, contacts, tips, ... }]
     ferriesLoading: true,
     ferriesError: '',
+    ferryTab: 'schedule',      // 'schedule' | 'price' | 'contact'
 
     // ===== 应急 POI =====
     emergency: null,
     emergencyLoading: true,
     emergencyError: '',
-    emergencyCategoryOrder: ['hospital', 'police', 'gas', 'repair', 'general'],
+    emergencyCategoryOrder: ['hospital', 'police', 'gas', 'general', 'travel-service', 'travel-agency'],
     emergencyCategoryLabels: {
       hospital: '🏥 医院',
       police: '👮 派出所',
       gas: '⛽ 加油',
-      repair: '🔧 修车',
-      general: '🆘 紧急救援'
+      general: '🆘 紧急救援',
+      'travel-service': '📞 旅游服务',
+      'travel-agency': '🏢 旅行社'
     },
     activeEmergencyCat: 'hospital',
     hasUserLocation: false
@@ -152,13 +154,10 @@ Page({
 
     // ----- 渡轮 -----
     const ferries = data.ferries;
-    const ferriesDecorated = Array.isArray(ferries)
-      ? ferries.map(decorateFerry)
-      : [];
     this.setData({
-      ferries: ferriesDecorated,
+      ferries: Array.isArray(ferries) ? ferries : [],
       ferriesLoading: false,
-      ferriesError: errMap.ferries || (ferriesDecorated.length === 0 ? '暂无班次数据' : '')
+      ferriesError: errMap.ferries || (!ferries || ferries.length === 0 ? '暂无班次数据' : '')
     });
 
     // ----- 应急 POI -----
@@ -265,6 +264,11 @@ Page({
     } catch (err) {
       this.setData({ [`${mod}Loading`]: false, [`${mod}Error`]: err.message || '加载失败' });
     }
+  },
+
+  // ===== 渡轮 Tab 切换 =====
+  selectFerryTab(e) {
+    this.setData({ ferryTab: e.currentTarget.dataset.tab });
   },
 
   // ===== 应急 POI 切换分类 =====
@@ -377,18 +381,8 @@ function buildWeatherDisplay(weather) {
 }
 
 function decorateFerry(f) {
-  // 找当前时间之后的第一班(nextIndex);已过班次给 isPast 标记
-  const todayList = f.todayList || [];
-  const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
-  let nextIndex = -1;
-  const decorated = todayList.map((t, i) => {
-    const [hh, mm] = String(t.departure || '').split(':').map(Number);
-    const tMin = (hh || 0) * 60 + (mm || 0);
-    const isPast = tMin < nowMin;
-    if (!isPast && nextIndex < 0) nextIndex = i;
-    return { ...t, isPast };
-  });
-  return { ...f, todayList: decorated, nextIndex };
+  // 已废弃:新 schema 由云函数 ferries.js 派生 toIsland/toMainland + nextIdx,前端直接用
+  return f;
 }
 
 function buildStarArray(score) {

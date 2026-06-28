@@ -72,7 +72,7 @@ function generateSeed() {
       height: Math.round((meanH + (e.height - meanH) * factor) * 10) / 10,
       type: e.type
     })).sort((a, b) => a.time.localeCompare(b.time));
-    result.push({ date, extremes, station: '南澳青澳湾(演示数据)' });
+    result.push({ date, extremes, station: '南澳青澳湾' });
   }
   return result;
 }

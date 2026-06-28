@@ -31,60 +31,115 @@ const TIDE_LNG = Number(process.env.TIDE_LNG) || 117.13;
  */
 async function getTide(date) {
   const target = date || todayYMD();
+  const isToday = target === todayYMD();
 
-  // 1. 命中缓存直接返(集合不存在视为未命中)
+  // 1. 命中 manual cache(用户用 seedTidesManual 录入的真实数据,精度最高)
   const cached = await safeQueryCache({ date: target });
-  if (cached) {
+  if (cached && cached.source === 'manual') {
     return decorate(cached);
   }
 
-  // 2. 未命中:优先看 seed-tides 是否覆盖该日期
-  const seedHit = trySeedTides(target);
-  if (seedHit) {
-    // 写一份到 cache(下次直接读 cache,无需重算插值)
-    await writeCache(seedHit);
-    return decorate(seedHit);
+  // 2. 命中 chaoxibiao cache 直接用(每天每个日期只 GET 一次,潮汐表预测一天内不变)
+  if (cached && cached.source === 'chaoxibiao') {
+    return decorate(cached);
   }
 
-  // 3. seed 也没有 → 调 WorldTides(需要 WORLDTIDES_KEY)
-  if (!process.env.WORLDTIDES_KEY) {
-    // 友好降级:返回 null + 通过 tideSourceHint 告诉前端原因
-    return null;
+  // 3. 目标日期是今天 → 实时 GET chaoxibiao(精度=官方,误差 < 分钟)
+  if (isToday) {
+    try {
+      const chaoxibiao = require('./chaoxibiao');
+      const day = await chaoxibiao.fetchDay();  // GET 今天
+      if (day && day.extremes && day.extremes.length >= 2) {
+        // 从 extremes 用 cos 半周期插值生成 96 点 heights(供 canvas 绘图)
+        const expanded = expandFromExtremes(target, day.extremes);
+        const result = {
+          date: target,
+          heights: expanded.heights,
+          extremes: expanded.extremes,
+          station: day.station,
+          lunar: day.lunar,
+          tideType: day.tideType,
+          benchmark: day.benchmark,
+          source: 'chaoxibiao',
+          cachedAt: new Date()
+        };
+        try { await writeCache(result); } catch (e) { /* ignore */ }
+        return decorate(result);
+      }
+    } catch (err) {
+      console.warn('[tide] chaoxibiao failed, fallback to harmonic:', err.message);
+    }
   }
+
+  // 4. 目标日期不是今天(POST 不通,网站只能拉当天)→ 走本地谐波公式
+  try {
+    const harmonic = require('./tide-harmonic').predictDay(target);
+    if (harmonic && harmonic.extremes && harmonic.extremes.length >= 2) {
+      const result = {
+        date: target,
+        heights: harmonic.heights.map(h => ({ dt: h.dt, date: h.date, height: h.height })),
+        extremes: harmonic.extremes.map(e => ({
+          dt: e.dt, date: e.date, height: e.height, type: e.type
+        })),
+        station: harmonic.station,
+        source: 'harmonic',
+        cachedAt: new Date()
+      };
+      // 谐波不写 cache:每次当场算 1ms,且日后若用户来访问当天,chaoxibiao 会接管覆盖
+      return decorate(result);
+    }
+  } catch (err) {
+    console.warn('[tide] harmonic predict failed:', err.message);
+  }
+
+  // 5. 谐波也失败 → cache 里的旧数据(seed 等)
+  if (cached) return decorate(cached);
+
+  // 6. 最后兜底:WorldTides(需 KEY,实际不会走到)
+  if (!process.env.WORLDTIDES_KEY) return null;
 
   let api;
   try {
     api = await worldtides.fetchTides({
-      lat: TIDE_LAT,
-      lng: TIDE_LNG,
-      date: target,
-      days: 7
+      lat: TIDE_LAT, lng: TIDE_LNG, date: target, days: 7
     });
   } catch (err) {
     throw err;
   }
 
-  // 4. 按日期切片写入 cache(7 天 = 7 条 doc)
   const byDate = {};
   for (const h of (api.heights || [])) {
     const dKey = ymdFromIsoDate(h.date);
-    if (!byDate[dKey]) byDate[dKey] = { date: dKey, heights: [], extremes: [], station: api.station };
+    if (!byDate[dKey]) byDate[dKey] = { date: dKey, heights: [], extremes: [], station: api.station, source: 'worldtides' };
     byDate[dKey].heights.push(h);
   }
   for (const e of (api.extremes || [])) {
     const dKey = ymdFromIsoDate(e.date);
-    if (!byDate[dKey]) byDate[dKey] = { date: dKey, heights: [], extremes: [], station: api.station };
+    if (!byDate[dKey]) byDate[dKey] = { date: dKey, heights: [], extremes: [], station: api.station, source: 'worldtides' };
     byDate[dKey].extremes.push(e);
   }
-
-  for (const dKey of Object.keys(byDate)) {
-    await writeCache(byDate[dKey]);
-  }
-
-  // 5. 返回目标日期的数据
+  for (const dKey of Object.keys(byDate)) await writeCache(byDate[dKey]);
   const targetData = byDate[target];
   if (!targetData) return null;
   return decorate(targetData);
+}
+
+/**
+ * 从 chaoxibiao 抓到的 extremes(4 个高低潮 HH:MM + 高度)展开为完整 96 点 heights
+ * 复用既有的 cos 半周期插值
+ */
+function expandFromExtremes(date, extremesSimple) {
+  const extremesNorm = extremesSimple
+    .map(e => ({
+      dt: hmToUnixSec(date, e.time),
+      date: `${date}T${e.time}:00+0800`,
+      height: Number(e.height),
+      type: e.type   // 'High' / 'Low'
+    }))
+    .sort((a, b) => a.dt - b.dt);
+
+  const heights = interpolateHeights(date, extremesNorm);
+  return { extremes: extremesNorm, heights };
 }
 
 /** catch -502005 的安全 cache 查询 */
@@ -123,8 +178,16 @@ async function ensureCacheTable() {
     await db.createCollection('tides_cache');
   } catch (err) {
     // 已存在 → ignore;其他错误也吞掉(避免 ensure 阻塞主流程,反正后续 add 会暴露真实错误)
+    const code = err && err.errCode;
     const msg = (err && (err.errMsg || err.message)) || '';
-    if (!/already exist|existed/i.test(msg) && err.errCode !== -502002) {
+    const isAlreadyExist =
+      code === -501001 ||
+      code === -502002 ||
+      /Table exist/i.test(msg) ||
+      /ResourceExist/i.test(msg) ||
+      /ALREADY[_\s]?EXIST/i.test(msg) ||
+      /already.{0,3}exist/i.test(msg);
+    if (!isAlreadyExist) {
       console.warn('[tide] createCollection tides_cache failed:', msg);
     }
   }
@@ -316,6 +379,7 @@ function decorate(doc) {
     heights,
     extremes,
     station: doc.station || null,
+    source: doc.source || 'worldtides',   // 'seed' | 'manual' | 'worldtides' — 前端用来判断是否演示数据
     cachedAt: doc.cachedAt,
     // 派生字段
     todayKeyTimes,

@@ -41,8 +41,8 @@ function drawTideChart(ctx, width, height, opts) {
     return;
   }
 
-  // 内边距:左 36(给 y label)右 12 上 24(给 high label)下 28(给 x 时刻刻度)
-  const pad = { l: 36, r: 12, t: 24, b: 28 };
+  // 内边距:左 36(给 y label)右 12 上 28(给高潮 label)下 44(给低潮 label + x 轴时间刻度)
+  const pad = { l: 36, r: 12, t: 28, b: 44 };
   const innerW = width - pad.l - pad.r;
   const innerH = height - pad.t - pad.b;
 
@@ -86,15 +86,16 @@ function drawTideChart(ctx, width, height, opts) {
     ctx.fillText(v.toFixed(1) + 'm', pad.l - 4, y);
   }
 
-  // ---- x 轴刻度(每 4h) ----
+  // ---- x 轴刻度(每 4h)放到 canvas 最底部,与低潮 label 分开 ----
   ctx.fillStyle = colors.axis;
   ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
+  ctx.textBaseline = 'bottom';
   ctx.font = '10px sans-serif';
   for (let h = 0; h <= 24; h += 4) {
     const ratio = h / 24;
     const x = pad.l + innerW * ratio;
-    ctx.fillText(String(h).padStart(2, '0') + ':00', x, pad.t + innerH + 4);
+    // 放在 canvas 最底部 2px,避开低潮 label 区域
+    ctx.fillText(String(h).padStart(2, '0') + ':00', x, height - 2);
   }
 
   // ---- 平滑曲线(Catmull-Rom → 三次贝塞尔)+ 填充 ----
@@ -140,11 +141,12 @@ function drawTideChart(ctx, width, height, opts) {
     ctx.closePath();
     ctx.fill();
 
-    // 时刻 + 潮高 label
-    const labelY = isHigh ? y - 8 : y + 14;
+    // 时刻 + 潮高 label(低潮 label 现在有 ~26px 空间,与底部 x 轴 label 留 ~16px 间隙)
+    const labelY = isHigh ? y - 8 : y + 16;
     const labelText = hmFromIso(e.date) + ' ' + Number(e.height).toFixed(1) + 'm';
     ctx.fillStyle = c;
     ctx.textBaseline = isHigh ? 'bottom' : 'top';
+    ctx.font = 'bold 10px sans-serif';
     ctx.fillText(labelText, x, labelY);
   });
 
