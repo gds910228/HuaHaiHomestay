@@ -169,7 +169,6 @@
             >
               <text class="ferry-time">{{t.departure}}</text>
               <text class="ferry-sell-info" wx:if="{{t.sellStart}}">售 {{t.sellStart}}~{{t.departure}}</text>
-              <view class="next-badge" wx:if="{{idx === ferry.toIslandNextIdx}}">NEXT</view>
               <view class="holiday-badge" wx:if="{{t.isHolidayExtra}}">假日加班</view>
             </view>
           </view>
@@ -190,7 +189,6 @@
               wx:for-index="idx"
             >
               <text class="ferry-time">{{t.departure}}</text>
-              <view class="next-badge" wx:if="{{idx === ferry.toMainlandNextIdx}}">NEXT</view>
               <view class="holiday-badge" wx:if="{{t.isHolidayExtra}}">假日加班</view>
             </view>
           </view>

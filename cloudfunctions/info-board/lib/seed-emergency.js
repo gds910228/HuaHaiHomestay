@@ -83,39 +83,43 @@ module.exports = [
     latitude: 23.4280, longitude: 116.9900,
     weight: 90
   },
+  {
+    category: 'gas',
+    name: '中国石化南澳后宅加油站',
+    address: '后宅镇龙地路口(进岛主干道旁)',
+    phone: '0754-86801866',
+    latitude: 23.4218, longitude: 116.9788,
+    weight: 85
+  },
+  {
+    category: 'gas',
+    name: '中国石油南澳深澳加油站',
+    address: '深澳镇环岛公路深澳路段',
+    phone: '0754-86870268',
+    subtitle: '环岛公路东段唯一站点',
+    latitude: 23.4408, longitude: 117.0930,
+    weight: 80
+  },
 
   // ==================== 🆘 紧急救援(全国通用) ====================
-  {
-    category: 'general',
-    name: '报警',
-    address: '全国统一',
-    phone: '110',
-    latitude: 0, longitude: 0,
-    weight: 100
-  },
-  {
-    category: 'general',
-    name: '火警',
-    address: '全国统一',
-    phone: '119',
-    latitude: 0, longitude: 0,
-    weight: 95
-  },
-  {
-    category: 'general',
-    name: '医疗急救',
-    address: '全国统一',
-    phone: '120',
-    latitude: 0, longitude: 0,
-    weight: 90
-  },
+  // 注:110/119/120 用户都熟悉,不再列入避免冗余
   {
     category: 'general',
     name: '海上遇险救援',
     address: '全国统一',
     phone: '12395',
+    subtitle: '海上事故 · 渔船遇险',
     latitude: 0, longitude: 0,
-    weight: 85
+    weight: 100
+  },
+  {
+    category: 'general',
+    name: '旅游投诉与咨询',
+    address: '全国统一',
+    phone: '12301',
+    subtitle: '旅游投诉 · 行程咨询',
+    latitude: 0, longitude: 0,
+    weight: 90
   },
 
   // ==================== 📞 旅游服务 & 便民咨询 ====================

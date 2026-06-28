@@ -146,7 +146,10 @@ async function seedFerries() {
   const db = cloud.database();
   await ensureCollection(db, 'ferries');
   const SEED = require('./lib/seed-ferries');
-  const stats = { inserted: 0, updated: 0, failed: 0 };
+  const stats = { inserted: 0, updated: 0, failed: 0, removed: 0 };
+  const validRoutes = new Set(SEED.map(f => f.route));
+
+  // 1. upsert 当前 SEED 数据
   for (const f of SEED) {
     try {
       const exist = await safeWhereGet(db, 'ferries', { route: f.route });
@@ -163,6 +166,21 @@ async function seedFerries() {
       stats.failed++;
     }
   }
+
+  // 2. 清理孤儿:route 不在当前 SEED 里的旧记录(如老 route '莱芜港 ↔ 南澳港' 升级后残留)
+  try {
+    const all = await db.collection('ferries').limit(50).get();
+    for (const doc of (all.data || [])) {
+      if (!validRoutes.has(doc.route)) {
+        await db.collection('ferries').doc(doc._id).remove();
+        stats.removed++;
+        console.log('[seedFerries] 删除孤儿记录:', doc.route);
+      }
+    }
+  } catch (err) {
+    console.warn('[seedFerries] 清理孤儿失败:', err.errMsg || err.message);
+  }
+
   return stats;
 }
 
@@ -170,7 +188,35 @@ async function seedEmergency() {
   const db = cloud.database();
   await ensureCollection(db, 'emergency_pois');
   const SEED = require('./lib/seed-emergency');
-  const stats = { inserted: 0, updated: 0, failed: 0 };
+  const stats = { inserted: 0, updated: 0, failed: 0, removed: 0, deduped: 0 };
+  const validKeys = new Set(SEED.map(p => `${p.category}|${p.name}`));
+
+  // 1. 先做"去重 + 清理孤儿":同一 (category, name) 只保留 1 条;不在 SEED 的全删
+  //    放在 upsert 之前,这样后续 upsert 一定走"更新已存在的那条"路径
+  try {
+    const all = await db.collection('emergency_pois').limit(200).get();
+    const seenKey = new Map(); // (category|name) → _id (保留的第一条)
+    for (const doc of (all.data || [])) {
+      const key = `${doc.category}|${doc.name}`;
+      const isOrphan = !validKeys.has(key);
+      const isDup = seenKey.has(key);
+      if (isOrphan) {
+        await db.collection('emergency_pois').doc(doc._id).remove();
+        stats.removed++;
+        console.log('[seedEmergency] 删孤儿:', doc.category, doc.name);
+      } else if (isDup) {
+        await db.collection('emergency_pois').doc(doc._id).remove();
+        stats.deduped++;
+        console.log('[seedEmergency] 删重复:', doc.category, doc.name, doc._id);
+      } else {
+        seenKey.set(key, doc._id);
+      }
+    }
+  } catch (err) {
+    console.warn('[seedEmergency] 清理孤儿/重复失败:', err.errMsg || err.message);
+  }
+
+  // 2. upsert 当前 SEED
   for (const p of SEED) {
     try {
       // 唯一键:name + category(避免重复 seed)
@@ -188,6 +234,7 @@ async function seedEmergency() {
       stats.failed++;
     }
   }
+
   return { ...stats, total: SEED.length };
 }
 

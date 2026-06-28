@@ -348,6 +348,7 @@
   color: var(--text-tertiary);
   text-align: center;
   letter-spacing: 0.5rpx;
+  margin-top: -15rpx;
 }
 
 /* === 模块 C · 渡轮 === */
@@ -449,12 +450,9 @@
   position: relative;
 }
 
-.ferry-trip.past { opacity: 0.4; }
-
-.ferry-trip.next {
-  background: rgba(232, 154, 60, 0.12);
-  border-left: 4rpx solid var(--cat-info);
-}
+/* 班次列表不再区分"已过"与"当前下一班":样式置空(class 仍由 wxml 输出,保留兼容) */
+.ferry-trip.past,
+.ferry-trip.next { /* intentionally empty */ }
 
 .ferry-time {
   font-size: var(--font-md);
