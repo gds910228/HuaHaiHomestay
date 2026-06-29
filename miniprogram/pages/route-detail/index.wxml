@@ -46,7 +46,6 @@
         markers="{{mapMarkers}}"
         polyline="{{mapPolyline}}"
         include-points="{{includePoints}}"
-        show-location="{{true}}"
         enable-rotate="{{false}}"
       ></map>
 
@@ -99,6 +98,15 @@
           <text class="ov-label">距离</text>
         </view>
       </view>
+    </view>
+
+    <!-- 内容声明:把"路线"定位成主理人分享的玩法,而非旅游服务 -->
+    <view class="ugc-disclaimer-card">
+      <view class="ugc-disclaimer-card-head">
+        <text class="ugc-disclaimer-card-icon">📖</text>
+        <text class="ugc-disclaimer-card-title">玩法分享 · 仅供参考</text>
+      </view>
+      <text class="ugc-disclaimer-card-body">行程由「画海」整理分享,具体游玩节奏请按自身情况调整。本小程序不提供代订机票/船票/门票,也不组织或销售旅游产品。</text>
     </view>
 
     <!-- Day 分组时间轴 -->

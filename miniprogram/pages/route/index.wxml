@@ -22,6 +22,12 @@
     <text>当前为离线数据,下拉刷新重试</text>
   </view>
 
+  <!-- 内容声明:把"路线"定位成主理人分享的玩法,而非旅游服务 -->
+  <view class="ugc-disclaimer">
+    <text class="ugc-disclaimer-icon">📖</text>
+    <text class="ugc-disclaimer-text">行程由「画海」整理分享,仅供玩法参考,不提供代订代办服务。</text>
+  </view>
+
   <!-- Day tab -->
   <view class="days-tab-bar">
     <view

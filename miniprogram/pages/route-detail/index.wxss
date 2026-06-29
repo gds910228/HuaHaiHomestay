@@ -463,3 +463,36 @@
 
 .ab-btn:active { transform: scale(0.97); opacity: 0.9; }
 .ab-icon { width: 28rpx; height: 28rpx; }
+
+/* === 内容声明卡:把行程定位为玩法分享(避旅游服务类目) === */
+.ugc-disclaimer-card {
+  margin: 0 var(--space-lg) var(--space-md);
+  padding: 24rpx 28rpx;
+  background: rgba(30, 82, 102, 0.05);
+  border: 2rpx solid rgba(30, 82, 102, 0.15);
+  border-radius: 16rpx;
+}
+
+.ugc-disclaimer-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 10rpx;
+}
+
+.ugc-disclaimer-card-icon {
+  font-size: 28rpx;
+}
+
+.ugc-disclaimer-card-title {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: #1E5266;
+}
+
+.ugc-disclaimer-card-body {
+  display: block;
+  font-size: var(--font-xs);
+  line-height: 1.65;
+  color: #6B7780;
+}

@@ -333,3 +333,27 @@
   width: 24rpx;
   height: 24rpx;
 }
+
+/* === 内容声明条:把"路线"定位为玩法分享(避旅游服务类目) === */
+.ugc-disclaimer {
+  margin: 0 var(--space-lg) var(--space-md);
+  padding: 14rpx 20rpx;
+  background: rgba(30, 82, 102, 0.06);
+  border-left: 4rpx solid var(--cat-route, #1E5266);
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: var(--font-xs);
+  color: #5A6B73;
+  line-height: 1.55;
+}
+
+.ugc-disclaimer-icon {
+  font-size: 24rpx;
+  flex-shrink: 0;
+}
+
+.ugc-disclaimer-text {
+  flex: 1;
+}
