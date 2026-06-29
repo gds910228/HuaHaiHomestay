@@ -336,6 +336,6 @@
 
   <view class="page-footer">
     <text>数据来源:QWeather · WorldTides · 公开整理</text>
-    <text wx:if="{{cachedAt}}">缓存于 {{cachedAt}}</text>
+    <text wx:if="{{cachedAtDisplay}}">缓存于 {{cachedAtDisplay}}</text>
   </view>
 </view>

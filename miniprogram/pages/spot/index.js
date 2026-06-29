@@ -32,9 +32,9 @@ Page({
   checkLocationSetting() {
     wx.getSetting({
       success: (res) => {
-        if (res.authSetting['scope.userLocation']) {
+        if (res.authSetting['scope.userFuzzyLocation']) {
           this.fetchUserLocation();
-        } else if (res.authSetting['scope.userLocation'] === false) {
+        } else if (res.authSetting['scope.userFuzzyLocation'] === false) {
           this.setData({ locationDenied: true });
         }
       }
@@ -43,8 +43,7 @@ Page({
 
   /** 用户点"开启定位"按钮 */
   requestLocation() {
-    wx.getLocation({
-      type: 'gcj02',
+    wx.getFuzzyLocation({
       success: (res) => {
         this.setData({
           userLocation: { latitude: res.latitude, longitude: res.longitude },
@@ -54,7 +53,7 @@ Page({
         this.loadGuides();
       },
       fail: (err) => {
-        console.warn('[景点] getLocation 失败', err);
+        console.warn('[景点] getFuzzyLocation 失败', err);
         if (err.errMsg && err.errMsg.indexOf('auth') > -1) {
           this.setData({ locationDenied: true });
           wx.showModal({
@@ -65,7 +64,7 @@ Page({
               if (r.confirm) {
                 wx.openSetting({
                   success: (s) => {
-                    if (s.authSetting['scope.userLocation']) {
+                    if (s.authSetting['scope.userFuzzyLocation']) {
                       this.fetchUserLocation();
                     }
                   }
@@ -82,8 +81,7 @@ Page({
 
   /** 已授权后静默拉位置 */
   fetchUserLocation() {
-    wx.getLocation({
-      type: 'gcj02',
+    wx.getFuzzyLocation({
       success: (res) => {
         this.setData({
           userLocation: { latitude: res.latitude, longitude: res.longitude },

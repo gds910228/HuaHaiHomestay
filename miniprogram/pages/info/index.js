@@ -11,6 +11,7 @@ Page({
     // ===== 总状态 =====
     isOffline: false,
     cachedAt: null,            // 缓存时间戳(展示"数据更新于 N 分钟前")
+    cachedAtDisplay: '',       // cachedAt 派生的相对/绝对时间字符串
 
     // ===== 天气 =====
     weather: null,             // { now, forecast7d, sourceSpot, updatedAt }
@@ -66,7 +67,7 @@ Page({
       const cached = wx.getStorageSync(CACHE_KEY);
       if (cached && cached.data && Date.now() - cached.ts < CACHE_TTL) {
         this.applyAll(cached.data, { fromCache: true });
-        this.setData({ cachedAt: cached.ts });
+        this.setData({ cachedAt: cached.ts, cachedAtDisplay: formatCachedAt(cached.ts) });
       }
     } catch (e) { /* ignore */ }
   },
@@ -91,7 +92,7 @@ Page({
       const data = res.result.data || {};
       wx.setStorageSync(CACHE_KEY, { data, ts: Date.now() });
       this.applyAll(data, { fromCache: false });
-      this.setData({ isOffline: false, cachedAt: Date.now() });
+      this.setData({ isOffline: false, cachedAt: Date.now(), cachedAtDisplay: formatCachedAt(Date.now()) });
 
       // 异步绘制潮汐曲线(等数据 setData 后下一帧)
       wx.nextTick(() => this.renderTideChart());
@@ -279,8 +280,7 @@ Page({
 
   // ===== "用我的位置排序" =====
   async useMyLocation() {
-    wx.getLocation({
-      type: 'gcj02',
+    wx.getFuzzyLocation({
       success: async (loc) => {
         this._lastLocation = { latitude: loc.latitude, longitude: loc.longitude };
         try {
@@ -362,6 +362,33 @@ Page({
 });
 
 // ---- 派生工具 ----
+
+/**
+ * 缓存时间戳 → 人类可读时间
+ * - < 60s    : "刚刚"
+ * - < 60min  : "N 分钟前"
+ * - < 24h    : "N 小时前"
+ * - 今年     : "M月D日 HH:mm"
+ * - 跨年     : "YYYY/M/D HH:mm"
+ */
+function formatCachedAt(ts) {
+  if (!ts || typeof ts !== 'number' || !isFinite(ts)) return '';
+  const now = Date.now();
+  const diff = now - ts;
+  if (diff < 0) return ''; // 异常时钟,直接不显示
+  const min = Math.floor(diff / 60000);
+  if (min < 1) return '刚刚';
+  if (min < 60) return `${min} 分钟前`;
+  const hour = Math.floor(min / 60);
+  if (hour < 24) return `${hour} 小时前`;
+  const d = new Date(ts);
+  const now_d = new Date(now);
+  const pad = n => (n < 10 ? '0' + n : '' + n);
+  if (d.getFullYear() === now_d.getFullYear()) {
+    return `${d.getMonth() + 1}月${d.getDate()}日 ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+  return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 function buildWeatherDisplay(weather) {
   const now = weather.now || {};

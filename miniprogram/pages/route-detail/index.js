@@ -324,8 +324,7 @@ Page({
       wx.showToast({ title: '路线点位不足', icon: 'none' });
       return;
     }
-    wx.getLocation({
-      type: 'gcj02',
+    wx.getFuzzyLocation({
       success: (loc) => {
         // 找最近 waypoint
         let nearestIdx = 0;
@@ -344,7 +343,7 @@ Page({
         });
       },
       fail: (err) => {
-        console.warn('[路线详情] getLocation 失败', err);
+        console.warn('[路线详情] getFuzzyLocation 失败', err);
         // 兜底:直接导航到第一个点
         const first = wps[0];
         wx.openLocation({
