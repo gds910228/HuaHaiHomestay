@@ -9,7 +9,7 @@ const STATUS_OPTIONS = [
 const CATEGORY_OPTIONS = [
   { value: '', label: '全部' },
   { value: 'food', label: '美食推荐' },
-  { value: 'route', label: '游玩路线' },
+  { value: 'route', label: '南澳玩法' },
   { value: 'info', label: '实用信息' },
   { value: 'spot', label: '景点打卡' }
 ];
@@ -17,7 +17,7 @@ const CATEGORY_OPTIONS = [
 // category 值 → 中文（兼容老数据：库里如果直接存中文也能显示）
 const CATEGORY_LABEL_MAP = {
   food: '美食推荐',
-  route: '游玩路线',
+  route: '南澳玩法',
   info: '实用信息',
   spot: '景点打卡'
 };

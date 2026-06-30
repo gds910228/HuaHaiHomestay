@@ -37,7 +37,7 @@ Page({
   onLoad(options) {
     const id = options.id;
     if (!id) {
-      this.setData({ loading: false, errorMsg: '路线 ID 缺失' });
+      this.setData({ loading: false, errorMsg: '玩法 ID 缺失' });
       return;
     }
     this.setData({ routeId: id });
@@ -74,7 +74,7 @@ Page({
         // 异步增加 view 数
         wx.cloud.callFunction({ name: 'huahai', data: { type: 'incrementViews', id } }).catch(() => {});
       } else {
-        throw new Error(res.result?.errMsg || '路线不存在');
+        throw new Error(res.result?.errMsg || '玩法不存在');
       }
     } catch (err) {
       console.error('[路线详情] 加载失败', err);
@@ -321,7 +321,7 @@ Page({
   navigateToNext() {
     const wps = (this.data.route && this.data.route.waypoints) || [];
     if (wps.length < 2) {
-      wx.showToast({ title: '路线点位不足', icon: 'none' });
+      wx.showToast({ title: '点位不足,无法导航', icon: 'none' });
       return;
     }
     wx.getFuzzyLocation({
@@ -360,7 +360,7 @@ Page({
 
   onShareAppMessage() {
     const r = this.data.route;
-    const title = r ? `${r.title} - 画海民宿` : '南澳岛游玩路线 - 画海';
+    const title = r ? `${r.title} - 画海民宿` : '南澳岛玩法分享 - 画海';
     return {
       title,
       path: `/pages/route-detail/index?id=${this.data.routeId}`,
@@ -371,7 +371,7 @@ Page({
   onShareTimeline() {
     const r = this.data.route;
     return {
-      title: r ? r.title : '南澳岛游玩路线',
+      title: r ? r.title : '南澳岛玩法分享',
       query: `id=${this.data.routeId}`,
       imageUrl: r && r.cover ? r.cover : '/images/logo.jpg'
     };

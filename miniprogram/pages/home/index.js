@@ -13,7 +13,7 @@ Page({
     categories: [
       { id: 'spot',  name: '景点打卡', desc: 'TOP · 必去地标',     iconSrc: ICON_SPOT  },
       { id: 'food',  name: '南澳味道', desc: 'TASTE · 海鲜与小食',  iconSrc: ICON_FOOD  },
-      { id: 'route', name: '游玩路线', desc: 'TRAIL · 环岛慢行',    iconSrc: ICON_ROUTE },
+      { id: 'route', name: '南澳玩法', desc: 'PLAY · 环岛慢行',    iconSrc: ICON_ROUTE },
       { id: 'info',  name: '实用信息', desc: 'GUIDE · 出行须知',    iconSrc: ICON_INFO  }
     ]
   },

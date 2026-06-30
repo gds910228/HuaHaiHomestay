@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "路线详情",
+  "navigationBarTitleText": "玩法详情",
   "backgroundColor": "#FBF7F0",
   "enablePullDownRefresh": true,
   "usingComponents": {

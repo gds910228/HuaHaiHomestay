@@ -30,7 +30,7 @@ Page({
     },
     categories: [
       { value: 'food', label: '美食推荐' },
-      { value: 'route', label: '游玩路线' },
+      { value: 'route', label: '南澳玩法' },
       { value: 'spot', label: '景点打卡' },
       { value: 'info', label: '实用信息' }
     ],
@@ -540,7 +540,7 @@ Page({
     } else {
       // route 类校验
       if (!Array.isArray(payload.waypoints) || payload.waypoints.length < 2) {
-        wx.showToast({ title: '路线至少需要 2 个点位', icon: 'none' });
+        wx.showToast({ title: '至少需要 2 个点位', icon: 'none' });
         return;
       }
       // 数字字段保证是 number
@@ -587,7 +587,7 @@ Page({
           // adminSaveGuide 服务端已 fire-and-forget 触发了一次,这里前端不再重复触发,
           // 仅给用户友好提示
           setTimeout(() => {
-            wx.showToast({ title: '路线规划中,稍后返回列表查看', icon: 'none', duration: 2200 });
+            wx.showToast({ title: '行程整理中,稍后返回列表查看', icon: 'none', duration: 2200 });
           }, 1700);
           setTimeout(() => {
             wx.navigateBack();

@@ -49,7 +49,7 @@
   "lazyCodeLoading": "requiredComponents",
   "permission": {
     "scope.userFuzzyLocation": {
-      "desc": "用于按距离推荐附近景点 / 路线导航"
+      "desc": "用于按距离推荐附近景点和导航至目的地"
     }
   },
   "requiredPrivateInfos": ["getFuzzyLocation", "chooseLocation"]

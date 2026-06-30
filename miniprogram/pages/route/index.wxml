@@ -10,7 +10,7 @@
     <view class="hero-spark spark-3"></view>
     <view class="hero-glow"></view>
     <view class="hero-meta">
-      <view class="hero-eyebrow">TRAIL · 游玩路线</view>
+      <view class="hero-eyebrow">PLAY · 南澳玩法</view>
       <view class="hero-title">环岛慢行</view>
       <view class="hero-sub">从日出礁石到落日海堤</view>
     </view>
@@ -65,7 +65,7 @@
 
   <empty-state
     wx:if="{{!loading && filtered.length === 0}}"
-    title="暂无路线"
+    title="暂无玩法"
     description="切换 day 或清除标签筛选试试"
     actionText="返回首页"
     bind:action="goHome"

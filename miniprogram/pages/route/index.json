@@ -5,7 +5,7 @@
     "optimized-image": "/components/optimized-image/index",
     "empty-state": "/components/empty-state/index"
   },
-  "navigationBarTitleText": "游玩路线",
+  "navigationBarTitleText": "南澳玩法",
   "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark"
 }

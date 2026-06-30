@@ -26,7 +26,7 @@
         </view>
         <view class="menu-info">
           <text class="menu-title">攻略管理</text>
-          <text class="menu-desc">景点 · 美食 · 路线 · 信息</text>
+          <text class="menu-desc">景点 · 美食 · 玩法 · 信息</text>
         </view>
         <image class="menu-arrow" src="/images/icons/chevron-right.svg" mode="aspectFit"></image>
       </view>

@@ -4,7 +4,7 @@ const CACHE_TTL = 24 * 60 * 60 * 1000; // 24h
 
 Page({
   data: {
-    category: { id: 'route', name: '游玩路线', emoji: '🗺️' },
+    category: { id: 'route', name: '南澳玩法', emoji: '🗺️' },
     guides: [],         // 原始数据(已含 totalDistance / polylineSegments)
     filtered: [],       // 经 day + tag 过滤后展示
     loading: false,
@@ -143,7 +143,7 @@ Page({
       // 走网络失败,如果当前已有缓存数据就保留 + toast;无数据才提示空
       if (this.data.guides.length > 0) {
         this.setData({ isOffline: true });
-        wx.showToast({ title: force ? '刷新失败,已显示离线数据' : '当前为离线数据,请联网获取最新路线', icon: 'none', duration: 2200 });
+        wx.showToast({ title: force ? '刷新失败,已显示离线数据' : '当前为离线数据,请联网获取最新内容', icon: 'none', duration: 2200 });
       } else {
         wx.showToast({ title: '加载失败', icon: 'none' });
       }
@@ -195,7 +195,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '南澳岛游玩路线 - 画海民宿',
+      title: '南澳岛玩法分享 - 画海民宿',
       path: `/pages/route/index`,
       imageUrl: '/images/logo.jpg'
     };
@@ -203,7 +203,7 @@ Page({
 
   onShareTimeline() {
     return {
-      title: '南澳岛游玩路线 - 画海民宿',
+      title: '南澳岛玩法分享 - 画海民宿',
       query: '',
       imageUrl: '/images/logo.jpg'
     };

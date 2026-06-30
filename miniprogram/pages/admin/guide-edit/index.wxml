@@ -214,7 +214,7 @@
     <block wx:if="{{form.category === 'route'}}">
       <view class="route-panel">
         <view class="route-panel-head" bindtap="toggleRoutePanel">
-          <text class="rp-title">路线规划</text>
+          <text class="rp-title">玩法编排</text>
           <text class="rp-hint" wx:if="{{form.waypoints.length > 0}}">{{form.waypoints.length}} 个点位</text>
           <text class="rp-toggle">{{routePanelExpanded ? '▾' : '▸'}}</text>
         </view>
@@ -391,7 +391,7 @@
 
           <view class="wp-add-btn" bindtap="addWaypoint">+ 添加点位</view>
 
-          <text class="rp-tip" wx:if="{{form.waypoints.length >= 2}}">保存后将自动重新规划路线</text>
+          <text class="rp-tip" wx:if="{{form.waypoints.length >= 2}}">保存后将自动重新生成导航路径</text>
         </view>
       </view>
     </block>

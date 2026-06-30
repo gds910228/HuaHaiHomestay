@@ -1,7 +1,7 @@
 <!--pages/route-detail/index.wxml-->
 <view class="route-page">
   <!-- 加载态 -->
-  <loading-state wx:if="{{loading && !route}}" text="加载路线..."></loading-state>
+  <loading-state wx:if="{{loading && !route}}" text="加载玩法..."></loading-state>
 
   <!-- 错误态 -->
   <view class="error-block" wx:if="{{!loading && errorMsg}}">
