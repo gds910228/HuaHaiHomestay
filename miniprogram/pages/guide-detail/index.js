@@ -47,6 +47,11 @@ Page({
           guide: guide,
           isFavorite: guide.isFavorited || false
         });
+
+        // 动态更新导航栏标题：用攻略真实标题替换静态默认值，利于微信搜一搜抓取及分享/收藏展示
+        if (guide.title) {
+          wx.setNavigationBarTitle({ title: `${guide.title} - 南澳岛攻略` });
+        }
       }
     } catch (err) {
       console.error('加载详情失败', err);

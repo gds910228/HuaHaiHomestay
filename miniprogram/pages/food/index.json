@@ -4,5 +4,6 @@
     "loading-state": "/components/loading-state/index",
     "optimized-image": "/components/optimized-image/index",
     "empty-state": "/components/empty-state/index"
-  }
+  },
+  "navigationBarTitleText": "南澳岛美食 · 美味推荐"
 }

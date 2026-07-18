@@ -5,7 +5,7 @@
     "optimized-image": "/components/optimized-image/index",
     "empty-state": "/components/empty-state/index"
   },
-  "navigationBarTitleText": "南澳玩法",
+  "navigationBarTitleText": "南澳岛环岛玩法",
   "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark"
 }

@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "攻略详情",
+  "navigationBarTitleText": "南澳岛攻略",
   "backgroundColor": "#FBF7F0",
   "usingComponents": {
     "loading-state": "/components/loading-state/index"
