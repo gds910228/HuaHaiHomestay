@@ -70,14 +70,14 @@
 
   <view class="list-area" wx:if="{{!loading && guides.length > 0}}">
     <view class="card-list">
-      <view
+      <navigator
         class="guide-card fade-in-up clickable"
         wx:for="{{guides}}"
         wx:key="_id"
         wx:for-item="guide"
         style="animation-delay: {{index * 60}}ms"
-        data-id="{{guide._id}}"
-        bindtap="viewGuide"
+        url="/pages/guide-detail/index?id={{guide._id}}"
+        hover-class="none"
       >
         <!-- 天气徽章 -->
         <view class="weather-badge" wx:if="{{guide.weatherBrief}}">
@@ -146,7 +146,7 @@
             </button>
           </view>
         </view>
-      </view>
+      </navigator>
     </view>
   </view>
 </view>

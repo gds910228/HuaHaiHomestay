@@ -73,14 +73,14 @@
 
   <view class="list-area" wx:if="{{!loading && filtered.length > 0}}">
     <view class="card-list">
-      <view
+      <navigator
         class="route-card fade-in-up clickable"
         wx:for="{{filtered}}"
         wx:key="_id"
         wx:for-item="guide"
         style="animation-delay: {{index * 60}}ms"
-        data-id="{{guide._id}}"
-        bindtap="viewGuide"
+        url="/pages/route-detail/index?id={{guide._id}}"
+        hover-class="none"
       >
         <!-- 封面图 / 占位 -->
         <view class="card-cover">
@@ -138,7 +138,7 @@
             <image class="cta-arrow" src="/images/icons/chevron-right.svg" mode="aspectFit"></image>
           </view>
         </view>
-      </view>
+      </navigator>
     </view>
   </view>
 </view>
